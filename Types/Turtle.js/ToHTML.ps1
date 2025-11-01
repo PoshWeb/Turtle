@@ -29,7 +29,7 @@ function draw() {
     const turtle = $this
     const cmds = [ ${commandsToParse} ]
     const actions = turtle.parse( ...cmds )
-    actions.forEach( (action) => { turtle.go( action.method, action.arguments ) } )
+    actions.forEach( (action) => { turtle.go( action.method, ...action.arguments ) } )
 
     let turtleElement = document.querySelector('turtle')
     let svg = turtleElement.querySelector('#$( $this.Id )')
