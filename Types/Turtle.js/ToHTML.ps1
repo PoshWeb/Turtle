@@ -7,17 +7,18 @@
     ./TinyTurtle.html.ps1 > ./TinyTurtle.html
 #>
 
-
-# [string] $commandsToParse = @( '[',
-#    ( $this.ArgumentList.ForEach({ "'{0}'" -f $_ }) -join ', ' ),
-# ' ]' ) -join ' '
 [string] $commandsToParse = $this.ArgumentList.ForEach({ "'{0}'" -f $_ }) -join ', '
 
 @"
 <div><turtle>
-<svg width='100%' height='100%' id='stage'>
-<path id='turtle-path' fill='transparent' stroke='currentColor' stroke-width='1%' stroke-linecap='round'></path>
-<text id='counter' font-size='12px' x='50%' y='50%' text-anchor='middle' dominant-baseline='middle'></text>
+<svg width='100%' height='100%' id='$( $this.Id )'>
+    <path id='turtle-path'
+        fill = '$( $this.Fill )'
+        stroke = '$( $this.Stroke )'
+        stroke-width = '$( $this.StrokeWidth )'
+        stroke-linecap = 'round'
+    ></path>
+    <text id='counter' font-size='12px' x='50%' y='50%' text-anchor='middle' dominant-baseline='middle'></text>
 </svg>
 </turtle>
 <script>
