@@ -8303,17 +8303,18 @@ Instruction
     ./TinyTurtle.html.ps1 &gt; ./TinyTurtle.html
 #&gt;
 
-
-# [string] $commandsToParse = @( '[',
-#    ( $this.ArgumentList.ForEach({ "'{0}'" -f $_ }) -join ', ' ),
-# ' ]' ) -join ' '
 [string] $commandsToParse = $this.ArgumentList.ForEach({ "'{0}'" -f $_ }) -join ', '
 
 @"
 &lt;div&gt;&lt;turtle&gt;
-&lt;svg width='100%' height='100%' id='stage'&gt;
-&lt;path id='turtle-path' fill='transparent' stroke='currentColor' stroke-width='1%' stroke-linecap='round'&gt;&lt;/path&gt;
-&lt;text id='counter' font-size='12px' x='50%' y='50%' text-anchor='middle' dominant-baseline='middle'&gt;&lt;/text&gt;
+&lt;svg width='100%' height='100%' id='$( $this.Id )'&gt;
+    &lt;path id='turtle-path'
+        fill = '$( $this.Fill )'
+        stroke = '$( $this.Stroke )'
+        stroke-width = '$( $this.StrokeWidth )'
+        stroke-linecap = 'round'
+    &gt;&lt;/path&gt;
+    &lt;text id='counter' font-size='12px' x='50%' y='50%' text-anchor='middle' dominant-baseline='middle'&gt;&lt;/text&gt;
 &lt;/svg&gt;
 &lt;/turtle&gt;
 &lt;script&gt;
@@ -8324,10 +8325,10 @@ function draw() {
     const turtle = $this
     const cmds = [ ${commandsToParse} ]
     const actions = turtle.parse( ...cmds )
-    actions.forEach( (action) =&gt; { turtle.go( action.method, action.arguments ) } )
+    actions.forEach( (action) =&gt; { turtle.go( action.method, ...action.arguments ) } )
 
     let turtleElement = document.querySelector('turtle')
-    let svg = turtleElement.querySelector('#stage')
+    let svg = turtleElement.querySelector('#$( $this.Id )')
     svg.setAttribute('viewBox', ``0 0 `${turtle.width} `${turtle.height}``)
     let path = turtleElement.querySelector('#turtle-path')
     path.setAttribute('d', turtle.pathData())
