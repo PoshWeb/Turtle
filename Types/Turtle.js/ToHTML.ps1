@@ -32,7 +32,7 @@ function draw() {
     actions.forEach( (action) => { turtle.go( action.method, action.arguments ) } )
 
     let turtleElement = document.querySelector('turtle')
-    let svg = turtleElement.querySelector('#stage')
+    let svg = turtleElement.querySelector('#$( $this.Id )')
     svg.setAttribute('viewBox', ``0 0 `${turtle.width} `${turtle.height}``)
     let path = turtleElement.querySelector('#turtle-path')
     path.setAttribute('d', turtle.pathData())
