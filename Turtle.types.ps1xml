@@ -140,6 +140,10 @@
         <ReferencedMemberName>PenColor</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>PetalFlower</Name>
+        <ReferencedMemberName>FlowerPetal</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Pie</Name>
         <ReferencedMemberName>PieGraph</ReferencedMemberName>
       </AliasProperty>
@@ -247,11 +251,11 @@
 param(
 # The X Radius of the arc.
 [double]
-$RadiusX,
+$RadiusX = $(Get-Random -Min -42 -Max 42),
 
 # The Y Radius of the arc.
 [double]
-$RadiusY,
+$RadiusY = $(Get-Random -Min -42 -Max 42),
 
 # The rotation along the x-axis.
 [double]
@@ -261,22 +265,26 @@ $Rotation = 0,
 # If set to 0, will draw a small arc
 [ValidateSet(0,1, "Large", "Small", $true, $false)]
 [PSObject]
-$IsLargeArc = 1,
+$IsLargeArc = $(1,0 | Get-Random),
 
 # By default, the arc will be drawn clockwise
 # If this is set to 1, the arc will be drawn counterclockwise
 # If set to 1, will draw an arc counterclockwise
 [ValidateSet(0, 1, 'Clockwise','CounterclockWise', 'cw', 'ccw', $true, $false)]
 [PSObject]
-$IsCounterClockwise = 0,
+$IsCounterClockwise = $(1,0 | Get-Random),
 
 # The deltaX 
 [double]
-$DeltaX,
+$DeltaX = $(
+    (Get-Random -Min 42 -Max 84) * (1,-1 | Get-Random)
+),
 
 # The deltaY 
 [double]
-$DeltaY
+$DeltaY = $(
+    (Get-Random -Min 42 -Max 84) * (1,-1 | Get-Random)
+)
 )
 
 if ($DeltaX -or $DeltaY) {
@@ -315,11 +323,11 @@ return $this
 param(
 # The radius of a the circle, were it to complete the arc.
 [double]
-$Radius = 10,
+$Radius = (Get-Random -Min 42 -Max 84),
 
 # The angle of the arc
 [double]
-$Angle = 60
+$Angle = (Get-Random -Min 30 -Max 90)
 )
 
 # Rather than duplicate logic, we will simply reverse the angle
@@ -344,11 +352,11 @@ return $this.ArcRight($Radius, $Angle)
 param(
 # The radius of a the circle, were it to complete the arc.
 [double]
-$Radius = 10,
+$Radius = (Get-Random -Min 42 -Max 84),
 
 # The angle of the arc
 [double]
-$Angle = 60,
+$Angle = (Get-Random -Min 30 -Max 90),
 
 # The number of steps.  If not provided, will default to half of the angle.
 [int]
@@ -489,16 +497,12 @@ return $this.
 .DESCRIPTION
     Moves the turtle backwards by a specified distance.
 .EXAMPLE
-    Move-Turtle Forward 10 | 
-        Move-Turtle Backward 5 | 
-        Move-Turtle Rotate 90 | 
-        Move-Turtle Forward 20 | 
-        Save-Turtle ./DrawT.svg
+    turtle id 'tshape' forward 10 backward 5 rotate 90 forward 20    
 #&gt;
 param(
 # The distance to move backwards
 [double]
-$Distance = 10
+$Distance = (Get-Random -Min 10 -Max 100)
 )
 
 $this.Forward($Distance * -1)
@@ -553,9 +557,22 @@ param(
 [double[]]$Points
 )
 
+if ($width -and -not $Height) {
+    $height = $width
+} elseif ($height -and -not $Width) {
+    $width = $height
+} elseif (-not $width -and -not $height) {
+    $width = (Get-Random -Min 10 -Max 100) * (1,-1| Get-Random)
+    $height = (Get-Random -Min 10 -Max 100)
+}
+
 
 # If there were no points, we are drawing nothing, so return ourself.
-if (-not $points) { return $this}
+if (-not $points) { 
+    $points = foreach ($n in 1..(Get-Random -Min 4 -Max 20)) {
+        Get-Random -Min 0 -Max 100
+    }
+}
 
 # Divide the width by the number of points to get a very snug bar graph
 $barWidth = $width / $points.Length
@@ -636,19 +653,19 @@ return $this
 param(
 # The X control point
 [double]
-$ControlX,
+$ControlX = (Get-Random -Max 42),
 
 # The Y control point
 [double]
-$ControlY,
+$ControlY = (Get-Random -Max 42),
 
 # The delta X
 [double]
-$DeltaX,
+$DeltaX = (Get-Random -Min 0 -Max 100),
 
 # The delta Y
 [double]
-$DeltaY
+$DeltaY = (Get-Random -Min 0 -Max 100)
 )
 
 
@@ -721,9 +738,9 @@ return $this.Rotate(-90).LSystem('0',  [Ordered]@{
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = (Get-Random -Min 100 -Max 200),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (2,3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 90
 )
@@ -758,8 +775,8 @@ return $this.LSystem('F+F+F+F',  [Ordered]@{
     $turtle.Pattern.Save("$pwd/BoxFractal2.svg")
 #&gt;
 param(
-    [double]$Size = 20,
-    [int]$Order = 4,
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (2,3,4 | Get-Random),
     [double]$Angle = 90
 )
 return $this.LSystem('F-F-F-F',  [Ordered]@{
@@ -990,11 +1007,15 @@ return $this
 param(
 # The radius of the circle
 [double]
-$Radius = 42,
+$Radius = $(
+    (Get-Random -Min 42 -Max 84) *(1,-1|Get-Random)
+),
 
 # The angle of the arc 
 [double]
-$Angle = 30
+$Angle =  $(
+    (Get-Random -Min 30 -Max 90) *(1,-1|Get-Random)
+)
 )
 
 # If we wanted an angle that was a multiple of 360
@@ -1292,27 +1313,27 @@ return $this.LSystem('F+F+F+F',  [Ordered]@{
 param(
 # The X control point
 [double]
-$ControlStartX,
+$ControlStartX = $(Get-Random -Min -100 -Max 100),
 
 # The Y control point
 [double]
-$ControlStartY,
+$ControlStartY = $(Get-Random -Min -100 -Max 100),
 
 # The X control point
 [double]
-$ControlEndX,
+$ControlEndX = $(Get-Random -Min -100 -Max 100),
 
 # The Y control point
 [double]
-$ControlEndY,
+$ControlEndY = $(Get-Random -Min -100 -Max 100),
 
 # The delta X
 [double]
-$DeltaX,
+$DeltaX = $(Get-Random -Min -100 -Max 100),
 
 # The delta Y
 [double]
-$DeltaY
+$DeltaY = $(Get-Random -Min -100 -Max 100)
 )
 
 if ($DeltaX -or $DeltaY) {
@@ -1409,14 +1430,30 @@ return $this
 #&gt;
 param(
     # The size of the base shape
-    [double]$Size = 100,
+    [double]$Size = $( Get-Random -Min 42 -Max 84 ),
     # The rotation after each step
-    [double]$Rotation = 10,
+    [double]$Rotation = (Get-Random -Min 10.0 -Max 120.0),
     # The number of sides in each shape
-    [double]$SideCount = 4,
+    [double]$SideCount = $( Get-Random -Min 3 -Max 12 ),
     # The number of steps in the flower.
-    [int]$StepCount = 36
+    [int]$StepCount = 0
 )
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 8)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
 
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
     $this.Polygon($Size, $SideCount)
@@ -1442,24 +1479,41 @@ return $this
 param(
 # The radius of the flower
 [double]
-$Radius = 10,
+$Radius = $(Get-Random -Minimum 42 -Maximum 84),
 
 # The rotation per step 
 [double]
-$Rotation = 30,
+$Rotation = $(Get-Random -Minimum 10 -Maximum 90),
 
 # The angle of the petal.
 [double]
-$PetalAngle = 60,
+$PetalAngle = $(Get-Random -Minimum 10 -Maximum 60),
 
 # The number of steps.
-[ValidateRange(1,1mb)]
+[ValidateRange(0,1kb)]
 [int]
-$StepCount = 12
+$StepCount = 0
 )
 
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 8)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
+
 foreach ($n in 1..$stepCount) {
-    $this = $this.Petal($radius, $PetalAngle).Rotate($Rotation)    
+    $this = $this.Petal($radius, $PetalAngle).Rotate($Rotation)
 }
 
 return $this
@@ -1678,7 +1732,7 @@ return $this.Step(
 #&gt;
 param(
 [double]
-$A = 100,
+$A = $(Get-Random -Min 100 -Max 200),
 
 [double]
 $B = 0
@@ -1723,9 +1777,28 @@ return $this.
       <ScriptMethod>
         <Name>HilbertCurve</Name>
         <Script>
-                        param(
-    [double]$Size = 10,
-    [int]$Order = 5,
+                        &lt;#
+.SYNOPSIS
+    Hilbert Curve
+.DESCRIPTION
+    Draws a Hilbert Curve, using an L-System.
+
+    A Hilbert Curve is a space-filling curve.
+.EXAMPLE
+    turtle id hilbert1 hilbertCurve 42 1
+.EXAMPLE
+    turtle id hilbert2 hilbertCurve 42 2
+.EXAMPLE
+    turtle id hilbert3 hilbertCurve 42 3
+.EXAMPLE
+    turtle id hilbert4 hilbertCurve 42 4
+#&gt;
+param(
+    # The size of each segment.
+    [double]$Size = (Get-Random -Min 10 -Max 100),
+    # The number of generations.
+    [int]$Order = (3,4,5 | Get-Random),
+    # The angle.
     [double]$Angle = 90
 )        
 
@@ -2212,6 +2285,38 @@ $matchCache = @{}
 
 # return this so we can pipe and chain this method.
 return $this
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>Lucky</Name>
+        <Script>
+                        $luckyArgs = @(
+    'rotate' 
+    (Get-Random -Minimum 0 -Maximum 360)    
+    "arcygon", "flower", "starflower", "square", 
+        "circle", "rectangle", "sierpinskitriangle", 
+            "polygon", "flowerpetal" | Get-Random
+    'fill'
+    @(
+        foreach ($n in 1..(Get-Random -Min 2 -Maximum 3)) {
+            'random'
+        }
+    )
+    'stroke'
+    @(
+        foreach ($n in 1..(Get-Random -Min 2 -Maximum 3)) {
+            'random'
+        }
+    ) 
+    @(
+        if ($true, $false, $false | Get-Random) {
+            'fillrule'
+            'evenodd'
+        }
+    )
+)
+turtle @luckyArgs
 
                     </Script>
       </ScriptMethod>
@@ -2866,15 +2971,14 @@ return $this
         turtle polygon 42 3.001
         turtle polygon 42 4
         turtle polygon 42 3.001
-    ) save ./TriangleToSquare.svg 
-
+    )
 #&gt;
 param(
 # The default size of each segment of the polygon
-[double]$Size = 42,
+[double]$Size = $(Get-Random -Min 42 -Max 84),
 # The number of sides in the polygon.  
 # If this is not a whole number, the polygon will not be closed.
-[double]$SideCount = 6
+[double]$SideCount = (Get-Random -Min 3 -Max 12)
 )
 
 # Determine the absolute side count
