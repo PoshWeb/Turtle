@@ -1,6 +1,6 @@
 Push-Location $PSScriptRoot
 $myName = $MyInvocation.MyCommand.Name -replace '\.turtle\.ps1$'
-$turtle = turtle @('StepSpiral',16, 90, 16, 20, 'rotate',90 * 4) | 
+$turtle = turtle id EndlessStepSpiral @('StepSpiral',16, 90, 16, 20, 'rotate',90 * 4) | 
     Set-Turtle -Property PatternTransform -Value @{scale=1} |
     # set-turtle -property Fill -value 'currentColor' |
     # set-turtle -property FillRule -value 'evenodd' |

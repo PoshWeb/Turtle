@@ -1,5 +1,5 @@
 Push-Location $PSScriptRoot
-$turtle = turtle KochSnowflake 10 4 | 
+$turtle = turtle id EndlessSnowflake KochSnowflake 10 4 | 
     Set-Turtle -Property PatternTransform -Value @{scale=0.33} |
     set-turtle -property Fill -value '#4488ff' |
     Set-Turtle -Property PatternAnimation -Value ([Ordered]@{

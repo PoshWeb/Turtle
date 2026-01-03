@@ -1,2 +1,3 @@
 if ($this.'.ID') { return $this.'.ID'}
-return 'turtle'
+$this.ID = "turtle-$([DateTimeOffset]::Now.Ticks)"
+return $this.'.ID'

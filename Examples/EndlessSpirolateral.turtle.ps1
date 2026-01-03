@@ -1,6 +1,6 @@
 Push-Location $PSScriptRoot
 $myName = $MyInvocation.MyCommand.Name -replace '\.turtle\.ps1$'
-$turtle = turtle rotate -30 @('spirolateral',42,60,6,@(1,3),'rotate', 60 * 6 )| 
+$turtle = turtle id EndlessSpirolateral rotate -30 @('spirolateral',42,60,6,@(1,3),'rotate', 60 * 6 )| 
     Set-Turtle -Property PatternTransform -Value @{scale=0.33} |
     set-turtle -property Fill -value '#4488ff' |
     set-turtle -property FillRule -value 'evenodd' |
