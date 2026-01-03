@@ -4,16 +4,12 @@
 .DESCRIPTION
     Moves the turtle backwards by a specified distance.
 .EXAMPLE
-    Move-Turtle Forward 10 | 
-        Move-Turtle Backward 5 | 
-        Move-Turtle Rotate 90 | 
-        Move-Turtle Forward 20 | 
-        Save-Turtle ./DrawT.svg
+    turtle id 'tshape' forward 10 backward 5 rotate 90 forward 20    
 #>
 param(
 # The distance to move backwards
 [double]
-$Distance = 10
+$Distance = (Get-Random -Min 10 -Max 100)
 )
 
 $this.Forward($Distance * -1)

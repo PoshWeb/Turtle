@@ -183,27 +183,27 @@
 param(
 # The X control point
 [double]
-$ControlStartX,
+$ControlStartX = $(Get-Random -Min -100 -Max 100),
 
 # The Y control point
 [double]
-$ControlStartY,
+$ControlStartY = $(Get-Random -Min -100 -Max 100),
 
 # The X control point
 [double]
-$ControlEndX,
+$ControlEndX = $(Get-Random -Min -100 -Max 100),
 
 # The Y control point
 [double]
-$ControlEndY,
+$ControlEndY = $(Get-Random -Min -100 -Max 100),
 
 # The delta X
 [double]
-$DeltaX,
+$DeltaX = $(Get-Random -Min -100 -Max 100),
 
 # The delta Y
 [double]
-$DeltaY
+$DeltaY = $(Get-Random -Min -100 -Max 100)
 )
 
 if ($DeltaX -or $DeltaY) {

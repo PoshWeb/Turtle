@@ -51,6 +51,7 @@
     # Common transposition errors
     FlowerStar = 'StarFlower'
     FlowerGolden = 'GoldenFlower'
+    PetalFlower = 'FlowerPetal'
 
     # Technically accurate aliases to more helpful names
     Href = 'Link'    

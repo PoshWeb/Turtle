@@ -22,15 +22,14 @@
         turtle polygon 42 3.001
         turtle polygon 42 4
         turtle polygon 42 3.001
-    ) save ./TriangleToSquare.svg 
-
+    )
 #>
 param(
 # The default size of each segment of the polygon
-[double]$Size = 42,
+[double]$Size = $(Get-Random -Min 42 -Max 84),
 # The number of sides in the polygon.  
 # If this is not a whole number, the polygon will not be closed.
-[double]$SideCount = 6
+[double]$SideCount = (Get-Random -Min 3 -Max 12)
 )
 
 # Determine the absolute side count
