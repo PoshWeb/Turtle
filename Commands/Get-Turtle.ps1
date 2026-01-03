@@ -1036,7 +1036,13 @@ function Get-Turtle {
         # and keep track of when it became unbalanced.
         $unbalancedAt = $null
         foreach ($match in [Regex]::Matches(
-                ($wordsAndArguments -join ' ' ), '[\[\]]'
+                (@(
+                    foreach ($arg in $wordsAndArguments) {
+                        if ($arg -is [string]) {
+                            $arg
+                        }
+                    }
+                ) -join ' '), '[\[\]]'
             )
         ) {
             # To do this, we increment or decrement depth for brackets `[]`
@@ -1089,7 +1095,7 @@ $(
         for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
             $arg = $wordsAndArguments[$argIndex]
             # If the argument is not in the member names list, we can complain about it.
-            if ($arg -notin $memberNames) {
+            if ($arg -is [string] -and $arg -notin $memberNames) {
                 if (
                     # (we might not want to, if it starts with a bracket)
                     -not $currentMember -and $arg -is [string] -and
@@ -1140,13 +1146,12 @@ $(
                         if ("$bracket" -eq '[') { $bracketDepth++ }
                         if ("$bracket" -eq ']') { $bracketDepth-- } 
                     }
-                }                
-                # If the next word is a method name, and our brackets are balanced
-                if ($wordsAndArguments[$methodArgIndex] -in $memberNames -and -not $bracketDepth) {
-                    # break out of the loop.
-                    break
+                    # If the next word is a method name, and our brackets are balanced
+                    if ($wordsAndArguments[$methodArgIndex] -in $memberNames -and -not $bracketDepth) {
+                        # break out of the loop.
+                        break
+                    }
                 }
-                
             }
             # Now we know how far we had to look to get to the next member name.
 
@@ -1164,7 +1169,10 @@ $(
                             $HelpWanted = $true
                             continue
                         }
-                        if ($HelpWanted -and $word -in 'example', 'examples', 'parameter','parameters','online') {
+                        if ($HelpWanted -and 
+                            $word -is [string] -and 
+                            $word -in 'example', 'examples', 'parameter','parameters','online'
+                        ) {
                             if ($word -in 'example','examples') {
                                 $switches['Examples'] = $true
                             }
@@ -1176,7 +1184,7 @@ $(
                             }
                             continue
                         }
-                        if ($word -match '^[-/]+?[\D-[\.]]') {
+                        if ($word -is [string] -and $word -match '^[-/]+?[\D-[\.]]') {
                             $switchInfo = $word -replace '^[-/]+'
                             $switchName, $switchValue = $switchInfo -split ':', 2
                             if ($null -eq ($switchName -as [double])) {
@@ -1190,12 +1198,12 @@ $(
                             }                            
                         }
                         # If the word started with a bracket, and we haven't removed any
-                        if ("$word".StartsWith('[') -and -not $debracketCount) {
+                        if ($word -is [string] -and $word.StartsWith('[') -and -not $debracketCount) {
                             $word = $word -replace '^\[' # remove it
                             $debracketCount++ # and increment our removal counter.
                         }
                         # If the word ended with a bracket, and we have debracketed once
-                        if ("$word".EndsWith(']') -and $debracketCount -eq 1) {
+                        if ($word -is [string] -and $word.EndsWith(']') -and $debracketCount -eq 1) {
                             # remove the closing bracket
                             $word = $word -replace '\]$'
                             # and increment our removal counter
