@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 42" transform-origin="50% 50%" width="100%" height="100%">
-  <path id="turtle-path" d="m 0 0" stroke="currentcolor" stroke-width="0.25%" fill="transparent" class="foreground-stroke" transform-origin="50% 50%">
+  <path id="turtle-639030660186642882-path" d="m 0 0" stroke="currentcolor" stroke-width="0.25%" fill="transparent" class="foreground-stroke" transform-origin="50% 50%">
   </path>
-  <g id="turtle-children">
-    <path id="turtle-square-path" d="m 0 0   l 42 0 l 0 42 l -42 0 l -0 -42" stroke="#224488" stroke-width="0.25%" fill="#4488ff" class="" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
+  <g id="turtle-639030660186642882-children">
+    <path id="turtle-639030660186642882-square-path" d="m 0 0   l 42 0 l 0 42 l -42 0 l -0 -42" stroke="#224488" stroke-width="0.25%" fill="#4488ff" class="" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
     </path>
-    <path id="turtle-circle-path" d="m 21 0 a 21 21 0 0 1 21 21 a 21 21 0 0 1 -21 21 a 21 21 0 0 1 -21 -21 a 21 21 0 0 1 21 -21" stroke="#4488ff" stroke-width="0.25%" fill="#224488" class="" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
+    <path id="turtle-639030660186642882-circle-path" d="m 21 0 a 21 21 0 0 1 21 21 a 21 21 0 0 1 -21 21 a 21 21 0 0 1 -21 -21 a 21 21 0 0 1 21 -21" stroke="#4488ff" stroke-width="0.25%" fill="#224488" class="" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
     </path>
   </g>
 </svg>
