@@ -22,7 +22,7 @@ param(
 [double]$Size = $(
     (Get-Random -Min 42 -Max 84) * (1,-1 |Get-Random)
 ),
-[int]$Order = (2,3,4 | Get-Random),
+[int]$Order = (3,4 | Get-Random),
 [double]$Angle = 90
 )        
 

@@ -1,26 +1,35 @@
 $luckyArgs = @(
     'rotate' 
     (Get-Random -Minimum 0 -Maximum 360)    
-    "arcygon", "flower", "starflower", "square", 
-        "circle", "rectangle", "sierpinskitriangle", 
-            "polygon", "flowerpetal" | Get-Random
-    'fill'
-    @(
-        foreach ($n in 1..(Get-Random -Min 2 -Maximum 3)) {
-            'random'
+    "flower", "starflower", "goldenflower",    
+    "arcygon", "polygon", 
+    "square", "circle", "rectangle", 'righttriangle',
+    "sierpinskitriangle",
+    "hilbertcurve", "moorecurve", "flowerpetal",
+    "fractalplant","fractalshrub",
+    'Spiderweb','pentaplexity',
+    "kochisland","kochsnowflake",
+    'ringfractal','crystalfractal','boardfractal',
+    'bargraph','piegraph' | 
+        Get-Random
+    if ($true, $true, $false | Get-Random) {
+        'fill'    
+        foreach ($n in 1..(Get-Random -Minimum 2 -Maximum 3)) {
+            'random'        
+        }    
+        if ($true, $false, $false | Get-Random) {
+            'fillrule'
+            'evenodd'
         }
-    )
+    }
+    
     'stroke'
     @(
         foreach ($n in 1..(Get-Random -Min 2 -Maximum 3)) {
             'random'
         }
-    ) 
-    @(
-        if ($true, $false, $false | Get-Random) {
-            'fillrule'
-            'evenodd'
-        }
-    )
+    )     
 )
-turtle @luckyArgs
+
+$id = $luckyArgs -join '-'
+turtle id $id title $($luckyArgs -join ' ') @luckyArgs

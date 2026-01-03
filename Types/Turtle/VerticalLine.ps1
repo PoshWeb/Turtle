@@ -13,7 +13,7 @@
 param(
 # The length of the line.
 [double]
-$Distance
+$Distance = $(Get-Random -Min 1 -Max 100)
 )
 
 $instruction = 
