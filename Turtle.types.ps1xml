@@ -1554,17 +1554,25 @@ return $this.Step($x, $y)
 .LINK
     https://en.wikipedia.org/wiki/L-system#Example_7:_fractal_plant
 .EXAMPLE
-    turtle FractalPlant save ./FractalPlant.svg
+    turtle FractalPlant 42 1 -25    
 .EXAMPLE
-    turtle FractalPlant morph  save ./FractalPlantMorph.svg
+    turtle FractalPlant 42 2 -25    
+.EXAMPLE    
+    turtle FractalPlant 42 3 -25    
+.EXAMPLE    
+    turtle FractalPlant 42 4 -25
+.EXAMPLE
+    turtle FractalPlant 42 4 -25
+.EXAMPLE
+    turtle FractalPlant 42 4 
 #&gt;  
 param(
     # The size of each segment
-    [double]$Size = 42,
+    [double]$Size = (Get-Random -Min 42 -Max 84),
     # The order of magnitude (the number of times the L-system is expanded)
-    [int]$Order = 4,
+    [int]$Order = (3,4,5 | Get-Random),
     # The angle of each segment
-    [double]$Angle = -25
+    [double]$Angle = (Get-Random -Min -35 -Max -25)
 )
 return $this.Rotate(-90).LSystem('-X',  [Ordered]@{
     'X' = 'F+[[X]-X]-F[-FX]+X'
@@ -1591,17 +1599,25 @@ return $this.Rotate(-90).LSystem('-X',  [Ordered]@{
 .LINK
     https://en.wikipedia.org/wiki/L-system#Example_7:_fractal_plant
 .EXAMPLE
-    turtle FractalShrub save ./FractalShrub.svg
+    turtle FractalShrub 42 1 -25    
 .EXAMPLE
-    turtle FractalShrub morph  save ./FractalShrubMorph.svg
+    turtle FractalShrub 42 2 -25    
+.EXAMPLE    
+    turtle FractalShrub 42 3 -25    
+.EXAMPLE    
+    turtle FractalShrub 42 4 -25
+.EXAMPLE
+    turtle FractalShrub 42 4 -25
+.EXAMPLE
+    turtle FractalShrub 42 4
 #&gt;  
-param(
+param(    
     # The size of each segment
-    [double]$Size = 42,
+    [double]$Size = (Get-Random -Min 42 -Max 84),
     # The order of magnitude (the number of times the L-system is expanded)
-    [int]$Order = 4,
+    [int]$Order = (3,4,5 | Get-Random),
     # The angle of each segment
-    [double]$Angle = -25
+    [double]$Angle = (Get-Random -Min -35 -Max -25)
 )
 return $this.Rotate(-90).LSystem('-X',  [Ordered]@{
     'X' = 'F[[X]X]F[FX]X'
@@ -1839,7 +1855,7 @@ return $this.Teleport(0,0)
 #&gt;
 param(
 [double]
-$Distance
+$Distance = (Get-Random -Min 1 -Max 100)
 )
 
 $instruction = 
@@ -1891,9 +1907,9 @@ $this.PenUp().Forward($Distance).PenDown()
     Draws a Koch Curve, using an L-System.
 #&gt;
 param(
-    [double]$Size = 10,
-    [double]$Rotation = 90,
-    [int]$Order = 4
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (2,3,4 | Get-Random),
+    [double]$Rotation = 90    
 )    
 return $this.LSystem('F',  @{
     F = 'F+F-F-F+F'
@@ -1930,8 +1946,8 @@ return $this.LSystem('F',  @{
     $turtle.Pattern.Save("$pwd/KochIsland2.svg")
 #&gt;
 param(
-    [double]$Size = 42,
-    [int]$Order = 4,
+    [double]$Size = $(Get-Random -Min 5.0 -Max 20.0),    
+    [int]$Order = (2,3,4 | Get-Random),
     [double]$Angle = -90
 )
 
@@ -1972,8 +1988,8 @@ return $this.LSystem('W',  [Ordered]@{
     $turtle.Pattern.Save("$pwd/KochSnowflake2.svg")
 #&gt;
 param(
-    [double]$Size = 10,    
-    [int]$Order = 4,
+    [double]$Size = $(Get-Random -Min 5.0 -Max 20.0),    
+    [int]$Order = (2,3,4 | Get-Random),
     [double]$Rotation = 60
 )    
 return $this.LSystem('F--F--F ',  @{
@@ -2294,29 +2310,38 @@ return $this
                         $luckyArgs = @(
     'rotate' 
     (Get-Random -Minimum 0 -Maximum 360)    
-    "arcygon", "flower", "starflower", "square", 
-        "circle", "rectangle", "sierpinskitriangle", 
-            "polygon", "flowerpetal" | Get-Random
-    'fill'
-    @(
-        foreach ($n in 1..(Get-Random -Min 2 -Maximum 3)) {
-            'random'
+    "flower", "starflower", "goldenflower",    
+    "arcygon", "polygon", 
+    "square", "circle", "rectangle", 'righttriangle',
+    "sierpinskitriangle",
+    "hilbertcurve", "moorecurve", "flowerpetal",
+    "fractalplant","fractalshrub",
+    'Spiderweb','pentaplexity',
+    "kochisland","kochsnowflake",
+    'ringfractal','crystalfractal','boardfractal',
+    'bargraph','piegraph' | 
+        Get-Random
+    if ($true, $true, $false | Get-Random) {
+        'fill'    
+        foreach ($n in 1..(Get-Random -Minimum 2 -Maximum 3)) {
+            'random'        
+        }    
+        if ($true, $false, $false | Get-Random) {
+            'fillrule'
+            'evenodd'
         }
-    )
+    }
+    
     'stroke'
     @(
         foreach ($n in 1..(Get-Random -Min 2 -Maximum 3)) {
             'random'
         }
-    ) 
-    @(
-        if ($true, $false, $false | Get-Random) {
-            'fillrule'
-            'evenodd'
-        }
-    )
+    )     
 )
-turtle @luckyArgs
+
+$id = $luckyArgs -join '-'
+turtle id $id title $($luckyArgs -join ' ') @luckyArgs
 
                     </Script>
       </ScriptMethod>
@@ -2347,7 +2372,7 @@ param(
 [double]$Size = $(
     (Get-Random -Min 42 -Max 84) * (1,-1 |Get-Random)
 ),
-[int]$Order = (2,3,4 | Get-Random),
+[int]$Order = (3,4 | Get-Random),
 [double]$Angle = 90
 )        
 
@@ -3082,19 +3107,19 @@ return $this
 param(
 # The X control point
 [double]
-$ControlX,
+$ControlX = $(Get-Random -Min 0 -Max 100),
 
 # The Y control point
 [double]
-$ControlY,
+$ControlY = $(Get-Random -Min 0 -Max 100),
 
 # The delta X
 [double]
-$DeltaX,
+$DeltaX = $(Get-Random -Min 0 -Max 100),
 
 # The delta Y
 [double]
-$DeltaY
+$DeltaY = $(Get-Random -Min 0 -Max 100)
 )
 
 
@@ -3133,7 +3158,7 @@ return $this
 param(
 # The width of the rectangle
 [double]
-$Width = 42,
+$Width = $(Get-Random -Min 42 -Maximum 84),
 
 # The height of the rectangle.  If not provided, will be the width divided by the golden ratio.
 [double]
@@ -3486,9 +3511,9 @@ return $this.
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = (Get-Random -Min 100 -Max 200),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (3,4| Get-Random),
 # The default angle.
 [double]$Angle = 90
 )
@@ -3924,7 +3949,7 @@ return $this.Pop().Push().
 
     This will draw any number of spokes, and draw a polygon between each spoke at regular intervals
 .EXAMPLE
-    # Draw a spiderweb
+    # Draw a random spiderweb
     turtle spiderweb
 .EXAMPLE
     # Draw a spider web with a radius six
@@ -4003,15 +4028,15 @@ return $this.Pop().Push().
 param(
 # The radius of the web
 [double]
-$Radius = 42,
+$Radius = (Get-Random -Min 42 -Maximum 84),
 
 # The number of spokes in the web.
 [int]
-$SpokeCount = 6,
+$SpokeCount = (Get-Random -Min 5 -Max 13),
 
 # The number of rings in the web.
 [int]
-$RingCount = 6
+$RingCount = (Get-Random -Min 5 -Max 13)
 )
 
 
@@ -4103,17 +4128,20 @@ return $this
 param(
 # The base length of each side (this will be multiplied by the step number)
 [double]
-$Side = 10,
+$Side = $(
+    (Get-Random -Min 42.0 -Maximum 84.0) * (1,-1 | Get-Random)
+),
 
 # The angle of the turn
 [double]
-$Angle = 90,
+$Angle = $(
+    (Get-Random -Min 10.0 -Maximum 120.0) * (1,-1 | Get-Random)
+),
 
 # The step count.
 # This is the number of times the steps will be repeated.
-# This is also the maximum number of iterations the shape will complete.
 [int]
-$StepCount = 10,
+$StepCount = 0,
 
 # The step numbers that are left turns (counter-clockwise).
 # This allows the creation of general spirolaterals
@@ -4122,10 +4150,46 @@ $StepCount = 10,
 $LeftTurnSteps
 )
 
+if ($Angle -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 16)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Angle
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
+
 $stepNumber = 1
-$majorStepCount = 0
-$totalTurn = 0
-do {
+
+# Figure out our total turn per loop
+$totalTurn = 0.0
+for ($stepNumber = 1; $stepNumber -le [Math]::Abs($StepCount); $stepNumber++) {    
+    if ($LeftTurnSteps -contains $stepNumber) {
+        $totalTurn -= $angle        
+    } else {
+        $totalTurn += $angle        
+    }
+}
+
+$rotations = 0
+foreach ($n in 1..32) {
+    $rotations = ($n * 360)/$totalTurn    
+    if ([Math]::Floor($rotations) -eq $rotations) {
+        break
+    }
+}
+$rotations = [Math]::Ceiling($rotations)
+
+
+foreach ($rotation in 1..$rotations) {
     $null = for ($stepNumber = 1; $stepNumber -le [Math]::Abs($StepCount); $stepNumber++) {
         $null = $this.Forward($side * $stepNumber)
         if ($LeftTurnSteps) {
@@ -4141,11 +4205,14 @@ do {
             $this.Right($angle)
         }
     }
-    $majorStepCount++
-} until (
-    (-not ([Math]::Round($totalTurn, 5) % 360 )) -and 
+}
+
+    
+    
+&lt;#} until (
+    (-not ([Math]::Round($totalTurn, 1) % 360 )) -and 
     $majorStepCount -le [Math]::Abs($StepCount)
-)
+)#&gt;
 
 return $this
 
@@ -4616,9 +4683,9 @@ return $this.LSystem('F',  [Ordered]@{
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = (Get-Random -Min 100 -Max 200),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 90
 )
@@ -4861,7 +4928,7 @@ return $this.LSystem('FX+FX+',  [Ordered]@{
 param(
 # The length of the line.
 [double]
-$Distance
+$Distance = $(Get-Random -Min 1 -Max 100)
 )
 
 $instruction = 
