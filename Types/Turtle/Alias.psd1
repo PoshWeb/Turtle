@@ -75,10 +75,19 @@
     # Internationalized Method Names.  
     # These are technically more correct, but will not be easy to type on all keyboards.    
     BézierCurve = 'BezierCurve'
+    Bézier = 'BezierCurve'
+    
     QuadraticBézierCurve = 'QuadraticBezierCurve'
+    
     CubicBézierCurve = 'CubicBezierCurve'    
     SierpińskiTriangle = 'SierpinskiTriangle'
     SierpińskiArrowHeadCurve = 'SierpinskiArrowHeadCurve'
     SierpińskiSquareCurve = 'SierpinskiSquareCurve'
-    SierpińskiCurve = 'SierpinskiCurve'
+    SierpińskiCurve = 'SierpinskiCurve'    
+
+    Bezier = 'BezierCurve'
+    Cubic = 'CubicBezierCurve'
+
+    # Shortened fractal names
+    Terdragon = 'TerdragonCurve'
 }
