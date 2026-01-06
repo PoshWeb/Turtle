@@ -1558,7 +1558,7 @@ return $this
 param(
 # The distance to move forward
 [double]
-$Distance = 10
+$Distance = $(Get-Random -Min 1 -Max 100)
 )
 
 $heading = $this.Heading
@@ -1677,12 +1677,29 @@ return $this.Rotate(-90).LSystem('-X',  [Ordered]@{
 #&gt;
 param(
     # The width of each rectangle
-    [double]$Size = 42,
-    # The rotation after each rectangle
-    [double]$Rotation = 20,
+    [double]$Size = $( Get-Random -Min 42 -Max 84 ),
+    # The rotation after each step
+    [double]$Rotation = (Get-Random -Min 10.0 -Max 120.0),
     # The number of steps.
-    [int]$StepCount = 18
+    [int]$StepCount = 0
 )
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 8)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
 
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
     $this.Rectangle($Size)
@@ -2036,7 +2053,7 @@ return $this.LSystem('F--F--F ',  @{
     Turns the turtle left (counter-clockwise) by the specified angle.
 #&gt;
 param(
-[double]$Angle = 90
+[double]$Angle = $(Get-Random -Minimum 0.0 -Maximum 360.0)
 )
 
 $this.Rotate($Angle * -1)
@@ -2083,6 +2100,17 @@ foreach ($arg in $args) {
         $pairs += ,$pair
         $pair = @()
     }
+}
+
+if (-not $pairs) {
+    $pairs += ,@(
+        Get-Random -Minimum 50 -Maximum 100
+        Get-Random -Minimum 30 -Maximum 90
+    )
+    $pairs += ,@(
+        Get-Random -Minimum 50 -Maximum 100
+        Get-Random -Minimum 30 -Maximum 90
+    )
 }
 
 foreach ($pair in $pairs) {
@@ -2335,16 +2363,18 @@ return $this
                         $luckyArgs = @(
     'rotate' 
     (Get-Random -Minimum 0 -Maximum 360)    
-    "flower", "starflower", "goldenflower",    
-    "arcygon", "polygon", 
-    "square", "circle", "rectangle", 'righttriangle',
-    "sierpinskitriangle","sierpinskiarrowheadcurve",
-    "hilbertcurve", "moorecurve", "flowerpetal",
-    "fractalplant","fractalshrub",
-    'Spiderweb','pentaplexity',
-    "kochisland","kochsnowflake",
-    'ringfractal','crystalfractal','boardfractal',
-    'bargraph','piegraph' | 
+
+    $shapes = @(
+        "flower", "starflower", "goldenflower",    
+        "arcygon", "polygon", 
+        "square", "circle", "rectangle", 'righttriangle',
+        "sierpinskitriangle","sierpinskiarrowheadcurve",
+        "hilbertcurve", "moorecurve", "flowerpetal",    
+        'Spiderweb','pentaplexity',"kochsnowflake",
+        'TurtleMonotile','HatMonotile',
+        'bargraph','piegraph'
+    )
+    $shapes | 
         Get-Random
     if ($true, $true, $false | Get-Random) {
         'fill'    
@@ -2362,7 +2392,7 @@ return $this
         foreach ($n in 1..(Get-Random -Min 2 -Maximum 3)) {
             'random'
         }
-    )     
+    )
 )
 
 $id = $luckyArgs -join '-'
@@ -2827,8 +2857,16 @@ $GraphData
 )
 
 
-# If there were no points, we are drawing nothing, so return ourself.
-if (-not $GraphData) { return $this}
+if (-not $radius) {
+    $radius = Get-Random -Min 42 -Max 84    
+}
+
+# If there were no points, draw a random number of slices
+if (-not $GraphData) {
+    $GraphData = foreach ($n in Get-Random -min 3 -max 12) {
+        Get-Random -Max 42
+    }
+}
 
 filter IsPrimitive {$_.GetType -and $_.GetType().IsPrimitive}
 
@@ -3372,7 +3410,7 @@ return $this
     Turns the turtle right (clockwise) by the specified angle.
 #&gt;
 param(
-[double]$Angle = 90
+[double]$Angle = (Get-Random -Min 0.0 -Max 360.0)
 )
 
 $this.Rotate($Angle)
@@ -3476,12 +3514,6 @@ $Side2 = $(
 # If neither side is a number, return ourself
 if (-not $side1 -and -not $side2) { return $this }
 
-# If one side is negative and the other is positive
-&lt;#if (($side1 * $side2) -lt 0) {
-    # flip the other side so they match.
-    $side2 = $Side2 * -1
-} #&gt;   
-
 # Figure out our angles with a bit of trigonometry.
 # (SOHCAHTOA)
 $angle1 = [Math]::Atan2($side2, $Side1) * (180/[Math]::Pi)
@@ -3561,7 +3593,9 @@ return $this.LSystem('F+F+F+F',  [Ordered]@{
 .DESCRIPTION
     Rotates the turtle by the specified angle.
 #&gt;
-param([double]$Angle = 90)
+param(
+[double]$Angle = (Get-Random -Min -360.0 -Max 360.0)
+)
 $this.Heading += $Angle
 return $this
                     </Script>
@@ -3611,11 +3645,11 @@ return $this | Save-Turtle @saveSplat
 param(
 # The distance to travel
 [double]
-$Distance = 10,
+$Distance = $(Get-Random -Min 21 -Max 42),
 
 # The interior angle of the scissors
 [double]
-$Angle = 60
+$Angle = $(Get-Random -Min 15 -Max 75)
 )
 
 
@@ -3677,26 +3711,36 @@ $this.
 param(
 # The distance of each side of the scissor
 [double]
-$Distance,
+$Distance = (
+    (Get-Random -Min 42 -Max 84) * (1,-1|Get-Random)
+),
 
 # The angle between each scissor
 [double]
-$Angle,
+$Angle = (Get-Random -Min 30 -Max 90),
 
 # The angle of each scissor, or the degree out of phase a regular N-gon would be.
 [double]
-$Phase
+$Phase = (Get-Random -Min 30 -Max 90)
 )
 
 $totalTurn = 0
 
-do {
-    $this = $this.Scissor($Distance, $Phase).Left($angle)
-    $totalTurn -= $angle
+if ($angle -eq 0) { return $this }
+
+$totalTurn = $Angle
+$rotations = 0
+foreach ($n in 1..360) {
+    $rotations = ($n * 360)/$totalTurn    
+    if ([Math]::Floor($rotations) -eq $rotations) {
+        break
+    }
 }
-until (
-    (-not ([Math]::Round($totalTurn, 5) % 360 ))
-)
+
+foreach ($n in 1..$rotations) {
+    $this = $this.Scissor($Distance, $Phase).Left($angle)
+}
+return $this
 
                     </Script>
       </ScriptMethod>
@@ -4656,25 +4700,40 @@ return $this
 .LINK
     https://en.wikipedia.org/wiki/Dragon_curve#Terdragon
 .EXAMPLE
-    $turtle.TerdragonCurve().Pattern.Save("$pwd/TerdragonCurve.svg")
+    turtle TerdragonCurve    
 .EXAMPLE
-    $turtle.Clear()
-    $turtle.TerdragonCurve(20,7,90)
-    $turtle.PatternTransform = @{
+    turtle id Terdragon1 TerdragonCurve 42 1
+.EXAMPLE
+    turtle id Terdragon2 TerdragonCurve 42 2
+.EXAMPLE
+    turtle id Terdragon3 TerdragonCurve 42 3
+.EXAMPLE
+    turtle id Terdragon4 TerdragonCurve 42 4
+.EXAMPLE
+    turtle id Terdragon5 TerdragonCurve 42 5
+.EXAMPLE
+    turtle id Terdragon6 TerdragonCurve 42 6
+.EXAMPLE
+    turtle id Terdragon7 TerdragonCurve 42 7
+.EXAMPLE
+    turtle id Terdragon8 TerdragonCurve 42 8
+.EXAMPLE
+    turtle id EndlessTerdragon TerdragonCurve PatternTransform = @{
         'scale' = 0.9
         'rotate' = 45
-    }
-    
-    $turtle.PatternAnimation = "
-    &lt;animateTransform attributeName='patternTransform' attributeType='XML' type='scale' values='1;0.9;1' dur='19s' repeatCount='indefinite' additive='sum' /&gt;
-    &lt;animateTransform attributeName='patternTransform' attributeType='XML' type='skewY' values='30;-30;30' dur='67s' repeatCount='indefinite' additive='sum' /&gt;
-    &lt;animateTransform attributeName='patternTransform' attributeType='XML' type='skewX' values='30;-30;30' dur='83s' repeatCount='indefinite' additive='sum' /&gt;
-    "
-    $turtle.Pattern.Save("$pwd/TerdragonCurve2.svg")
+    } PatternAnimation @(
+        "&lt;animateTransform attributeName='patternTransform' attributeType='XML' type='scale' values='1;0.9;1' dur='19s' repeatCount='indefinite' additive='sum' /&gt;"
+        "&lt;animateTransform attributeName='patternTransform' attributeType='XML' type='skewY' values='30;-30;30' dur='67s' repeatCount='indefinite' additive='sum' /&gt;"
+        "&lt;animateTransform attributeName='patternTransform' attributeType='XML' type='skewX' values='30;-30;30' dur='83s' repeatCount='indefinite' additive='sum' /&gt;"        
+    )     
 #&gt;
 param(
-    [double]$Size = 20,
-    [int]$Order = 8,
+    [double]$Size = $(
+        Get-Random -Min 42 -Max 84
+    ),
+    [int]$Order = (
+        5,6,7,8 | Get-Random
+    ),
     [double]$Angle = 120
 )
 return $this.LSystem('F',  [Ordered]@{
@@ -4846,7 +4905,7 @@ return $this.LSystem('F++F++F',  [Ordered]@{
 #&gt;
 param(
 [double]
-$A = 100,
+$A = $(Get-Random -Min 42 -Max 100),
 
 [double]
 $B = 0
