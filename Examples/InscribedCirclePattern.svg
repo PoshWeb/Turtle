@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
   <defs>
-    <pattern id="turtle-639030661703012214-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="42" height="42" transform-origin="50% 50%">
-      <path id="turtle-639030661703012214-path" d="m 0 0" stroke="currentcolor" stroke-width="0.25%" fill="transparent" class="foreground-stroke" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
+    <pattern id="inscribedCircle-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="42" height="42" transform-origin="50% 50%">
+      <path id="inscribedCircle-path" d="m 0 0" stroke="currentcolor" stroke-width="0.25%" fill="transparent" class="foreground-stroke" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
       </path>
-      <g id="turtle-639030661703012214-children" xmlns="http://www.w3.org/2000/svg">
-        <path id="turtle-639030661703012214-square-path" d="m 0 0   l 42 0 l 0 42 l -42 0 l -0 -42" stroke="#224488" stroke-width="0.25%" fill="#4488ff" class="" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
+      <g id="inscribedCircle-children" xmlns="http://www.w3.org/2000/svg">
+        <path id="inscribedCircle-square-path" d="m 0 0   l 42 0 l 0 42 l -42 0 l -0 -42" stroke="#224488" stroke-width="0.25%" fill="#4488ff" class="" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
         </path>
-        <path id="turtle-639030661703012214-circle-path" d="m 21 0 a 21 21 0 0 1 21 21 a 21 21 0 0 1 -21 21 a 21 21 0 0 1 -21 -21 a 21 21 0 0 1 21 -21" stroke="#4488ff" stroke-width="0.25%" fill="#224488" class="" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
+        <path id="inscribedCircle-circle-path" d="m 21 0 a 21 21 0 0 1 21 21 a 21 21 0 0 1 -21 21 a 21 21 0 0 1 -21 -21 a 21 21 0 0 1 21 -21" stroke="#4488ff" stroke-width="0.25%" fill="#224488" class="" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
         </path>
       </g>
     </pattern>
   </defs>
-  <rect width="10000%" height="10000%" x="-5000%" y="-5000%" fill="url(#turtle-639030661703012214-pattern)" transform-origin="50% 50%" />
+  <rect width="10000%" height="10000%" x="-5000%" y="-5000%" fill="url(#inscribedCircle-pattern)" transform-origin="50% 50%" />
 </svg>
