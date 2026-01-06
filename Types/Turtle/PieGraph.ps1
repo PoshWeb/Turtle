@@ -143,8 +143,16 @@ $GraphData
 )
 
 
-# If there were no points, we are drawing nothing, so return ourself.
-if (-not $GraphData) { return $this}
+if (-not $radius) {
+    $radius = Get-Random -Min 42 -Max 84    
+}
+
+# If there were no points, draw a random number of slices
+if (-not $GraphData) {
+    $GraphData = foreach ($n in Get-Random -min 3 -max 12) {
+        Get-Random -Max 42
+    }
+}
 
 filter IsPrimitive {$_.GetType -and $_.GetType().IsPrimitive}
 

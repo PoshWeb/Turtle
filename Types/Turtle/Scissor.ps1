@@ -11,11 +11,11 @@
 param(
 # The distance to travel
 [double]
-$Distance = 10,
+$Distance = $(Get-Random -Min 21 -Max 42),
 
 # The interior angle of the scissors
 [double]
-$Angle = 60
+$Angle = $(Get-Random -Min 15 -Max 75)
 )
 
 

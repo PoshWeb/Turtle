@@ -9,7 +9,7 @@
 param(
 # The distance to move forward
 [double]
-$Distance = 10
+$Distance = $(Get-Random -Min 1 -Max 100)
 )
 
 $heading = $this.Heading

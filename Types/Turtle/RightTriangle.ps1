@@ -93,12 +93,6 @@ $Side2 = $(
 # If neither side is a number, return ourself
 if (-not $side1 -and -not $side2) { return $this }
 
-# If one side is negative and the other is positive
-<#if (($side1 * $side2) -lt 0) {
-    # flip the other side so they match.
-    $side2 = $Side2 * -1
-} #>   
-
 # Figure out our angles with a bit of trigonometry.
 # (SOHCAHTOA)
 $angle1 = [Math]::Atan2($side2, $Side1) * (180/[Math]::Pi)

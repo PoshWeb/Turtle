@@ -44,23 +44,33 @@
 param(
 # The distance of each side of the scissor
 [double]
-$Distance,
+$Distance = (
+    (Get-Random -Min 42 -Max 84) * (1,-1|Get-Random)
+),
 
 # The angle between each scissor
 [double]
-$Angle,
+$Angle = (Get-Random -Min 30 -Max 90),
 
 # The angle of each scissor, or the degree out of phase a regular N-gon would be.
 [double]
-$Phase
+$Phase = (Get-Random -Min 30 -Max 90)
 )
 
 $totalTurn = 0
 
-do {
-    $this = $this.Scissor($Distance, $Phase).Left($angle)
-    $totalTurn -= $angle
+if ($angle -eq 0) { return $this }
+
+$totalTurn = $Angle
+$rotations = 0
+foreach ($n in 1..360) {
+    $rotations = ($n * 360)/$totalTurn    
+    if ([Math]::Floor($rotations) -eq $rotations) {
+        break
+    }
 }
-until (
-    (-not ([Math]::Round($totalTurn, 5) % 360 ))
-)
+
+foreach ($n in 1..$rotations) {
+    $this = $this.Scissor($Distance, $Phase).Left($angle)
+}
+return $this

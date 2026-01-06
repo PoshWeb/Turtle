@@ -10,7 +10,7 @@
 #>
 param(
 [double]
-$A = 100,
+$A = $(Get-Random -Min 42 -Max 100),
 
 [double]
 $B = 0
