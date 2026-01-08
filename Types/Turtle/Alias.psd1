@@ -65,7 +65,8 @@
     Keyframes = 'Keyframe'
     Styles = 'Style'
     Spoke = 'Spokes'
-    Stick = 'Sticks'    
+    Stick = 'Sticks'
+    Rhombi = 'Rhombus'    
 
     # Anglican color property names
     BackgroundColour = 'BackgroundColor'    
