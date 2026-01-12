@@ -2730,9 +2730,9 @@ return $this
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = $(Get-Random -Min 42 -Max 84),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 36
 )
@@ -4517,11 +4517,11 @@ return $this
 param(
 # The radius of the spokes
 [double]
-$Radius = 42,
+$Radius = $(Get-Random -Min 42 -Max 84),
 
 # The number of spokes or sticks to draw
 [int]
-$SpokeCount = 6    
+$SpokeCount = $(3..12 | Get-Random)    
 )
 
 $spokeAngle = 360 / $SpokeCount
@@ -4612,15 +4612,34 @@ return $this
     Turtle StarFlower 84 40 6 9 | Save-Turtle ./StarFlowerPattern.svg Pattern
 #&gt;
 param(
-    # The size of each star
-    [double]$Size = 42,
-    # The rotation after each star
-    [double]$Rotation = 20,
+    # The size of the base shape
+    [double]$Size = $( Get-Random -Min 42 -Max 84 ),
+    # The rotation after each step
+    [double]$Rotation = (Get-Random -Min 10.0 -Max 120.0),
+    
     # The number of points in the star    
-    [double]$PointCount = 6,
+    [double]$PointCount = (Get-Random -Min 5 -Max 12),
     # The number of steps.
-    [int]$StepCount = 18
+    [int]$StepCount = 0
 )
+
+
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 8)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
 
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
     $this.Star($Size, $PointCount)
@@ -4676,7 +4695,7 @@ return $this
 
     To create an inward spiral, use a negative StepSize or StepCount.
 .EXAMPLE
-    turtle StepSpiral save ./StepSpiral.svg
+    turtle StepSpiral 1 90 2 20 save ./StepSpiral.svg
 .EXAMPLE
     turtle @('StepSpiral',3, 120, 'rotate',120 * 3) save ./StepSpiralx3.svg
 .EXAMPLE
@@ -4684,14 +4703,33 @@ return $this
 #&gt;
 param(
 # The length of the first step
-[double]$Length = 1,
+[double]$Length = $(Get-Random -Min 1.0 -Max 2.0),
 # The angle to rotate after each step
-[double]$Angle = 90,
+[double]$Angle = $(
+    @(
+        foreach ($n in 3..24) {
+            if ([Math]::Floor(360/$n) -eq (360/$n)) {
+                360/$n
+            }
+        }
+    ) | Get-Random
+),
 # The amount of change per step
-[double]$StepSize = 1,
+[double]$StepSize = $(Get-Random -Min 2.0 -Max 5.0),
 # The number of steps.
-[int]$StepCount = 20
+[int]$StepCount = 0
 )
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 4 -Max 12)
+    # and figure out how many steps at our angle it takes to get there.
+    
+    $StepCount = ($revolutions * 360)/$Angle    
+}
 
 # If the step size or count is negative
 if (
