@@ -10,7 +10,7 @@
 
     To create an inward spiral, use a negative StepSize or StepCount.
 .EXAMPLE
-    turtle StepSpiral save ./StepSpiral.svg
+    turtle StepSpiral 1 90 2 20 save ./StepSpiral.svg
 .EXAMPLE
     turtle @('StepSpiral',3, 120, 'rotate',120 * 3) save ./StepSpiralx3.svg
 .EXAMPLE
@@ -18,14 +18,33 @@
 #>
 param(
 # The length of the first step
-[double]$Length = 1,
+[double]$Length = $(Get-Random -Min 1.0 -Max 2.0),
 # The angle to rotate after each step
-[double]$Angle = 90,
+[double]$Angle = $(
+    @(
+        foreach ($n in 3..24) {
+            if ([Math]::Floor(360/$n) -eq (360/$n)) {
+                360/$n
+            }
+        }
+    ) | Get-Random
+),
 # The amount of change per step
-[double]$StepSize = 1,
+[double]$StepSize = $(Get-Random -Min 2.0 -Max 5.0),
 # The number of steps.
-[int]$StepCount = 20
+[int]$StepCount = 0
 )
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 4 -Max 12)
+    # and figure out how many steps at our angle it takes to get there.
+    
+    $StepCount = ($revolutions * 360)/$Angle    
+}
 
 # If the step size or count is negative
 if (
