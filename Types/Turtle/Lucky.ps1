@@ -34,4 +34,4 @@ $luckyArgs = @(
 )
 
 $id = $luckyArgs -join '-'
-turtle id $id title $($luckyArgs -join ' ') @luckyArgs
+$this | turtle id $id title $($luckyArgs -join ' ') @luckyArgs
