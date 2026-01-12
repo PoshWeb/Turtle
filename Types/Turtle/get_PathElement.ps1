@@ -46,6 +46,6 @@ foreach ($collection in $this.SVGAttribute, $this.Attribute) {
     }
 )>"
 if ($this.Title) { "<title>$([Security.SecurityElement]::Escape($this.Title))</title>" }
-if ($this.PathAnimation) {$this.PathAnimation}
+if ($this.PathAnimation) {$this.PathAnimation.OuterXml}
 "</path>"
 )

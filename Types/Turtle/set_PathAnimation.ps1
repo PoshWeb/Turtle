@@ -56,9 +56,15 @@ $newAnimation = @(foreach ($animation in $PathAnimation) {
     }
 })
 
+$animationXml = $newAnimation -as [xml]
+
+if (-not $animationXml) { return }
+
 $pathAnimation = $this.PathAnimation
 if ($pathAnimation) {
-    $newAnimation = @($pathAnimation) + $newAnimation
+    $newAnimation = @($pathAnimation) + $animationXml
+} else {
+    $newAnimation = @($animationXml)
 }
 $this | Add-Member -MemberType NoteProperty -Force -Name '.PathAnimation' -Value $newAnimation
 

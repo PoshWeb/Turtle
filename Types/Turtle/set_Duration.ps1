@@ -19,15 +19,12 @@ foreach ($v in $value) {
     }
 }
 
-if (($this.'.Duration' -is [TimeSpan]) -and $this.PathAnimation) {
-    $updatedAnimations =
-        @(foreach ($animationXML in $this.PathAnimation -split '(?<=/>)') {
-            $animationXML = $animationXML -as [xml]
-            if (-not $animationXML) { continue }
-            if ($animationXML.animate.attributeName -eq 'd') {
-                $animationXML.animate.dur = "$(($this.'.Duration').TotalSeconds)s"
-            }
-            $animationXML.OuterXml
-        })
-    $this.PathAnimation = $updatedAnimations
+if (($this.'.Duration' -is [TimeSpan]) -and $this.PathAnimation) {    
+    foreach ($animationXML in $this.PathAnimation) {
+        $animationXML = $animationXML -as [xml]
+        if (-not $animationXML) { continue }
+        if ($animationXML.animate.attributeName -eq 'd') {
+            $animationXML.animate.dur = "$(($this.'.Duration').TotalSeconds)s"
+        }
+    }    
 }
