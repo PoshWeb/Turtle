@@ -3,7 +3,7 @@ $luckyArgs = @(
     (Get-Random -Minimum 0 -Maximum 360)    
 
     $shapes = @(
-        "flower", "starflower", "goldenflower",    
+        "flower", "starflower", "goldenflower", 'triflower',    
         "arcygon", "polygon", 
         "square", "circle", "rectangle", 'righttriangle',
         "sierpinskitriangle","sierpinskiarrowheadcurve",
