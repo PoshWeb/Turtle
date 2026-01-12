@@ -22,7 +22,7 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=7) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 6)]
                 $comment = "arc $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
@@ -41,7 +41,7 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=6) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 5)]
                 $comment = "cubic curve $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
@@ -60,7 +60,7 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=2) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 1)]
                 $comment = "line $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
@@ -81,7 +81,7 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
 
                 $comment = "line $toBy $sequence"
 
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 
                 if ($isUpper) { $delta -= $currentPosition }
 
@@ -113,7 +113,7 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=4) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 3)]
                 $comment = "simple bezier curve $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
@@ -132,7 +132,7 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=2) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 1)]
                 $comment = "continue bezier curve $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
@@ -151,7 +151,7 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
                 
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 3)]
                 $comment = "quadratic bezier curve $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
