@@ -34,4 +34,9 @@ $luckyArgs = @(
 )
 
 $id = $luckyArgs -join '-'
-$this | turtle id $id title $($luckyArgs -join ' ') @luckyArgs
+$title = $luckyArgs -join ' '
+if ($this.id -notmatch 'turtle-?\d+') {
+    $id = $this.id, $id -join '-'
+    $title = $this.title, $title -join ' '
+}
+$this | turtle id $id title $title @luckyArgs
