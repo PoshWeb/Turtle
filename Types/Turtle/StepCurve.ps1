@@ -8,20 +8,18 @@
 #>
 param(
 # The DeltaX
-[double]$DeltaX = $(Get-Random -Min 0 -Max 100.0), 
+[double]$DeltaX = $(Get-Random -Min -100.0 -Max 100.0), 
 # The DeltaY
-[double]$DeltaY = $(Get-Random -Min 0 -Max 100.0)
+[double]$DeltaY = $(Get-Random -Min -100.0 -Max 100.0)
 )
 
-# If both coordinates are empty, there is no step
-if ($DeltaX -or $DeltaY) {
-    
-    $this.Position = $DeltaX, $DeltaY
-    if ($This.IsPenDown) {
-        $this.Steps.Add(" t $deltaX $deltaY")
-    } else {
-        $this.Steps.Add(" m $DeltaX $DeltaY")
-    }
+# If both coordinates are empty, we aren't going anywhere.
+# But we _might_ want a point to exist.
+$this.Position = $DeltaX, $DeltaY
+if ($This.IsPenDown) {
+    $this.Steps.Add(" t $deltaX $deltaY")
+} else {
+    $this.Steps.Add(" m $DeltaX $DeltaY")
 }
 
 return $this
