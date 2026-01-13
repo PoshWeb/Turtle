@@ -8,11 +8,13 @@
     q = 'QuadraticBezierCurve'
     s = 'BezierCurve'
     v = 'VerticalLine'
+    z = 'ClosePath'
 
     # Shorter forms:
     Pie = 'PieGraph'
     ArcR = 'ArcRight'
     ArcL = 'ArcLeft'
+    Close = 'ClosePath'
 
     # Logo ('Original') Turtle Compatibility
     pd = 'PenDown'
