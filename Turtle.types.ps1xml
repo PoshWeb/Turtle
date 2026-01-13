@@ -72,6 +72,10 @@
         <ReferencedMemberName>CubicBezierCurve</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Close</Name>
+        <ReferencedMemberName>ClosePath</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Cobweb</Name>
         <ReferencedMemberName>Spiderweb</ReferencedMemberName>
       </AliasProperty>
@@ -254,6 +258,10 @@
       <AliasProperty>
         <Name>yPos</Name>
         <ReferencedMemberName>ycor</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>z</Name>
+        <ReferencedMemberName>ClosePath</ReferencedMemberName>
       </AliasProperty>
       <ScriptMethod>
         <Name>Arc</Name>
