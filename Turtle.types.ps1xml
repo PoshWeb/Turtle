@@ -4770,7 +4770,21 @@ return $this
 .EXAMPLE
     turtle @('StepSpiral',3, 120, 'rotate',120 * 3) save ./StepSpiralx3.svg
 .EXAMPLE
-    turtle @('StepSpiral',3, 90, 'rotate',90 * 3) save ./StepSpiralx4.svg
+    turtle @('StepSpiral',3, 90, 'rotate',90 * 4) save ./StepSpiralx4.svg
+.EXAMPLE
+    turtle @('StepSpiral',3, -6, 0, (360/6 * 2), 'rotate',30 * (360/6))
+.EXAMPLE
+    turtle @('StepSpiral',3, -60, 0, (360/60 * 2), 'rotate',60 * (360/60)) morph @(
+        turtle @('StepSpiral',3, -60, 0, (360/60 * 2), 'rotate',60 * (360/60))
+        turtle @('StepSpiral',2, 60, 0, (360/60 * 2), 'rotate',60 * (360/60))
+        turtle @('StepSpiral',3, -60, 0, (360/60 * 2), 'rotate',60 * (360/60))
+    ) save ./StepSpiralSmoothMorph.svg
+.EXAMPLE
+    turtle @('StepSpiral',3, -6, 0, (360/6 * 2), 'rotate',30 * (360/6)) morph @(
+        turtle @('StepSpiral',3, -6, 0, (360/6 * 2), 'rotate',30 * (360/6))
+        turtle @('StepSpiral',3, 6, 0, (360/6 * 2), 'rotate',30 * (360/6))
+        turtle @('StepSpiral',3, -6, 0, (360/6 * 2), 'rotate',30 * (360/6))
+    ) save ./StepSpiralSmoothMorph.svg
 #&gt;
 param(
 # The length of the first step
@@ -4786,20 +4800,23 @@ param(
     ) | Get-Random
 ),
 # The amount of change per step
-[double]$StepSize = $(Get-Random -Min 2.0 -Max 5.0),
+[double]$StepSize = 0,
 # The number of steps.
 [int]$StepCount = 0
 )
 
 if ($Rotation -eq 0) { return $this }
 
+if (-not $StepSize) {
+    $StepSize = $Length * 2
+}
+
 # If no step count was provided
 if ($StepCount -eq 0) {
-    # pick a random number of rotations
-    $revolutions = (Get-Random -Minimum 4 -Max 12)
+    # we want to use a fixed number of steps
     # and figure out how many steps at our angle it takes to get there.
-    
-    $StepCount = ($revolutions * 360)/$Angle    
+    $revolutions = 4
+    $StepCount = [Math]::Ceiling(($revolutions*360)/$angle)
 }
 
 # If the step size or count is negative
