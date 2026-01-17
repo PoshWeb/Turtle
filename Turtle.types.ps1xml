@@ -3526,7 +3526,11 @@ return $this
 .SYNOPSIS
     Draws a Rhombus
 .DESCRIPTION
-    Draws a Rhombus
+    Draws a Rhombus in Turtle Graphics.
+.NOTES
+    If you provide `NaN` or positive infinity `∞`, you'll get rhombus with a golden angle.
+
+    If you provide negative infinity `-∞`, you'll get a rhombus with a different golden angle.
 .LINK
     https://logothings.github.io/logothings/logo/SquashedSquares.html
 .EXAMPLE
@@ -3543,13 +3547,21 @@ return $this
         turtle rhombus 10 20 30
     )
 .EXAMPLE
+    turtle rhombus 20 20 90 morph @(
+        turtle rhombus 20 20 90
+        turtle rhombus 20 10 30
+        turtle rhombus 20 20 90
+        turtle rhombus 10 20 -30
+        turtle rhombus 20 20 90
+    )
+.EXAMPLE
     # If we pass nan for an angle, 
     # we use 1/the golden ratio as the angle
     turtle rhombus 10 20 nan
-.EXAMPLE
+.EXAMPLE    
     turtle rhombus 10 20 nan morph @(
         turtle rhombus 10 20 nan
-        turtle rhombus 20 10 nan
+        turtle rhombus -20 -10 nan
         turtle rhombus 10 20 nan
     )
 #&gt;
@@ -3573,11 +3585,14 @@ $Angle = $(
 )
 )
 
-if ("$angle" -eq "NaN") {    
+if ("$angle" -eq "NaN" -or 
+    "$angle" -eq "$([double]::PositiveInfinity)") {    
     $angle = 
         [Math]::Atan(1 / (1 + [Math]::Sqrt(5))) * 2 * 180/[Math]::Pi
+} elseif ($angle -eq "$([double]::NegativeInfinity)") {
+    $angle = 
+        [Math]::Atan((1 + [Math]::Sqrt(5))) * 2 * 180/[Math]::Pi
 }
-
 
 $this.
     Forward($Side1).Rotate($Angle).
