@@ -6313,6 +6313,43 @@ $this.TextAttribute = @{'font-style'= $args }
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>FontVariant</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the font variant
+.DESCRIPTION
+    Gets the font variant of the Turtle, if one has been set.
+
+    If no font variant has been set, this returns nothing.
+.EXAMPLE
+    turtle fontvariant small-caps fontvariant
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-variant
+#&gt;
+$this.TextAttribute.'font-variant'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the font variant
+.DESCRIPTION
+    Sets the font variant of the Turtle.
+
+    Any input is acceptable, but it may not be valid.
+    
+    Invalid input will be ignored.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-variant
+.EXAMPLE
+    turtle fontvariant small-caps fontvariant
+#&gt;
+$this.TextAttribute = @{'font-variant'= $args }
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Heading</Name>
         <GetScriptBlock>
                         &lt;#
