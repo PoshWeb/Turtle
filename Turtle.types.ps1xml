@@ -6200,6 +6200,43 @@ $this.PathAttribute = [Ordered]@{'fill-rule' = $fillRule.ToLower()}
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>FontFamily</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the font family
+.DESCRIPTION
+    Gets the font family of the Turtle, if one has been set.
+
+    If no font family has been set, this returns nothing.
+.EXAMPLE
+    turtle fontfamily 12 fontfamily
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-family
+#&gt;
+$this.TextAttribute.'font-family'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the font family
+.DESCRIPTION
+    Sets the font family of the Turtle.
+
+    Any input is acceptable, but it may not be valid.
+    
+    Invalid input will be ignored.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-family
+.EXAMPLE
+    turtle fontfamily sans-serif fontfamily
+#&gt;
+$this.TextAttribute = @{'font-family'= $args }
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Heading</Name>
         <GetScriptBlock>
                         &lt;#
