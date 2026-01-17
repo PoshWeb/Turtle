@@ -6350,6 +6350,43 @@ $this.TextAttribute = @{'font-variant'= $args }
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>FontWeight</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the font weight
+.DESCRIPTION
+    Gets the font weight of the Turtle, if one has been set.
+
+    If no font weight has been set, this returns nothing.
+.EXAMPLE
+    turtle fontweight bold fontweight
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-weight
+#&gt;
+$this.TextAttribute.'font-weight'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the font weight
+.DESCRIPTION
+    Sets the font weight of the Turtle.
+
+    Any input is acceptable, but it may not be valid.
+    
+    Invalid input will be ignored.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-weight
+.EXAMPLE
+    turtle fontweight bold fontweight
+#&gt;
+$this.TextAttribute = @{'font-weight'= $args }
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>Heading</Name>
         <GetScriptBlock>
                         &lt;#
