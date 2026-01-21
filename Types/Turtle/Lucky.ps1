@@ -7,12 +7,15 @@ $luckyArgs = @(
         "arcygon", "polygon", 
         "square", "circle", "rectangle", 'righttriangle',
         "sierpinskitriangle","sierpinskiarrowheadcurve",
+        "sierpinskicurve","sierpinskisquarecurve",
         "hilbertcurve", "moorecurve", "flowerpetal",    
         'Spiderweb','pentaplexity',"kochsnowflake",
+        'StepSpiral',
         'TurtleMonotile','HatMonotile',
         'bargraph','piegraph'
     )
     $shapes | 
+        Select-Object -Unique |
         Get-Random
     if ($true, $true, $false | Get-Random) {
         'fill'    
