@@ -497,11 +497,11 @@ function Get-Turtle {
         )
     .EXAMPLE
         #### Spirolaterals
-        turtle spirolateral
+        turtle spirolateral 10 90 10
     .EXAMPLE
         turtle spirolateral 50 60 10
     .EXAMPLE
-        turtle spirolateral 50 120 6 @(1,3)            
+        turtle spirolateral 50 120 6 @(1,3)
     .EXAMPLE
         turtle spirolateral 23 144 8
     .EXAMPLE
