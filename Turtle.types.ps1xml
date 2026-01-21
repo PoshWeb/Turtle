@@ -4761,9 +4761,9 @@ return $this
 #&gt;
 param(
 # The DeltaX
-[double]$DeltaX = $(Get-Random -Min -100.0 -Max 100.0), 
+[double]$DeltaX = $(Get-Random -Min -10.0 -Max 10.0), 
 # The DeltaY
-[double]$DeltaY = $(Get-Random -Min -100.0 -Max 100.0)
+[double]$DeltaY = $(Get-Random -Min -10.0 -Max 10.0)
 )
 
 # If both coordinates are empty, we aren't going anywhere.
@@ -4923,11 +4923,11 @@ return $this
 param(
 # The length of both arcs
 [double]
-$Length = 42,
+$Length = $(Get-Random -Min 42 -Max 81),
 
 # The rotation after each step
 [double]
-$Angle = 160,
+$Rotation = $(Get-Random -Min 60 -Max 270),
 
 # The angle of the rays of the sun
 [double]
@@ -4936,11 +4936,27 @@ $RayAngle = 90,
 # The number of steps to draw.
 # In order to close the shape, this multiplied by the angle should be a multiple of 360.
 [int]
-$StepCount = 9
+$StepCount = 0
 )
 
-# If there are no steps to draw, return this
-if ($stepCount -eq 0) { return $this }
+if ($rotation -eq 0 -and $StepCount -eq 0) {
+    return $this
+}
+
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 16)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
 
 # Every step we take
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
@@ -4950,7 +4966,7 @@ $null = foreach ($n in 1..([Math]::Abs($StepCount))) {
         # then arc left
         ArcLeft($length/2, $RayAngle).
         # then rotate.
-        Rotate($Angle)    
+        Rotate($Rotation)    
 }
 
 # Return this so we never break the chain.
@@ -5251,9 +5267,9 @@ return $this
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 42,
+[double]$Size = (Get-Random -Min 21 -Max 21),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (2,3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 60
 )
@@ -5356,8 +5372,8 @@ return
 #&gt;
 
 param(
-    [double]$Size = 20,
-    [int]$Order = 6,
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (3,4,5,6, 7, 8 | Get-Random ),
     [double]$Angle = 90
 )
 return $this.LSystem('FX+FX+',  [Ordered]@{
@@ -5365,7 +5381,7 @@ return $this.LSystem('FX+FX+',  [Ordered]@{
     Y = 'FX-Y'
 }, $Order, [Ordered]@{
     '\+'    = { $this.Rotate($Angle) }
-    '-'     = { $this.Rotate($Angle * -1) }
+    '\-'     = { $this.Rotate($Angle * -1) }
     '[F]'  = { $this.Forward($Size) }
 })
 
