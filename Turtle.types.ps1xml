@@ -2453,7 +2453,7 @@ return $this
 
     $shapes = @(
         "flower", "starflower", "goldenflower", 'triflower',    
-        "arcygon", "polygon", 
+        "arcygon", "polygon", 'star',
         "square", "circle", "rectangle", 'righttriangle',
         "sierpinskitriangle","sierpinskiarrowheadcurve",
         "sierpinskicurve","sierpinskisquarecurve",
@@ -4115,8 +4115,8 @@ return $this.LSystem('X',  [Ordered]@{
     $turtle.Pattern.Save("$pwd/SierpinskiTriangle2.svg")
 #&gt;
 param(
-    [double]$Size = 200,
-    [int]$Order = 2,
+    [double]$Size = (Get-Random -Min 42 -Max 84),
+    [int]$Order = $(Get-Random -Min 3 -Max 5),
     [double]$Angle = 120
 )
 return $this.LSystem('F-G-G',  [Ordered]@{
@@ -4593,7 +4593,17 @@ return $this
       <ScriptMethod>
         <Name>Square</Name>
         <Script>
-                        param([double]$Size = 50)
+                        &lt;#
+.SYNOPSIS
+    Draws a square
+.DESCRIPTION
+    Draws a square using Turtle graphics
+.EXAMPLE
+    turtle square 42    
+#&gt;
+param(
+[double]$Size = $(Get-Random -Min 21 -Max 42)
+)
 $null = foreach ($n in 1..4) {
     $this.Forward($Size)
     $this.Rotate(90)
@@ -4626,9 +4636,9 @@ return $this
 #&gt;
 param(
     # The approximate size of the star
-    [double]$Size = 50,
+    [double]$Size = $(Get-Random -Min 21 -Max 42),
     # The number of points in the star
-    [int]$Points = 6
+    [int]$Points = $(Get-Random -Min 5 -Max 7)
 )
 
 # To determine the angle, divide 360 by the number of points
