@@ -4,7 +4,7 @@ $luckyArgs = @(
 
     $shapes = @(
         "flower", "starflower", "goldenflower", 'triflower',    
-        "arcygon", "polygon", 
+        "arcygon", "polygon", 'star',
         "square", "circle", "rectangle", 'righttriangle',
         "sierpinskitriangle","sierpinskiarrowheadcurve",
         "sierpinskicurve","sierpinskisquarecurve",
