@@ -2456,12 +2456,15 @@ return $this
         "arcygon", "polygon", 
         "square", "circle", "rectangle", 'righttriangle',
         "sierpinskitriangle","sierpinskiarrowheadcurve",
+        "sierpinskicurve","sierpinskisquarecurve",
         "hilbertcurve", "moorecurve", "flowerpetal",    
         'Spiderweb','pentaplexity',"kochsnowflake",
+        'StepSpiral',
         'TurtleMonotile','HatMonotile',
         'bargraph','piegraph'
     )
     $shapes | 
+        Select-Object -Unique |
         Get-Random
     if ($true, $true, $false | Get-Random) {
         'fill'    
@@ -4070,8 +4073,8 @@ return $this.LSystem('F--XF--F--XF',  [Ordered]@{
     $turtle.Pattern.Save("$pwd/SierpinskiSquareCurve2.svg")
 #&gt;
 param(
-    [double]$Size = 20,
-    [int]$Order = 5,
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (2,3,4,5 | Get-Random),
     [double]$Angle = 90
 )
 return $this.LSystem('X',  [Ordered]@{
