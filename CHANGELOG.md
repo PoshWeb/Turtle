@@ -1,3 +1,37 @@
+## Turtle 0.2.2:
+
+* New Shapes:  
+  * `Turtle.ArcFlower` ( #358 )
+  * `Turtle.Arcygon` ( #359 )
+  * `Turtle.ClosePath` ( #277 )  
+  * `Turtle.RightTriangle` ( #367 )
+  * `Turtle.Rhombus` ( #372 )
+  * `Turtle.StepCurve` ( #329 )
+  * `Turtle.Triflower` ( #371 )
+  * `Turtle.Lucky` draws a random shape (#366)  
+* Font Settings:
+  * `Turtle.FontWeight` ( Fixes #354, Fixes #381 )
+  * `Turtle.FontVariant` ( Fixes #354, Fixes #380 )
+  * `Turtle.FontStyle` ( Fixes #354, Fixes #379 )
+  * `Turtle.FontSize` ( Fixes #354, Fixes #378 )
+  * `Turtle.FontFamily` ( Fixes #354, Fixes #377 )
+* Improvements
+  * Turtle.PathAnimation outputs XML (#374)
+  * Get-Turtle speed boost (#368)
+  * Move-Turtle uses the script (#351)
+  * Randomizing most default parameters (#363)
+  * Turtle defaults IDs to timestamp ( #362 )
+  * Fill and Stroke improvement ( Fixes #360, Fixes #361, Fixes #369 )    
+    * Adding random support
+    * Improving gradient support
+    * Overwriting class if stroke is specified
+* Fixes
+  * Turtle.History compatibility fix ( #373 )
+    * Turtle works on PowerShell 5.1!
+  * Moore Curve Fixes ( #370 )
+
+---
+
 ## Turtle 0.2.1:
 
 * New Documentation:
