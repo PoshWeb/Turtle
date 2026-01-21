@@ -51,7 +51,7 @@ $Length = $(Get-Random -Min 42 -Max 81),
 
 # The rotation after each step
 [double]
-$Rotation = $(Get-Random -Min 60 -Max 270),
+$Rotation = $(Get-Random -Min 90 -Max 270),
 
 # The angle of the rays of the sun
 [double]
