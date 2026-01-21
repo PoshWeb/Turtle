@@ -24,8 +24,8 @@
 #>
 
 param(
-    [double]$Size = 20,
-    [int]$Order = 6,
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (3,4,5,6, 7, 8 | Get-Random ),
     [double]$Angle = 90
 )
 return $this.LSystem('FX+FX+',  [Ordered]@{
@@ -33,6 +33,6 @@ return $this.LSystem('FX+FX+',  [Ordered]@{
     Y = 'FX-Y'
 }, $Order, [Ordered]@{
     '\+'    = { $this.Rotate($Angle) }
-    '-'     = { $this.Rotate($Angle * -1) }
+    '\-'     = { $this.Rotate($Angle * -1) }
     '[F]'  = { $this.Forward($Size) }
 })

@@ -8,9 +8,9 @@
 #>
 param(
 # The DeltaX
-[double]$DeltaX = $(Get-Random -Min -100.0 -Max 100.0), 
+[double]$DeltaX = $(Get-Random -Min -10.0 -Max 10.0), 
 # The DeltaY
-[double]$DeltaY = $(Get-Random -Min -100.0 -Max 100.0)
+[double]$DeltaY = $(Get-Random -Min -10.0 -Max 10.0)
 )
 
 # If both coordinates are empty, we aren't going anywhere.
