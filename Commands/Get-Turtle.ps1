@@ -949,8 +949,21 @@ function Get-Turtle {
         # The SierpinskiArrowHead Curve is pretty          
         turtle SierpinskiArrowheadCurve 42 4
     .EXAMPLE
+        # So is the SierpinskiCurve
+        turtle SierpinskiCurve 42 4
+    .EXAMPLE
+        # The SierpinskiCurveSquare curve fills a from a corner
+        turtle SierpinskiSquareCurve 42 4
+    .EXAMPLE
+        # If we put four of these next to each other
+        # and turn left, we get a square made of square curves.
+        turtle @('SierpinskiSquareCurve', -42, 4, 'Rotate', -90 * 4) 
+    .EXAMPLE
+        # If we turn right instead, we get a diamond with an empty square at the center        
+        turtle @('SierpinskiSquareCurve', -42, 4, 'Rotate', 90 * 4)     
+    .EXAMPLE
         # The SierpinskiTriangle is a Fractal classic    
-        turtle SierpinskiTriangle 42 4
+        turtle SierpinskiTriangle 42 4    
     .EXAMPLE
         # We can morph with no parameters to try to draw step by step
         # 
@@ -979,6 +992,10 @@ function Get-Turtle {
         turtle @('rotate', 30, 'SierpinskiTriangle',42,4 * 12)
     .EXAMPLE
         turtle @('rotate', 45, 'SierpinskiTriangle',42,4 * 24)
+    .LINK
+        https://psturtle.com/Commands/Get-Turtle
+    .LINK
+        https://psturtle.com/History/
     #>
     [CmdletBinding(PositionalBinding=$false)]
     [Alias('turtle','🐢')]
