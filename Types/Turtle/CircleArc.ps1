@@ -26,11 +26,15 @@
 param(
 # The radius of the circle
 [double]
-$Radius = 42,
+$Radius = $(
+    (Get-Random -Min 42 -Max 84) *(1,-1|Get-Random)
+),
 
 # The angle of the arc 
 [double]
-$Angle = 30
+$Angle =  $(
+    (Get-Random -Min 30 -Max 90) *(1,-1|Get-Random)
+)
 )
 
 # If we wanted an angle that was a multiple of 360

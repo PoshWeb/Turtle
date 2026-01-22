@@ -8,11 +8,13 @@
     q = 'QuadraticBezierCurve'
     s = 'BezierCurve'
     v = 'VerticalLine'
+    z = 'ClosePath'
 
     # Shorter forms:
     Pie = 'PieGraph'
     ArcR = 'ArcRight'
     ArcL = 'ArcLeft'
+    Close = 'ClosePath'
 
     # Logo ('Original') Turtle Compatibility
     pd = 'PenDown'
@@ -51,6 +53,7 @@
     # Common transposition errors
     FlowerStar = 'StarFlower'
     FlowerGolden = 'GoldenFlower'
+    PetalFlower = 'FlowerPetal'
 
     # Technically accurate aliases to more helpful names
     Href = 'Link'    
@@ -64,7 +67,8 @@
     Keyframes = 'Keyframe'
     Styles = 'Style'
     Spoke = 'Spokes'
-    Stick = 'Sticks'    
+    Stick = 'Sticks'
+    Rhombi = 'Rhombus'    
 
     # Anglican color property names
     BackgroundColour = 'BackgroundColor'    
@@ -74,10 +78,19 @@
     # Internationalized Method Names.  
     # These are technically more correct, but will not be easy to type on all keyboards.    
     BézierCurve = 'BezierCurve'
+    Bézier = 'BezierCurve'
+    
     QuadraticBézierCurve = 'QuadraticBezierCurve'
+    
     CubicBézierCurve = 'CubicBezierCurve'    
     SierpińskiTriangle = 'SierpinskiTriangle'
     SierpińskiArrowHeadCurve = 'SierpinskiArrowHeadCurve'
     SierpińskiSquareCurve = 'SierpinskiSquareCurve'
-    SierpińskiCurve = 'SierpinskiCurve'
+    SierpińskiCurve = 'SierpinskiCurve'    
+
+    Bezier = 'BezierCurve'
+    Cubic = 'CubicBezierCurve'
+
+    # Shortened fractal names
+    Terdragon = 'TerdragonCurve'
 }

@@ -20,9 +20,9 @@
 #>
 param(
     # The approximate size of the star
-    [double]$Size = 50,
+    [double]$Size = $(Get-Random -Min 21 -Max 42),
     # The number of points in the star
-    [int]$Points = 6
+    [int]$Points = $(Get-Random -Min 5 -Max 7)
 )
 
 # To determine the angle, divide 360 by the number of points

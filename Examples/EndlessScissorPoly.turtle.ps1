@@ -1,5 +1,5 @@
 Push-Location $PSScriptRoot
-$turtle = turtle ScissorPoly 230 64 64 | 
+$turtle = turtle id EndlessScissorPoly ScissorPoly 230 64 64 | 
     Set-Turtle -Property PatternTransform -Value @{scale=0.33} |
     set-turtle -property Stroke -value '#224488' |
     set-turtle -property Fill -value '#4488ff' |

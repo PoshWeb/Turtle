@@ -43,9 +43,22 @@ param(
 [double[]]$Points
 )
 
+if ($width -and -not $Height) {
+    $height = $width
+} elseif ($height -and -not $Width) {
+    $width = $height
+} elseif (-not $width -and -not $height) {
+    $width = (Get-Random -Min 10 -Max 100) * (1,-1| Get-Random)
+    $height = (Get-Random -Min 10 -Max 100)
+}
+
 
 # If there were no points, we are drawing nothing, so return ourself.
-if (-not $points) { return $this}
+if (-not $points) { 
+    $points = foreach ($n in 1..(Get-Random -Min 4 -Max 20)) {
+        Get-Random -Min 0 -Max 100
+    }
+}
 
 # Divide the width by the number of points to get a very snug bar graph
 $barWidth = $width / $points.Length

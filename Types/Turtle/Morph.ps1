@@ -12,11 +12,26 @@
 .EXAMPLE
     $sierpinskiTriangle = turtle SierpinskiTriangle 42 4
     $SierpinskiTriangleFlipped = turtle rotate 180 SierpinskiTriangle 42 4
-    turtle SierpinskiTriangle 42 4 morph (
+    $sf = turtle SierpinskiTriangle 42 4 morph (
         $SierpinskiTriangle, 
         $SierpinskiTriangleFlipped, 
         $sierpinskiTriangle
-    ) save ./SierpinskiTriangleFlip.svg
+    ) 
+    $sf | Save-Turtle ./SierpinskiTriangleFlip.svg
+.EXAMPLE
+    $sierpinskiTriangle = turtle SierpinskiTriangle 42 4    
+    $SierpinskiTriangle90 = turtle rotate 90 SierpinskiTriangle 42 4    
+    $SierpinskiTriangle180 = turtle rotate 180 SierpinskiTriangle 42 4
+    $SierpinskiTriangle270 = turtle rotate 270 SierpinskiTriangle 42 4
+    $sf = turtle SierpinskiTriangle 42 4 morph @(
+        $SierpinskiTriangle,         
+        $SierpinskiTriangle90
+    ) morph @(
+        $SierpinskiTriangle180
+        $SierpinskiTriangle270
+        $sierpinskiTriangle
+    ) 
+    $sf | save-turtle ./SierpinskiRoll.svg 
 .EXAMPLE
     $sideCount = (3..24 | Get-Random )
     $stepCount = 36
@@ -53,11 +68,15 @@ $Arguments
 $durationArgument = $null
 $hasPoints = $false
 $segmentCount = 0 
+$reflect = $false
 $newPaths = @(foreach ($arg in $Arguments) {
     if ($arg -is [string]) {
         if ($arg -match '^\s{0,}m') {
             $arg
             $hasPoints = $true
+        }
+        elseif ($arg -match 'reflect') {
+            $reflect = $true
         }
     } elseif ($arg.PathData) {
         $arg.PathData
@@ -73,7 +92,7 @@ $newPaths = @(foreach ($arg in $Arguments) {
             $segmentCount = [Math]::Abs($arg)
         } else {
             $durationArgument = [TimeSpan]::FromSeconds($arg)
-        }        
+        }
     }
 })
 
@@ -97,19 +116,28 @@ if (-not $newPaths) {
     }        
 }
 
-if ($this.PathAnimation) {
+# Check to see if we have existing animations on the path
+$pathAnimation = $this.PathAnimation
+$updatedAnimations = @()
+# If we do
+if ($pathAnimation) {
+    # see if any of them are updated    
     $updatedAnimations = 
-        @(foreach ($animationXML in $this.PathAnimation -split '(?<=/>)') {
-            $animationXML = $animationXML -as [xml]
+        @(foreach ($animationXML in $pathAnimation) {
             if (-not $animationXML) { continue }
-            if ($animationXML.animate.attributeName -eq 'd') {
-                $animationXML.animate.values = "$($newPaths -join ';')"
+            # we only want to change morphs
+            # (which are animations of the path data)
+            if ($animationXML.animate.attributeName -eq 'd') {                
+                $animationXML.animate.values = "$(
+                    @($animationXML.animate.values; $newPaths) -join ';'
+                )"
             }
-            $animationXML.OuterXml
-        })
-    $this.PathAnimation = $updatedAnimations
-} else {
-    $this.PathAnimation += [Ordered]@{
+            $animationXML
+        })        
+} 
+
+if (-not $updatedAnimations) {
+    $this.PathAnimation = [Ordered]@{
         attributeName = 'd'   ; values = "$($newPaths -join ';')" ; repeatCount = 'indefinite'; dur = $(
             if ($durationArgument) {
                 "$($durationArgument.TotalSeconds)s"
@@ -118,9 +146,8 @@ if ($this.PathAnimation) {
             } else {
                 "4.2s"
             }
-            
         )
-    }
+    }    
 }
 
 return $this

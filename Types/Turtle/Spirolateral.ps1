@@ -21,17 +21,20 @@
 param(
 # The base length of each side (this will be multiplied by the step number)
 [double]
-$Side = 10,
+$Side = $(
+    (Get-Random -Min 42.0 -Maximum 84.0) * (1,-1 | Get-Random)
+),
 
 # The angle of the turn
 [double]
-$Angle = 90,
+$Angle = $(
+    (Get-Random -Min 10.0 -Maximum 120.0) * (1,-1 | Get-Random)
+),
 
 # The step count.
 # This is the number of times the steps will be repeated.
-# This is also the maximum number of iterations the shape will complete.
 [int]
-$StepCount = 10,
+$StepCount = 0,
 
 # The step numbers that are left turns (counter-clockwise).
 # This allows the creation of general spirolaterals
@@ -40,10 +43,46 @@ $StepCount = 10,
 $LeftTurnSteps
 )
 
+if ($Angle -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 16)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Angle
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
+
 $stepNumber = 1
-$majorStepCount = 0
-$totalTurn = 0
-do {
+
+# Figure out our total turn per loop
+$totalTurn = 0.0
+for ($stepNumber = 1; $stepNumber -le [Math]::Abs($StepCount); $stepNumber++) {    
+    if ($LeftTurnSteps -contains $stepNumber) {
+        $totalTurn -= $angle        
+    } else {
+        $totalTurn += $angle        
+    }
+}
+
+$rotations = 0
+foreach ($n in 1..32) {
+    $rotations = ($n * 360)/$totalTurn    
+    if ([Math]::Floor($rotations) -eq $rotations) {
+        break
+    }
+}
+$rotations = [Math]::Ceiling($rotations)
+
+
+foreach ($rotation in 1..$rotations) {
     $null = for ($stepNumber = 1; $stepNumber -le [Math]::Abs($StepCount); $stepNumber++) {
         $null = $this.Forward($side * $stepNumber)
         if ($LeftTurnSteps) {
@@ -59,10 +98,13 @@ do {
             $this.Right($angle)
         }
     }
-    $majorStepCount++
-} until (
-    (-not ([Math]::Round($totalTurn, 5) % 360 )) -and 
+}
+
+    
+    
+<#} until (
+    (-not ([Math]::Round($totalTurn, 1) % 360 )) -and 
     $majorStepCount -le [Math]::Abs($StepCount)
-)
+)#>
 
 return $this

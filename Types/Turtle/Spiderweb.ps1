@@ -6,7 +6,7 @@
 
     This will draw any number of spokes, and draw a polygon between each spoke at regular intervals
 .EXAMPLE
-    # Draw a spiderweb
+    # Draw a random spiderweb
     turtle spiderweb
 .EXAMPLE
     # Draw a spider web with a radius six
@@ -85,15 +85,15 @@
 param(
 # The radius of the web
 [double]
-$Radius = 42,
+$Radius = (Get-Random -Min 42 -Maximum 84),
 
 # The number of spokes in the web.
 [int]
-$SpokeCount = 6,
+$SpokeCount = (Get-Random -Min 5 -Max 13),
 
 # The number of rings in the web.
 [int]
-$RingCount = 6
+$RingCount = (Get-Random -Min 5 -Max 13)
 )
 
 

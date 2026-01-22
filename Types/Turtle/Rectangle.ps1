@@ -11,7 +11,7 @@
 param(
 # The width of the rectangle
 [double]
-$Width = 42,
+$Width = $(Get-Random -Min 42 -Maximum 84),
 
 # The height of the rectangle.  If not provided, will be the width divided by the golden ratio.
 [double]

@@ -1,6 +1,6 @@
 if ($PSScriptRoot) { Push-Location $PSScriptRoot}
 
-$turtlesOnATextPath = turtle rotate 90 jump 50 rotate -90 ArcRight 500 60 text 'turtles on a text path' textattribute @{'font-size'=36}
+$turtlesOnATextPath = turtle id TurtlesOnATextPath rotate 90 jump 50 rotate -90 ArcRight 500 60 text 'turtles on a text path' textattribute @{'font-size'=36}
 $turtlesOnATextPath | Save-Turtle ./TurtlesOnATextPath.svg
 $turtlesOnATextPath = $turtlesOnATextPath.Morph(@(
     $turtlesOnATextPath
@@ -11,7 +11,7 @@ $turtlesOnATextPath = $turtlesOnATextPath.Morph(@(
 $turtlesOnATextPath | Save-Turtle ./TurtlesOnATextPath-BendMorph.svg
 
 $turtlesOnATextPath = 
-    turtle rotate 90 jump 50 rotate -90 rotate -30 forward 200 text 'turtles on a text path' morph @(
+    turtle id TurtlesOnATextPath2 rotate 90 jump 50 rotate -90 rotate -30 forward 200 text 'turtles on a text path' morph @(
         turtle rotate 90 jump 50 rotate -90 rotate -10 forward 200
         turtle rotate 90 jump 50 rotate -90 rotate -5 forward 200
         turtle rotate 90 jump 50 rotate -90 rotate -10 forward 200
@@ -27,7 +27,7 @@ $turtlesOnATextPath =
 $turtlesOnATextPath | Save-Turtle ./TurtlesOnATextPath-Morph.svg
 
 
-turtle rotate -90 circle 42 text "a turtle circle" textattribute ([Ordered]@{
+turtle id ATurtleCircle rotate -90 circle 42 text "a turtle circle" textattribute ([Ordered]@{
     'x'='5%'
     'dominant-baseline'='text-before-edge'
     'letter-spacing'='.16em'

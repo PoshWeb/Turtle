@@ -2,8 +2,12 @@ function Move-Turtle {
     <#
     .SYNOPSIS
         Moves a turtle.
-    .DESCRIPTION
+    .DESCRIPTION        
         Moves a turtle by invoking a method with any number of arguments.
+
+        This represents a single movement of the turtle.
+
+        To move the turtle multiple times in one command, use `Get-Turtle`.
     .EXAMPLE
         New-Turtle | 
             Move-Turtle Forward 10 |
@@ -15,6 +19,10 @@ function Move-Turtle {
             Move-Turtle Forward 10 |
             Move-Turtle Right 90 |
             Save-Turtle "./Square.svg"
+    .LINK
+        Get-Turtle
+    .LINK
+        Set-Turtle
     #>
     [CmdletBinding(PositionalBinding=$false)]
     param(
@@ -64,7 +72,10 @@ function Move-Turtle {
             Write-Error "Method '$method' not found on Turtle object."
             return
         }
-
-        $inputMethod.Invoke($ArgumentList)
+        
+        if ($inputMethod.Script) {
+            $this = $InputObject
+            & $inputMethod.Script @ArgumentList
+        }        
     }
 }

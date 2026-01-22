@@ -1,5 +1,5 @@
 Push-Location $PSScriptRoot
-$turtle = turtle BoxFractal 20 4 | 
+$turtle = turtle id EndlessBoxFractal BoxFractal 20 4 | 
     set-turtle -property Fill -value '#4488ff' | 
     set-turtle -property backgroundColor '#224488' |
     Set-Turtle -Property PatternTransform @{scale=0.5} |

@@ -49,9 +49,14 @@ if ($fill.Count -gt 1) {
             $gradientTypeHint = ($color -replace 'gradient').ToLower()
         }
         # If the color was `pad`, `reflect`, or `repeat`
-        elseif ($fillColor -in 'pad', 'reflect', 'repeat') {
+        elseif ($color -in 'pad', 'reflect', 'repeat') {
             # take the hint and set the spreadMethod
             $gradientAttributes['spreadMethod'] = $color
+        }
+        # If the color matched '^ra?n(?>dom|d|g)?'
+        elseif ($color -match '^ra?n(?>dom|d|g)?') {
+            # output the color
+            "#{0:x6}" -f (Get-Random -max 0xffffff)
         }
         # If the fill is a dictionary
         elseif ($color -is [Collections.IDictionary]) {
@@ -80,6 +85,10 @@ if ($fill.Count -gt 1) {
     # We need to make sure the offset starts at 0% an ends at 100%
     # and so we actually need to divide by one less than our fill color, so we end at 100%.
     $offsetStep = 1 / ($fill.Count - 1)
+    $gradientAttributes.id = 
+        # default our identifier to the current id plus `fill-gradient`
+        # (so we could have multiple gradients without a collision)
+        "$($this.id)-fill-gradient-$($fill -replace '^#' -replace '[\(\)\s]' -join '-')" 
     $Gradient = @(
         # Construct our gradient element.
         "<${gradientTypeHint}Gradient$(

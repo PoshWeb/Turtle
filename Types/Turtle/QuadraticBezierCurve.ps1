@@ -24,19 +24,19 @@
 param(
 # The X control point
 [double]
-$ControlX,
+$ControlX = $(Get-Random -Min 0 -Max 100),
 
 # The Y control point
 [double]
-$ControlY,
+$ControlY = $(Get-Random -Min 0 -Max 100),
 
 # The delta X
 [double]
-$DeltaX,
+$DeltaX = $(Get-Random -Min 0 -Max 100),
 
 # The delta Y
 [double]
-$DeltaY
+$DeltaY = $(Get-Random -Min 0 -Max 100)
 )
 
 

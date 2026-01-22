@@ -2,10 +2,10 @@ describe Turtle {
     it "Draws things with simple commands" {
         $null = $turtle.Clear().Square()
         $turtleSquaredPoints = $turtle.Points       
-        $turtleSquaredPoints.Length | Should -Be 8
-        $turtleSquaredPoints | 
+        $turtleSquaredPoints.Length | Should -Be 8    
+        [int]($turtleSquaredPoints | 
             Measure-Object -Sum | 
-            Select-Object -ExpandProperty Sum | 
+            Select-Object -ExpandProperty Sum) | 
             Should -Be 0
     } 
 

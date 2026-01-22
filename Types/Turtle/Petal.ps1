@@ -10,10 +10,10 @@
 #>
 param(
 [double]
-$Radius = 10,
+$Radius = $(Get-Random -Min 21 -Max 42),
 
 [double]
-$Angle = 60
+$Angle = $(Get-Random -Min 30 -Max 60)
 )
 
 $OppositeAngle = 180 - $Angle

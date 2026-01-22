@@ -1,5 +1,5 @@
 Push-Location $PSScriptRoot
-$turtle = turtle HilbertCurve 20 3 | 
+$turtle = turtle id EndlessHilbertCurve HilbertCurve 20 3 | 
     set-turtle -property Fill -value '#4488ff' | 
     set-turtle -property backgroundColor '#224488' |
     Set-Turtle -Property PatternAnimation -Value "

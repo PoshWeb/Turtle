@@ -21,8 +21,8 @@
     $turtle.Pattern.Save("$pwd/SierpinskiSquareCurve2.svg")
 #>
 param(
-    [double]$Size = 20,
-    [int]$Order = 5,
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (2,3,4,5 | Get-Random),
     [double]$Angle = 90
 )
 return $this.LSystem('X',  [Ordered]@{

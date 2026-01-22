@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
   <defs>
-    <pattern id="turtle-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="640" height="640" transform-origin="50% 50%" patternTransform="scale(1)">
+    <pattern id="EndlessStepSpiral-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="640" height="640" transform-origin="50% 50%" patternTransform="scale(1)">
       <animateTransform type="scale" values="0.66;0.33;0.66" repeatCount="indefinite" dur="23s" additive="sum" attributeType="XML" attributeName="patternTransform" />
       <animateTransform type="rotate" values="0;360" repeatCount="indefinite" dur="41s" additive="sum" attributeType="XML" attributeName="patternTransform" />
       <animateTransform type="translate" values="0 0;42 42;0 0" repeatCount="indefinite" additive="sum" dur="117s" attributeType="XML" attributeName="patternTransform" />
-      <path id="turtle-path" d="m 320 480   l 16 0 l 0 32 l -48 0 l -0 -64 l 80 -0 l 0 96 l -112 0 l -0 -128 l 144 -0 l 0 160 l -176 0 l 0 -192 l 208 -0 l -0 224 l -240 0 l 0 -256 l 272 -0 l 0 288 l -304 0 l 0 -320 l 0 16 l -32 -0 l -0 -48 l 64 -0 l -0 80 l -96 -0 l -0 -112 l 128 -0 l -0 144 l -160 -0 l -0 -176 l 192 -0 l 0 208 l -224 0 l -0 -240 l 256 -0 l 0 272 l -288 -0 l -0 -304 l 320 -0 l -16 0 l -0 -32 l 48 0 l 0 64 l -80 0 l 0 -96 l 112 -0 l 0 128 l -144 -0 l -0 -160 l 176 0 l 0 192 l -208 0 l 0 -224 l 240 -0 l 0 256 l -272 -0 l -0 -288 l 304 0 l 0 320 l 0 -16 l 32 -0 l -0 48 l -64 0 l -0 -80 l 96 -0 l 0 112 l -128 0 l 0 -144 l 160 -0 l 0 176 l -192 0 l -0 -208 l 224 0 l 0 240 l -256 0 l -0 -272 l 288 -0 l 0 304 l -320 -0" stroke="currentcolor" stroke-width="0.25%" fill="transparent" class="foreground-stroke" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
+      <path id="EndlessStepSpiral-path" d="m 320 480   l 16 0 l 0 32 l -48 0 l -0 -64 l 80 -0 l 0 96 l -112 0 l -0 -128 l 144 -0 l 0 160 l -176 0 l 0 -192 l 208 -0 l -0 224 l -240 0 l 0 -256 l 272 -0 l 0 288 l -304 0 l 0 -320 l 0 16 l -32 -0 l -0 -48 l 64 -0 l -0 80 l -96 -0 l -0 -112 l 128 -0 l -0 144 l -160 -0 l -0 -176 l 192 -0 l 0 208 l -224 0 l -0 -240 l 256 -0 l 0 272 l -288 -0 l -0 -304 l 320 -0 l -16 0 l -0 -32 l 48 0 l 0 64 l -80 0 l 0 -96 l 112 -0 l 0 128 l -144 -0 l -0 -160 l 176 0 l 0 192 l -208 0 l 0 -224 l 240 -0 l 0 256 l -272 -0 l -0 -288 l 304 0 l 0 320 l 0 -16 l 32 -0 l -0 48 l -64 0 l -0 -80 l 96 -0 l 0 112 l -128 0 l 0 -144 l 160 -0 l 0 176 l -192 0 l -0 -208 l 224 0 l 0 240 l -256 0 l -0 -272 l 288 -0 l 0 304 l -320 -0" stroke="currentcolor" stroke-width="0.25%" fill="transparent" class="foreground-stroke" transform-origin="50% 50%" xmlns="http://www.w3.org/2000/svg">
       </path>
     </pattern>
   </defs>
-  <rect width="10000%" height="10000%" x="-5000%" y="-5000%" fill="url(#turtle-pattern)" transform-origin="50% 50%" />
+  <rect width="10000%" height="10000%" x="-5000%" y="-5000%" fill="url(#EndlessStepSpiral-pattern)" transform-origin="50% 50%" />
 </svg>

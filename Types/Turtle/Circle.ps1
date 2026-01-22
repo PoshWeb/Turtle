@@ -46,7 +46,9 @@
 #>
 param(
 # The radius of the circle
-[double]$Radius = 42,
+[double]$Radius = $(
+    (Get-Random -Min 21 -Max 42) * (1,-1 | Get-Random)
+),
 # The portion of the circle to draw.
 [double]$Extent = 1,
 # The number of steps.

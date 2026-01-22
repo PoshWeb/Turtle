@@ -22,8 +22,8 @@
 #>
 
 param(
-    [double]$Size = 30,
-    [int]$Order = 8,
+    [double]$Size = $(Get-Random -Min 21 -Max 42),
+    [int]$Order = $(Get-Random -Min 4 -Max 8),
     [double]$Angle = 60
 )
 return $this.LSystem('XF',  [Ordered]@{

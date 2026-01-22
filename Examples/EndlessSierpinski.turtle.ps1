@@ -1,6 +1,6 @@
 #requires -Module Turtle
 Push-Location $PSScriptRoot
-$turtle = turtle SierpinskiTriangle 25 5  |
+$turtle = turtle id EndlessSierpinskiTriangle SierpinskiTriangle 25 5  |
     Set-Turtle PatternTransform @{
         scale = 0.66
     } |

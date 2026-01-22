@@ -79,11 +79,11 @@
 param(
 # The radius of the spokes
 [double]
-$Radius = 42,
+$Radius = $(Get-Random -Min 42 -Max 84),
 
 # The number of spokes or sticks to draw
 [int]
-$SpokeCount = 6    
+$SpokeCount = $(3..12 | Get-Random)    
 )
 
 $spokeAngle = 360 / $SpokeCount

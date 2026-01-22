@@ -23,8 +23,8 @@
     $turtle.Pattern.Save("$pwd/SierpinskiTriangle2.svg")
 #>
 param(
-    [double]$Size = 200,
-    [int]$Order = 2,
+    [double]$Size = (Get-Random -Min 42 -Max 84),
+    [int]$Order = $(Get-Random -Min 3 -Max 5),
     [double]$Angle = 120
 )
 return $this.LSystem('F-G-G',  [Ordered]@{

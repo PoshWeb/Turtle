@@ -5,9 +5,9 @@
     Draws a Koch Curve, using an L-System.
 #>
 param(
-    [double]$Size = 10,
-    [double]$Rotation = 90,
-    [int]$Order = 4
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (2,3,4 | Get-Random),
+    [double]$Rotation = 90    
 )    
 return $this.LSystem('F',  @{
     F = 'F+F-F-F+F'

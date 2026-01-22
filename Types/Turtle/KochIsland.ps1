@@ -21,8 +21,8 @@
     $turtle.Pattern.Save("$pwd/KochIsland2.svg")
 #>
 param(
-    [double]$Size = 42,
-    [int]$Order = 4,
+    [double]$Size = $(Get-Random -Min 5.0 -Max 20.0),    
+    [int]$Order = (2,3,4 | Get-Random),
     [double]$Angle = -90
 )
 

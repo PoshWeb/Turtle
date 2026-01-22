@@ -47,11 +47,11 @@
 param(
 # The length of both arcs
 [double]
-$Length = 42,
+$Length = $(Get-Random -Min 42 -Max 81),
 
 # The rotation after each step
 [double]
-$Angle = 160,
+$Rotation = $(Get-Random -Min 90 -Max 270),
 
 # The angle of the rays of the sun
 [double]
@@ -60,11 +60,27 @@ $RayAngle = 90,
 # The number of steps to draw.
 # In order to close the shape, this multiplied by the angle should be a multiple of 360.
 [int]
-$StepCount = 9
+$StepCount = 0
 )
 
-# If there are no steps to draw, return this
-if ($stepCount -eq 0) { return $this }
+if ($rotation -eq 0 -and $StepCount -eq 0) {
+    return $this
+}
+
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 16)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
 
 # Every step we take
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
@@ -74,7 +90,7 @@ $null = foreach ($n in 1..([Math]::Abs($StepCount))) {
         # then arc left
         ArcLeft($length/2, $RayAngle).
         # then rotate.
-        Rotate($Angle)    
+        Rotate($Rotation)    
 }
 
 # Return this so we never break the chain.

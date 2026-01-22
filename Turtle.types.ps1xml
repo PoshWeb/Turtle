@@ -52,6 +52,14 @@
         <ReferencedMemberName>BackgroundColor</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Bezier</Name>
+        <ReferencedMemberName>BezierCurve</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Bézier</Name>
+        <ReferencedMemberName>BezierCurve</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>BézierCurve</Name>
         <ReferencedMemberName>BezierCurve</ReferencedMemberName>
       </AliasProperty>
@@ -64,8 +72,16 @@
         <ReferencedMemberName>CubicBezierCurve</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Close</Name>
+        <ReferencedMemberName>ClosePath</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Cobweb</Name>
         <ReferencedMemberName>Spiderweb</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Cubic</Name>
+        <ReferencedMemberName>CubicBezierCurve</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>CubicBézierCurve</Name>
@@ -140,6 +156,10 @@
         <ReferencedMemberName>PenColor</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>PetalFlower</Name>
+        <ReferencedMemberName>FlowerPetal</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Pie</Name>
         <ReferencedMemberName>PieGraph</ReferencedMemberName>
       </AliasProperty>
@@ -158,6 +178,10 @@
       <AliasProperty>
         <Name>r</Name>
         <ReferencedMemberName>Rotate</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Rhombi</Name>
+        <ReferencedMemberName>Rhombus</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>rt</Name>
@@ -208,6 +232,10 @@
         <ReferencedMemberName>Style</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>Terdragon</Name>
+        <ReferencedMemberName>TerdragonCurve</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>up</Name>
         <ReferencedMemberName>PenUp</ReferencedMemberName>
       </AliasProperty>
@@ -231,6 +259,10 @@
         <Name>yPos</Name>
         <ReferencedMemberName>ycor</ReferencedMemberName>
       </AliasProperty>
+      <AliasProperty>
+        <Name>z</Name>
+        <ReferencedMemberName>ClosePath</ReferencedMemberName>
+      </AliasProperty>
       <ScriptMethod>
         <Name>Arc</Name>
         <Script>
@@ -247,11 +279,11 @@
 param(
 # The X Radius of the arc.
 [double]
-$RadiusX,
+$RadiusX = $(Get-Random -Min -42 -Max 42),
 
 # The Y Radius of the arc.
 [double]
-$RadiusY,
+$RadiusY = $(Get-Random -Min -42 -Max 42),
 
 # The rotation along the x-axis.
 [double]
@@ -261,22 +293,26 @@ $Rotation = 0,
 # If set to 0, will draw a small arc
 [ValidateSet(0,1, "Large", "Small", $true, $false)]
 [PSObject]
-$IsLargeArc = 1,
+$IsLargeArc = $(1,0 | Get-Random),
 
 # By default, the arc will be drawn clockwise
 # If this is set to 1, the arc will be drawn counterclockwise
 # If set to 1, will draw an arc counterclockwise
 [ValidateSet(0, 1, 'Clockwise','CounterclockWise', 'cw', 'ccw', $true, $false)]
 [PSObject]
-$IsCounterClockwise = 0,
+$IsCounterClockwise = $(1,0 | Get-Random),
 
 # The deltaX 
 [double]
-$DeltaX,
+$DeltaX = $(
+    (Get-Random -Min 42 -Max 84) * (1,-1 | Get-Random)
+),
 
 # The deltaY 
 [double]
-$DeltaY
+$DeltaY = $(
+    (Get-Random -Min 42 -Max 84) * (1,-1 | Get-Random)
+)
 )
 
 if ($DeltaX -or $DeltaY) {
@@ -300,6 +336,63 @@ return $this
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>ArcFlower</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Draws a arcflower pattern.
+.DESCRIPTION
+    Draws a arcflower pattern in turtle graphics.
+
+    This pattern consists of a series of CircleArcs and rotations to create a flower-like design.
+.EXAMPLE    
+    turtle ArcFlower 42 6 21 
+.EXAMPLE
+    turtle ArcFlower 42 20 21 18
+.EXAMPLE
+    turtle ArcFlower 42 20 6 18
+#&gt;
+param(
+    # The size of the base shape
+    [double]$Size = (
+        ( Get-Random -Min 21 -Max 84 ) * (1,-1 | Get-Random)
+    ),
+    # The rotation after each step
+    [double]$Rotation = (Get-Random -Min 10 -Max 90),
+    # The number of sides in each shape
+    [double]$Angle = (
+        ( Get-Random -Min 21 -Max 84 ) * (1,-1 | Get-Random)
+    ),
+    # The number of steps in the flower.
+    [int]$StepCount = 0
+)
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 64)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
+$null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
+    $this.
+        CircleArc($Size, $Angle).
+        Rotate($Rotation)
+}
+
+return $this
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>ArcLeft</Name>
         <Script>
                         &lt;#
@@ -315,11 +408,11 @@ return $this
 param(
 # The radius of a the circle, were it to complete the arc.
 [double]
-$Radius = 10,
+$Radius = (Get-Random -Min 42 -Max 84),
 
 # The angle of the arc
 [double]
-$Angle = 60
+$Angle = (Get-Random -Min 30 -Max 90)
 )
 
 # Rather than duplicate logic, we will simply reverse the angle
@@ -344,11 +437,11 @@ return $this.ArcRight($Radius, $Angle)
 param(
 # The radius of a the circle, were it to complete the arc.
 [double]
-$Radius = 10,
+$Radius = (Get-Random -Min 42 -Max 84),
 
 # The angle of the arc
 [double]
-$Angle = 60,
+$Angle = (Get-Random -Min 30 -Max 90),
 
 # The number of steps.  If not provided, will default to half of the angle.
 [int]
@@ -393,6 +486,94 @@ return $this
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Arcygon</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Draws an arcygon
+.DESCRIPTION
+    Draws an arcygon.  
+    
+    An arcygon is a polygon with N sides, and an arc at each corner.
+
+    To draw a closed arcygon, provide a whole number of sides.
+
+    To draw an open arcygon, provide a fractial number of sides.
+
+    To draw a negative arcygon, provide a negative angle.
+.EXAMPLE
+    # Arcygons have a side length, radius, and number of sides.
+    turtle arcygon 42 21 3
+.EXAMPLE    
+    turtle arcygon 42 21 4
+.EXAMPLE    
+    turtle arcygon 21 42 4
+.EXAMPLE
+    turtle arcygon 42 -21 4
+.EXAMPLE
+    turtle arcygon -42 -21 4
+.EXAMPLE
+    # we can make partial acygons
+    turtle arcygon 42 42 4.2
+.EXAMPLE
+    # we can morph partial acygons
+    turtle arcygon 42 42 4.2 morph @(
+        turtle arcygon 42 42 4.2
+        turtle arcygon 42 42 4.999999
+    )
+.EXAMPLE
+    turtle arcygon 42 42 8
+.EXAMPLE
+    turtle arcygon 42 3.001 morph @(
+        turtle arcygon 42 42 3.001
+        turtle arcygon 42 42 3.999
+        turtle arcygon 42 42 3.001
+    )
+.EXAMPLE
+    turtle arcygon 42 4 morph @(
+        turtle arcygon 42 42 4
+        turtle arcygon 42 -42 4
+        turtle arcygon 42 42 4
+    )
+#&gt;
+param(
+# The default size of each segment of the polygon
+[double]$Size = $(Get-Random -Min -42 -Max 42),
+
+[double]$Radius = $(Get-Random -Min -42 -Max 42),
+# The number of sides in the polygon.  
+# If this is not a whole number, the polygon will not be closed.
+[double]$SideCount = (Get-Random -Min 3 -Max 12)
+)
+
+# Determine the absolute side count
+$absSideCount = [Math]::Abs($SideCount)
+# and, for each whole number between 1 and that side count
+$null = foreach ($n in 1..([Math]::Floor($absSideCount))) {
+    # Rotate and move forward
+    $this.
+        CircleArc($radius, (360 / $SideCount)).
+        Forward($Size).
+        Rotate(360 / $SideCount)
+}
+# Determine if there was a remainder
+$remainder = $SideCount - [Math]::Floor($SideCount)
+# If there was not, return this polygon
+if (-not $remainder) { return $this }
+# Otherwise, we do one more partial rotation (multiplied by the remainder)
+# and draw one more line segment (multiplied by the remainder)
+# (the effect will be like watching a polygon close)
+$remainingAngle = (360 / $SideCount) * $remainder
+return $this.
+    CircleArc($remainder * $Radius, $remainingAngle)
+    Forward($remainder * $Size).
+    Rotate($remainingAngle)
+# @('CircleArc',$radius, $angle, 'Forward', $length, 'Rotate', $angle * $n)
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Backward</Name>
         <Script>
                         &lt;#
@@ -401,16 +582,12 @@ return $this
 .DESCRIPTION
     Moves the turtle backwards by a specified distance.
 .EXAMPLE
-    Move-Turtle Forward 10 | 
-        Move-Turtle Backward 5 | 
-        Move-Turtle Rotate 90 | 
-        Move-Turtle Forward 20 | 
-        Save-Turtle ./DrawT.svg
+    turtle id 'tshape' forward 10 backward 5 rotate 90 forward 20    
 #&gt;
 param(
 # The distance to move backwards
 [double]
-$Distance = 10
+$Distance = (Get-Random -Min 10 -Max 100)
 )
 
 $this.Forward($Distance * -1)
@@ -465,9 +642,22 @@ param(
 [double[]]$Points
 )
 
+if ($width -and -not $Height) {
+    $height = $width
+} elseif ($height -and -not $Width) {
+    $width = $height
+} elseif (-not $width -and -not $height) {
+    $width = (Get-Random -Min 10 -Max 100) * (1,-1| Get-Random)
+    $height = (Get-Random -Min 10 -Max 100)
+}
+
 
 # If there were no points, we are drawing nothing, so return ourself.
-if (-not $points) { return $this}
+if (-not $points) { 
+    $points = foreach ($n in 1..(Get-Random -Min 4 -Max 20)) {
+        Get-Random -Min 0 -Max 100
+    }
+}
 
 # Divide the width by the number of points to get a very snug bar graph
 $barWidth = $width / $points.Length
@@ -548,19 +738,19 @@ return $this
 param(
 # The X control point
 [double]
-$ControlX,
+$ControlX = (Get-Random -Max 42),
 
 # The Y control point
 [double]
-$ControlY,
+$ControlY = (Get-Random -Max 42),
 
 # The delta X
 [double]
-$DeltaX,
+$DeltaX = (Get-Random -Min 0 -Max 100),
 
 # The delta Y
 [double]
-$DeltaY
+$DeltaY = (Get-Random -Min 0 -Max 100)
 )
 
 
@@ -594,9 +784,9 @@ return $this
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 42,
+[double]$Size = $(Get-Random -Min 21 -Max 42),
 # The order of magnitude (the number of times the L-system is expanded)
-[int]$Order = 4,
+[int]$Order = (2,3,4,5,6| Get-Random),
 # The angle
 [double]$Angle = 45
 )
@@ -633,9 +823,9 @@ return $this.Rotate(-90).LSystem('0',  [Ordered]@{
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = (Get-Random -Min 100 -Max 200),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (2,3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 90
 )
@@ -670,8 +860,8 @@ return $this.LSystem('F+F+F+F',  [Ordered]@{
     $turtle.Pattern.Save("$pwd/BoxFractal2.svg")
 #&gt;
 param(
-    [double]$Size = 20,
-    [int]$Order = 4,
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (2,3,4 | Get-Random),
     [double]$Angle = 90
 )
 return $this.LSystem('F-F-F-F',  [Ordered]@{
@@ -736,7 +926,9 @@ return $this.LSystem('F-F-F-F',  [Ordered]@{
 #&gt;
 param(
 # The radius of the circle
-[double]$Radius = 42,
+[double]$Radius = $(
+    (Get-Random -Min 21 -Max 42) * (1,-1 | Get-Random)
+),
 # The portion of the circle to draw.
 [double]$Extent = 1,
 # The number of steps.
@@ -902,11 +1094,15 @@ return $this
 param(
 # The radius of the circle
 [double]
-$Radius = 42,
+$Radius = $(
+    (Get-Random -Min 42 -Max 84) *(1,-1|Get-Random)
+),
 
 # The angle of the arc 
 [double]
-$Angle = 30
+$Angle =  $(
+    (Get-Random -Min 30 -Max 90) *(1,-1|Get-Random)
+)
 )
 
 # If we wanted an angle that was a multiple of 360
@@ -981,6 +1177,31 @@ return $this
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>ClosePath</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Closes a path
+.DESCRIPTION
+    Closes a path and resets the position to the last move command (Start or Teleport)
+.EXAMPLE
+    turtle forward 42 rotate 90 forward 42 closePath rotate 90 forward 42 rotate 90 forward 42 closePath show
+#&gt;
+param()
+$this.Steps.Add("z")
+$history =$this.History
+if ($history) {
+    $change = $this.History[-1]
+    $this.Position = $change.Delta.X, $change.Delta.Y
+} else {
+    $this.Position = 0, 0
+}
+
+
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>CrystalFractal</Name>
         <Script>
                         &lt;#
@@ -1001,9 +1222,9 @@ return $this
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = (Get-Random -Min 42 -Max 84),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (2,3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 90
 )
@@ -1204,27 +1425,27 @@ return $this.LSystem('F+F+F+F',  [Ordered]@{
 param(
 # The X control point
 [double]
-$ControlStartX,
+$ControlStartX = $(Get-Random -Min -100 -Max 100),
 
 # The Y control point
 [double]
-$ControlStartY,
+$ControlStartY = $(Get-Random -Min -100 -Max 100),
 
 # The X control point
 [double]
-$ControlEndX,
+$ControlEndX = $(Get-Random -Min -100 -Max 100),
 
 # The Y control point
 [double]
-$ControlEndY,
+$ControlEndY = $(Get-Random -Min -100 -Max 100),
 
 # The delta X
 [double]
-$DeltaX,
+$DeltaX = $(Get-Random -Min -100 -Max 100),
 
 # The delta Y
 [double]
-$DeltaY
+$DeltaY = $(Get-Random -Min -100 -Max 100)
 )
 
 if ($DeltaX -or $DeltaY) {
@@ -1321,14 +1542,30 @@ return $this
 #&gt;
 param(
     # The size of the base shape
-    [double]$Size = 100,
+    [double]$Size = $( Get-Random -Min 42 -Max 84 ),
     # The rotation after each step
-    [double]$Rotation = 10,
+    [double]$Rotation = (Get-Random -Min 10.0 -Max 120.0),
     # The number of sides in each shape
-    [double]$SideCount = 4,
+    [double]$SideCount = $( Get-Random -Min 3 -Max 12 ),
     # The number of steps in the flower.
-    [int]$StepCount = 36
+    [int]$StepCount = 0
 )
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 8)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
 
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
     $this.Polygon($Size, $SideCount)
@@ -1354,24 +1591,41 @@ return $this
 param(
 # The radius of the flower
 [double]
-$Radius = 10,
+$Radius = $(Get-Random -Minimum 42 -Maximum 84),
 
 # The rotation per step 
 [double]
-$Rotation = 30,
+$Rotation = $(Get-Random -Minimum 10 -Maximum 90),
 
 # The angle of the petal.
 [double]
-$PetalAngle = 60,
+$PetalAngle = $(Get-Random -Minimum 10 -Maximum 60),
 
 # The number of steps.
-[ValidateRange(1,1mb)]
+[ValidateRange(0,1kb)]
 [int]
-$StepCount = 12
+$StepCount = 0
 )
 
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 8)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
+
 foreach ($n in 1..$stepCount) {
-    $this = $this.Petal($radius, $PetalAngle).Rotate($Rotation)    
+    $this = $this.Petal($radius, $PetalAngle).Rotate($Rotation)
 }
 
 return $this
@@ -1391,7 +1645,7 @@ return $this
 param(
 # The distance to move forward
 [double]
-$Distance = 10
+$Distance = $(Get-Random -Min 1 -Max 100)
 )
 
 $heading = $this.Heading
@@ -1412,17 +1666,25 @@ return $this.Step($x, $y)
 .LINK
     https://en.wikipedia.org/wiki/L-system#Example_7:_fractal_plant
 .EXAMPLE
-    turtle FractalPlant save ./FractalPlant.svg
+    turtle FractalPlant 42 1 -25    
 .EXAMPLE
-    turtle FractalPlant morph  save ./FractalPlantMorph.svg
+    turtle FractalPlant 42 2 -25    
+.EXAMPLE    
+    turtle FractalPlant 42 3 -25    
+.EXAMPLE    
+    turtle FractalPlant 42 4 -25
+.EXAMPLE
+    turtle FractalPlant 42 4 -25
+.EXAMPLE
+    turtle FractalPlant 42 4 
 #&gt;  
 param(
     # The size of each segment
-    [double]$Size = 42,
+    [double]$Size = (Get-Random -Min 42 -Max 84),
     # The order of magnitude (the number of times the L-system is expanded)
-    [int]$Order = 4,
+    [int]$Order = (3,4,5 | Get-Random),
     # The angle of each segment
-    [double]$Angle = -25
+    [double]$Angle = (Get-Random -Min -35 -Max -25)
 )
 return $this.Rotate(-90).LSystem('-X',  [Ordered]@{
     'X' = 'F+[[X]-X]-F[-FX]+X'
@@ -1449,17 +1711,25 @@ return $this.Rotate(-90).LSystem('-X',  [Ordered]@{
 .LINK
     https://en.wikipedia.org/wiki/L-system#Example_7:_fractal_plant
 .EXAMPLE
-    turtle FractalShrub save ./FractalShrub.svg
+    turtle FractalShrub 42 1 -25    
 .EXAMPLE
-    turtle FractalShrub morph  save ./FractalShrubMorph.svg
+    turtle FractalShrub 42 2 -25    
+.EXAMPLE    
+    turtle FractalShrub 42 3 -25    
+.EXAMPLE    
+    turtle FractalShrub 42 4 -25
+.EXAMPLE
+    turtle FractalShrub 42 4 -25
+.EXAMPLE
+    turtle FractalShrub 42 4
 #&gt;  
-param(
+param(    
     # The size of each segment
-    [double]$Size = 42,
+    [double]$Size = (Get-Random -Min 42 -Max 84),
     # The order of magnitude (the number of times the L-system is expanded)
-    [int]$Order = 4,
+    [int]$Order = (3,4,5 | Get-Random),
     # The angle of each segment
-    [double]$Angle = -25
+    [double]$Angle = (Get-Random -Min -35 -Max -25)
 )
 return $this.Rotate(-90).LSystem('-X',  [Ordered]@{
     'X' = 'F[[X]X]F[FX]X'
@@ -1494,12 +1764,29 @@ return $this.Rotate(-90).LSystem('-X',  [Ordered]@{
 #&gt;
 param(
     # The width of each rectangle
-    [double]$Size = 42,
-    # The rotation after each rectangle
-    [double]$Rotation = 20,
+    [double]$Size = $( Get-Random -Min 42 -Max 84 ),
+    # The rotation after each step
+    [double]$Rotation = (Get-Random -Min 10.0 -Max 120.0),
     # The number of steps.
-    [int]$StepCount = 18
+    [int]$StepCount = 0
 )
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 8)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
 
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
     $this.Rectangle($Size)
@@ -1590,7 +1877,7 @@ return $this.Step(
 #&gt;
 param(
 [double]
-$A = 100,
+$A = $(Get-Random -Min 100 -Max 200),
 
 [double]
 $B = 0
@@ -1635,9 +1922,28 @@ return $this.
       <ScriptMethod>
         <Name>HilbertCurve</Name>
         <Script>
-                        param(
-    [double]$Size = 10,
-    [int]$Order = 5,
+                        &lt;#
+.SYNOPSIS
+    Hilbert Curve
+.DESCRIPTION
+    Draws a Hilbert Curve, using an L-System.
+
+    A Hilbert Curve is a space-filling curve.
+.EXAMPLE
+    turtle id hilbert1 hilbertCurve 42 1
+.EXAMPLE
+    turtle id hilbert2 hilbertCurve 42 2
+.EXAMPLE
+    turtle id hilbert3 hilbertCurve 42 3
+.EXAMPLE
+    turtle id hilbert4 hilbertCurve 42 4
+#&gt;
+param(
+    # The size of each segment.
+    [double]$Size = (Get-Random -Min 10 -Max 100),
+    # The number of generations.
+    [int]$Order = (3,4,5 | Get-Random),
+    # The angle.
     [double]$Angle = 90
 )        
 
@@ -1678,7 +1984,7 @@ return $this.Teleport(0,0)
 #&gt;
 param(
 [double]
-$Distance
+$Distance = (Get-Random -Min 1 -Max 100)
 )
 
 $instruction = 
@@ -1730,9 +2036,9 @@ $this.PenUp().Forward($Distance).PenDown()
     Draws a Koch Curve, using an L-System.
 #&gt;
 param(
-    [double]$Size = 10,
-    [double]$Rotation = 90,
-    [int]$Order = 4
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (2,3,4 | Get-Random),
+    [double]$Rotation = 90    
 )    
 return $this.LSystem('F',  @{
     F = 'F+F-F-F+F'
@@ -1769,8 +2075,8 @@ return $this.LSystem('F',  @{
     $turtle.Pattern.Save("$pwd/KochIsland2.svg")
 #&gt;
 param(
-    [double]$Size = 42,
-    [int]$Order = 4,
+    [double]$Size = $(Get-Random -Min 5.0 -Max 20.0),    
+    [int]$Order = (2,3,4 | Get-Random),
     [double]$Angle = -90
 )
 
@@ -1811,8 +2117,8 @@ return $this.LSystem('W',  [Ordered]@{
     $turtle.Pattern.Save("$pwd/KochSnowflake2.svg")
 #&gt;
 param(
-    [double]$Size = 10,    
-    [int]$Order = 4,
+    [double]$Size = $(Get-Random -Min 5.0 -Max 20.0),    
+    [int]$Order = (2,3,4 | Get-Random),
     [double]$Rotation = 60
 )    
 return $this.LSystem('F--F--F ',  @{
@@ -1834,7 +2140,7 @@ return $this.LSystem('F--F--F ',  @{
     Turns the turtle left (counter-clockwise) by the specified angle.
 #&gt;
 param(
-[double]$Angle = 90
+[double]$Angle = $(Get-Random -Minimum 0.0 -Maximum 360.0)
 )
 
 $this.Rotate($Angle * -1)
@@ -1881,6 +2187,17 @@ foreach ($arg in $args) {
         $pairs += ,$pair
         $pair = @()
     }
+}
+
+if (-not $pairs) {
+    $pairs += ,@(
+        Get-Random -Minimum 50 -Maximum 100
+        Get-Random -Minimum 30 -Maximum 90
+    )
+    $pairs += ,@(
+        Get-Random -Minimum 50 -Maximum 100
+        Get-Random -Minimum 30 -Maximum 90
+    )
 }
 
 foreach ($pair in $pairs) {
@@ -2128,6 +2445,57 @@ return $this
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Lucky</Name>
+        <Script>
+                        $luckyArgs = @(
+    'rotate' 
+    (Get-Random -Minimum 0 -Maximum 360)    
+
+    $shapes = @(
+        "flower", "starflower", "goldenflower", 'triflower',    
+        "arcygon", "polygon", 'star',
+        "square", "circle", "rectangle", 'righttriangle',
+        "sierpinskitriangle","sierpinskiarrowheadcurve",
+        "sierpinskicurve","sierpinskisquarecurve",
+        "hilbertcurve", "moorecurve", "flowerpetal",    
+        'Spiderweb','pentaplexity',"kochsnowflake",
+        'StepSpiral',
+        'TurtleMonotile','HatMonotile',
+        'bargraph','piegraph'
+    )
+    $shapes | 
+        Select-Object -Unique |
+        Get-Random
+    if ($true, $true, $false | Get-Random) {
+        'fill'    
+        foreach ($n in 1..(Get-Random -Minimum 2 -Maximum 3)) {
+            'random'        
+        }    
+        if ($true, $false, $false | Get-Random) {
+            'fillrule'
+            'evenodd'
+        }
+    }
+    
+    'stroke'
+    @(
+        foreach ($n in 1..(Get-Random -Min 2 -Maximum 3)) {
+            'random'
+        }
+    )
+)
+
+$id = $luckyArgs -join '-'
+$title = $luckyArgs -join ' '
+if ($this.id -notmatch 'turtle-?\d+') {
+    $id = $this.id, $id -join '-'
+    $title = $this.title, $title -join ' '
+}
+$this | turtle id $id title $title @luckyArgs
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>MooreCurve</Name>
         <Script>
                         &lt;#
@@ -2138,17 +2506,24 @@ return $this
 .LINK
     https://en.wikipedia.org/wiki/Moore_curve
 .EXAMPLE
-    $turtle = New-Turtle
-    $turtle.MooreCurve().Pattern.Save("$pwd/MooreCurvePattern.svg")
+    turtle id moore1 moorecurve 42 1
+.EXAMPLE
+    turtle id moore2 moorecurve 42 2
+.EXAMPLE
+    turtle id moore3 moorecurve 42 3
+.EXAMPLE
+    turtle id moore4 moorecurve 42 4
 .EXAMPLE
     Move-Turtle MooreCurve 15 5 |
         Set-Turtle Stroke '#4488ff' |
         Save-Turtle "./MooreCurve.svg"
 #&gt;
 param(
-    [double]$Size = 10,
-    [int]$Order = 4,
-    [double]$Angle = 90
+[double]$Size = $(
+    (Get-Random -Min 42 -Max 84) * (1,-1 |Get-Random)
+),
+[int]$Order = (3,4 | Get-Random),
+[double]$Angle = 90
 )        
 
 
@@ -2158,9 +2533,9 @@ return $this.LSystem(
         L = '-RF+LFL+FR-'
         R = '+LF-RFR-FL+'
     },
-    4, 
+    $Order,
     @{
-        F = { $this.Forward(10) }            
+        F = { $this.Forward($Size) }
         '\+' = { $this.Rotate(90) }            
         '-' = { $this.Rotate(-90) }
     }
@@ -2185,11 +2560,26 @@ return $this.LSystem(
 .EXAMPLE
     $sierpinskiTriangle = turtle SierpinskiTriangle 42 4
     $SierpinskiTriangleFlipped = turtle rotate 180 SierpinskiTriangle 42 4
-    turtle SierpinskiTriangle 42 4 morph (
+    $sf = turtle SierpinskiTriangle 42 4 morph (
         $SierpinskiTriangle, 
         $SierpinskiTriangleFlipped, 
         $sierpinskiTriangle
-    ) save ./SierpinskiTriangleFlip.svg
+    ) 
+    $sf | Save-Turtle ./SierpinskiTriangleFlip.svg
+.EXAMPLE
+    $sierpinskiTriangle = turtle SierpinskiTriangle 42 4    
+    $SierpinskiTriangle90 = turtle rotate 90 SierpinskiTriangle 42 4    
+    $SierpinskiTriangle180 = turtle rotate 180 SierpinskiTriangle 42 4
+    $SierpinskiTriangle270 = turtle rotate 270 SierpinskiTriangle 42 4
+    $sf = turtle SierpinskiTriangle 42 4 morph @(
+        $SierpinskiTriangle,         
+        $SierpinskiTriangle90
+    ) morph @(
+        $SierpinskiTriangle180
+        $SierpinskiTriangle270
+        $sierpinskiTriangle
+    ) 
+    $sf | save-turtle ./SierpinskiRoll.svg 
 .EXAMPLE
     $sideCount = (3..24 | Get-Random )
     $stepCount = 36
@@ -2226,11 +2616,15 @@ $Arguments
 $durationArgument = $null
 $hasPoints = $false
 $segmentCount = 0 
+$reflect = $false
 $newPaths = @(foreach ($arg in $Arguments) {
     if ($arg -is [string]) {
         if ($arg -match '^\s{0,}m') {
             $arg
             $hasPoints = $true
+        }
+        elseif ($arg -match 'reflect') {
+            $reflect = $true
         }
     } elseif ($arg.PathData) {
         $arg.PathData
@@ -2246,7 +2640,7 @@ $newPaths = @(foreach ($arg in $Arguments) {
             $segmentCount = [Math]::Abs($arg)
         } else {
             $durationArgument = [TimeSpan]::FromSeconds($arg)
-        }        
+        }
     }
 })
 
@@ -2270,19 +2664,28 @@ if (-not $newPaths) {
     }        
 }
 
-if ($this.PathAnimation) {
+# Check to see if we have existing animations on the path
+$pathAnimation = $this.PathAnimation
+$updatedAnimations = @()
+# If we do
+if ($pathAnimation) {
+    # see if any of them are updated    
     $updatedAnimations = 
-        @(foreach ($animationXML in $this.PathAnimation -split '(?&lt;=/&gt;)') {
-            $animationXML = $animationXML -as [xml]
+        @(foreach ($animationXML in $pathAnimation) {
             if (-not $animationXML) { continue }
-            if ($animationXML.animate.attributeName -eq 'd') {
-                $animationXML.animate.values = "$($newPaths -join ';')"
+            # we only want to change morphs
+            # (which are animations of the path data)
+            if ($animationXML.animate.attributeName -eq 'd') {                
+                $animationXML.animate.values = "$(
+                    @($animationXML.animate.values; $newPaths) -join ';'
+                )"
             }
-            $animationXML.OuterXml
-        })
-    $this.PathAnimation = $updatedAnimations
-} else {
-    $this.PathAnimation += [Ordered]@{
+            $animationXML
+        })        
+} 
+
+if (-not $updatedAnimations) {
+    $this.PathAnimation = [Ordered]@{
         attributeName = 'd'   ; values = "$($newPaths -join ';')" ; repeatCount = 'indefinite'; dur = $(
             if ($durationArgument) {
                 "$($durationArgument.TotalSeconds)s"
@@ -2291,9 +2694,8 @@ if ($this.PathAnimation) {
             } else {
                 "4.2s"
             }
-            
         )
-    }
+    }    
 }
 
 return $this
@@ -2371,9 +2773,9 @@ return $this
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = $(Get-Random -Min 42 -Max 84),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 36
 )
@@ -2410,10 +2812,10 @@ return $this
 #&gt;
 param(
 [double]
-$Radius = 10,
+$Radius = $(Get-Random -Min 21 -Max 42),
 
 [double]
-$Angle = 60
+$Angle = $(Get-Random -Min 30 -Max 60)
 )
 
 $OppositeAngle = 180 - $Angle
@@ -2577,8 +2979,16 @@ $GraphData
 )
 
 
-# If there were no points, we are drawing nothing, so return ourself.
-if (-not $GraphData) { return $this}
+if (-not $radius) {
+    $radius = Get-Random -Min 42 -Max 84    
+}
+
+# If there were no points, draw a random number of slices
+if (-not $GraphData) {
+    $GraphData = foreach ($n in Get-Random -min 3 -max 12) {
+        Get-Random -Max 42
+    }
+}
 
 filter IsPrimitive {$_.GetType -and $_.GetType().IsPrimitive}
 
@@ -2771,15 +3181,14 @@ return $this
         turtle polygon 42 3.001
         turtle polygon 42 4
         turtle polygon 42 3.001
-    ) save ./TriangleToSquare.svg 
-
+    )
 #&gt;
 param(
 # The default size of each segment of the polygon
-[double]$Size = 42,
+[double]$Size = $(Get-Random -Min 42 -Max 84),
 # The number of sides in the polygon.  
 # If this is not a whole number, the polygon will not be closed.
-[double]$SideCount = 6
+[double]$SideCount = (Get-Random -Min 3 -Max 12)
 )
 
 # Determine the absolute side count
@@ -2883,19 +3292,19 @@ return $this
 param(
 # The X control point
 [double]
-$ControlX,
+$ControlX = $(Get-Random -Min 0 -Max 100),
 
 # The Y control point
 [double]
-$ControlY,
+$ControlY = $(Get-Random -Min 0 -Max 100),
 
 # The delta X
 [double]
-$DeltaX,
+$DeltaX = $(Get-Random -Min 0 -Max 100),
 
 # The delta Y
 [double]
-$DeltaY
+$DeltaY = $(Get-Random -Min 0 -Max 100)
 )
 
 
@@ -2934,7 +3343,7 @@ return $this
 param(
 # The width of the rectangle
 [double]
-$Width = 42,
+$Width = $(Get-Random -Min 42 -Maximum 84),
 
 # The height of the rectangle.  If not provided, will be the width divided by the golden ratio.
 [double]
@@ -3114,6 +3523,88 @@ return $this
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>Rhombus</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Draws a Rhombus
+.DESCRIPTION
+    Draws a Rhombus in Turtle Graphics.
+.NOTES
+    If you provide `NaN` or positive infinity `∞`, you'll get rhombus with a golden angle.
+
+    If you provide negative infinity `-∞`, you'll get a rhombus with a different golden angle.
+.LINK
+    https://logothings.github.io/logothings/logo/SquashedSquares.html
+.EXAMPLE
+    # Draw a random rhombus
+    turtle rhombus 
+.EXAMPLE
+    # Draw a 10 20 30 rhombus
+    turtle rhombus 10 20 30
+.EXAMPLE
+    # More a 10 20 30 rhombus to a 10 20 90 rhombus
+    turtle rhombus 10 20 30 morph @(
+        turtle rhombus 10 20 30
+        turtle rhombus 20 10 90
+        turtle rhombus 10 20 30
+    )
+.EXAMPLE
+    turtle rhombus 20 20 90 morph @(
+        turtle rhombus 20 20 90
+        turtle rhombus 20 10 30
+        turtle rhombus 20 20 90
+        turtle rhombus 10 20 -30
+        turtle rhombus 20 20 90
+    )
+.EXAMPLE
+    # If we pass nan for an angle, 
+    # we use 1/the golden ratio as the angle
+    turtle rhombus 10 20 nan
+.EXAMPLE    
+    turtle rhombus 10 20 nan morph @(
+        turtle rhombus 10 20 nan
+        turtle rhombus -20 -10 nan
+        turtle rhombus 10 20 nan
+    )
+#&gt;
+param(
+# The length of the first side
+[double]
+$Side1 = (Get-Random -Min 42 -Max 84),
+
+# The length of the second side
+[double]
+$Side2 = (Get-Random -Min 42 -Max 84),
+
+# The angle to rotate after the first and third side.
+# The second and third side will be 180 - this angle.
+# If 'NaN' is provided, the reciprocol of the golden ratio will be used as the angle.
+[double]
+$Angle = $(
+    (Get-Random -Min 10.0 -Max 60.0) * 
+        (1,-1 | Get-Random) * 
+            (1, 1, [double]::NaN | Get-Random)
+)
+)
+
+if ("$angle" -eq "NaN" -or 
+    "$angle" -eq "$([double]::PositiveInfinity)") {    
+    $angle = 
+        [Math]::Atan(1 / (1 + [Math]::Sqrt(5))) * 2 * 180/[Math]::Pi
+} elseif ($angle -eq "$([double]::NegativeInfinity)") {
+    $angle = 
+        [Math]::Atan((1 + [Math]::Sqrt(5))) * 2 * 180/[Math]::Pi
+}
+
+$this.
+    Forward($Side1).Rotate($Angle).
+    Forward($Side2).Rotate(180-$Angle).
+    Forward($side1).Rotate($Angle).
+    Forward($side2).Rotate(180-$Angle)
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Right</Name>
         <Script>
                         &lt;#
@@ -3123,10 +3614,141 @@ return $this
     Turns the turtle right (clockwise) by the specified angle.
 #&gt;
 param(
-[double]$Angle = 90
+[double]$Angle = (Get-Random -Min 0.0 -Max 360.0)
 )
 
 $this.Rotate($Angle)
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
+        <Name>RightTriangle</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Right triangle
+.DESCRIPTION
+    Draws a right triangle using two side lengths.
+.EXAMPLE
+    # Draw a random right triangle
+    turtle RightTriangle 
+.EXAMPLE
+    # Draw a 3-4-5 right triangle
+    turtle RightTriangle 3 4
+.EXAMPLE
+    # We can rotate after each right triangle
+    turtle @('RightTriangle',1,4,'Rotate', 90 * 4)
+.EXAMPLE
+    # We can make a parallax by putting with multiple right triangles
+    turtle id Parallax @(foreach ($n in 1..10) {
+        'RightTriangle',$n,-10
+        'RightTriangle',($n*-1),-10
+    }) save ./Parallax.svg
+.EXAMPLE
+    # We can do this along two axes to make a parallax illusion
+    turtle @(foreach ($n in 1..10) {
+        'RightTriangle',$n,(10)
+        'RightTriangle',($n),-10
+        'RightTriangle',($n * -1),-10
+        'RightTriangle',($n * -1),10
+    }) save ./ParallaxIllusion.svg
+.EXAMPLE
+    # We can create a parallax corner by scaling the triangles
+    turtle id ParallaxCorner @(foreach ($n in 1..10) {
+        'RightTriangle',(10 - $n),$n
+        'RightTriangle',$n,(10-$n)
+    }) save ./ParallaxCorner.svg   
+.EXAMPLE
+    # We can rotate and repeat this to make a Parallax Astroid
+    turtle id ParallaxAstroid (@(
+        @(foreach ($n in 1..10) {
+            'RightTriangle',(10 - $n),$n
+            'RightTriangle',$n,(10-$n)    
+        })
+        'rotate', 90
+    ) * 4) save ./ParallaxAstroid.svg
+.EXAMPLE
+    # We can make a pair of parallax astroids and morph them.
+    $parallaxAstroid = turtle id ParallaxAstroid (
+        @(
+            foreach ($n in 1..10) {
+                'RightTriangle',(10 - $n),$n
+                'RightTriangle',$n,(10-$n)    
+            }
+            'rotate', 90  
+        ) * 4
+    )
+
+    $parallaxAstroid2 = turtle id ParallaxAstroid (
+        @(
+            foreach ($n in 1..10) {
+                'RightTriangle',(10 - $n),($n*-1)
+                'RightTriangle',($n*-1),(10-$n)    
+            }
+            'rotate', 90  
+        ) * 4
+    )
+            
+    $parallaxAstroid | turtle morph @(
+        $parallaxAstroid
+        $parallaxAstroid2
+        $parallaxAstroid
+    ) @(
+        'stroke','#4488ff'
+        'fill','#224488'
+        'pathclass','foreground-stroke foreground-fill'
+        'fillrule','evenodd'
+    )
+#&gt;
+param(
+# The distance along the current angle.
+[Alias('Opposite')]
+[double]
+$Side1 = $(
+    (Get-Random -Minimum 42 -Maximum 84) * (1,-1 | Get-Random)
+),
+
+# The distance along the adjacent angle.
+[Alias('Adjacent')]
+[double]
+$Side2 = $(
+    (Get-Random -Minimum 42 -Maximum 84) * (1,-1 | Get-Random)
+)
+)
+
+# If neither side is a number, return ourself
+if (-not $side1 -and -not $side2) { return $this }
+
+# Figure out our angles with a bit of trigonometry.
+# (SOHCAHTOA)
+$angle1 = [Math]::Atan2($side2, $Side1) * (180/[Math]::Pi)
+$angle2 = [Math]::Atan2($side1, $side2) * (180/[Math]::Pi)
+
+
+# Figure out our hypotenuse (Pythagorean Theorem)
+$hypotenuse = [Math]::Sqrt(
+    ($Side1 * $side1) +
+    ($Side2 * $side2)
+)
+
+# Now draw our triangle
+return $this.
+    # move forward along our current side
+    Forward($side1). 
+    # turn back around and then turn by our angle. 
+    Rotate(180 - $angle1). 
+     # draw the hypotenuse
+    Forward($hypotenuse).
+    # turn back around and then turn by our other angle 
+    Rotate(180 - $angle2).
+    Forward($side2).
+    Rotate(-270)
+    
+
+    
+    
+    
+
+
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
@@ -3150,9 +3772,9 @@ $this.Rotate($Angle)
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = (Get-Random -Min 100 -Max 200),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (3,4| Get-Random),
 # The default angle.
 [double]$Angle = 90
 )
@@ -3175,7 +3797,9 @@ return $this.LSystem('F+F+F+F',  [Ordered]@{
 .DESCRIPTION
     Rotates the turtle by the specified angle.
 #&gt;
-param([double]$Angle = 90)
+param(
+[double]$Angle = (Get-Random -Min -360.0 -Max 360.0)
+)
 $this.Heading += $Angle
 return $this
                     </Script>
@@ -3225,11 +3849,11 @@ return $this | Save-Turtle @saveSplat
 param(
 # The distance to travel
 [double]
-$Distance = 10,
+$Distance = $(Get-Random -Min 21 -Max 42),
 
 # The interior angle of the scissors
 [double]
-$Angle = 60
+$Angle = $(Get-Random -Min 15 -Max 75)
 )
 
 
@@ -3291,26 +3915,36 @@ $this.
 param(
 # The distance of each side of the scissor
 [double]
-$Distance,
+$Distance = (
+    (Get-Random -Min 42 -Max 84) * (1,-1|Get-Random)
+),
 
 # The angle between each scissor
 [double]
-$Angle,
+$Angle = (Get-Random -Min 30 -Max 90),
 
 # The angle of each scissor, or the degree out of phase a regular N-gon would be.
 [double]
-$Phase
+$Phase = (Get-Random -Min 30 -Max 90)
 )
 
 $totalTurn = 0
 
-do {
-    $this = $this.Scissor($Distance, $Phase).Left($angle)
-    $totalTurn -= $angle
+if ($angle -eq 0) { return $this }
+
+$totalTurn = $Angle
+$rotations = 0
+foreach ($n in 1..360) {
+    $rotations = ($n * 360)/$totalTurn    
+    if ([Math]::Floor($rotations) -eq $rotations) {
+        break
+    }
 }
-until (
-    (-not ([Math]::Round($totalTurn, 5) % 360 ))
-)
+
+foreach ($n in 1..$rotations) {
+    $this = $this.Scissor($Distance, $Phase).Left($angle)
+}
+return $this
 
                     </Script>
       </ScriptMethod>
@@ -3358,8 +3992,8 @@ return $this | Show-Turtle
 #&gt;
 
 param(
-    [double]$Size = 30,
-    [int]$Order = 8,
+    [double]$Size = $(Get-Random -Min 21 -Max 42),
+    [int]$Order = $(Get-Random -Min 4 -Max 8),
     [double]$Angle = 60
 )
 return $this.LSystem('XF',  [Ordered]@{
@@ -3439,8 +4073,8 @@ return $this.LSystem('F--XF--F--XF',  [Ordered]@{
     $turtle.Pattern.Save("$pwd/SierpinskiSquareCurve2.svg")
 #&gt;
 param(
-    [double]$Size = 20,
-    [int]$Order = 5,
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (2,3,4,5 | Get-Random),
     [double]$Angle = 90
 )
 return $this.LSystem('X',  [Ordered]@{
@@ -3481,8 +4115,8 @@ return $this.LSystem('X',  [Ordered]@{
     $turtle.Pattern.Save("$pwd/SierpinskiTriangle2.svg")
 #&gt;
 param(
-    [double]$Size = 200,
-    [int]$Order = 2,
+    [double]$Size = (Get-Random -Min 42 -Max 84),
+    [int]$Order = $(Get-Random -Min 3 -Max 5),
     [double]$Angle = 120
 )
 return $this.LSystem('F-G-G',  [Ordered]@{
@@ -3588,7 +4222,7 @@ return $this.Pop().Push().
 
     This will draw any number of spokes, and draw a polygon between each spoke at regular intervals
 .EXAMPLE
-    # Draw a spiderweb
+    # Draw a random spiderweb
     turtle spiderweb
 .EXAMPLE
     # Draw a spider web with a radius six
@@ -3667,15 +4301,15 @@ return $this.Pop().Push().
 param(
 # The radius of the web
 [double]
-$Radius = 42,
+$Radius = (Get-Random -Min 42 -Maximum 84),
 
 # The number of spokes in the web.
 [int]
-$SpokeCount = 6,
+$SpokeCount = (Get-Random -Min 5 -Max 13),
 
 # The number of rings in the web.
 [int]
-$RingCount = 6
+$RingCount = (Get-Random -Min 5 -Max 13)
 )
 
 
@@ -3767,17 +4401,20 @@ return $this
 param(
 # The base length of each side (this will be multiplied by the step number)
 [double]
-$Side = 10,
+$Side = $(
+    (Get-Random -Min 42.0 -Maximum 84.0) * (1,-1 | Get-Random)
+),
 
 # The angle of the turn
 [double]
-$Angle = 90,
+$Angle = $(
+    (Get-Random -Min 10.0 -Maximum 120.0) * (1,-1 | Get-Random)
+),
 
 # The step count.
 # This is the number of times the steps will be repeated.
-# This is also the maximum number of iterations the shape will complete.
 [int]
-$StepCount = 10,
+$StepCount = 0,
 
 # The step numbers that are left turns (counter-clockwise).
 # This allows the creation of general spirolaterals
@@ -3786,10 +4423,46 @@ $StepCount = 10,
 $LeftTurnSteps
 )
 
+if ($Angle -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 16)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Angle
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
+
 $stepNumber = 1
-$majorStepCount = 0
-$totalTurn = 0
-do {
+
+# Figure out our total turn per loop
+$totalTurn = 0.0
+for ($stepNumber = 1; $stepNumber -le [Math]::Abs($StepCount); $stepNumber++) {    
+    if ($LeftTurnSteps -contains $stepNumber) {
+        $totalTurn -= $angle        
+    } else {
+        $totalTurn += $angle        
+    }
+}
+
+$rotations = 0
+foreach ($n in 1..32) {
+    $rotations = ($n * 360)/$totalTurn    
+    if ([Math]::Floor($rotations) -eq $rotations) {
+        break
+    }
+}
+$rotations = [Math]::Ceiling($rotations)
+
+
+foreach ($rotation in 1..$rotations) {
     $null = for ($stepNumber = 1; $stepNumber -le [Math]::Abs($StepCount); $stepNumber++) {
         $null = $this.Forward($side * $stepNumber)
         if ($LeftTurnSteps) {
@@ -3805,11 +4478,14 @@ do {
             $this.Right($angle)
         }
     }
-    $majorStepCount++
-} until (
-    (-not ([Math]::Round($totalTurn, 5) % 360 )) -and 
+}
+
+    
+    
+&lt;#} until (
+    (-not ([Math]::Round($totalTurn, 1) % 360 )) -and 
     $majorStepCount -le [Math]::Abs($StepCount)
-)
+)#&gt;
 
 return $this
 
@@ -3899,11 +4575,11 @@ return $this
 param(
 # The radius of the spokes
 [double]
-$Radius = 42,
+$Radius = $(Get-Random -Min 42 -Max 84),
 
 # The number of spokes or sticks to draw
 [int]
-$SpokeCount = 6    
+$SpokeCount = $(3..12 | Get-Random)    
 )
 
 $spokeAngle = 360 / $SpokeCount
@@ -3917,7 +4593,17 @@ return $this
       <ScriptMethod>
         <Name>Square</Name>
         <Script>
-                        param([double]$Size = 50)
+                        &lt;#
+.SYNOPSIS
+    Draws a square
+.DESCRIPTION
+    Draws a square using Turtle graphics
+.EXAMPLE
+    turtle square 42    
+#&gt;
+param(
+[double]$Size = $(Get-Random -Min 21 -Max 42)
+)
 $null = foreach ($n in 1..4) {
     $this.Forward($Size)
     $this.Rotate(90)
@@ -3950,9 +4636,9 @@ return $this
 #&gt;
 param(
     # The approximate size of the star
-    [double]$Size = 50,
+    [double]$Size = $(Get-Random -Min 21 -Max 42),
     # The number of points in the star
-    [int]$Points = 6
+    [int]$Points = $(Get-Random -Min 5 -Max 7)
 )
 
 # To determine the angle, divide 360 by the number of points
@@ -3994,15 +4680,34 @@ return $this
     Turtle StarFlower 84 40 6 9 | Save-Turtle ./StarFlowerPattern.svg Pattern
 #&gt;
 param(
-    # The size of each star
-    [double]$Size = 42,
-    # The rotation after each star
-    [double]$Rotation = 20,
+    # The size of the base shape
+    [double]$Size = $( Get-Random -Min 42 -Max 84 ),
+    # The rotation after each step
+    [double]$Rotation = (Get-Random -Min 10.0 -Max 120.0),
+    
     # The number of points in the star    
-    [double]$PointCount = 6,
+    [double]$PointCount = (Get-Random -Min 5 -Max 12),
     # The number of steps.
-    [int]$StepCount = 18
+    [int]$StepCount = 0
 )
+
+
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 8)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
 
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
     $this.Star($Size, $PointCount)
@@ -4044,6 +4749,37 @@ return $this
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>StepCurve</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Takes a curved step 
+.DESCRIPTION
+    Makes a relative movement with a curve.
+.EXAMPLE
+    turtle viewbox 20 teleport 10 0 stepCurve 5 5 stepCurve -5 0 stepCurve 0 -5 closepath
+#&gt;
+param(
+# The DeltaX
+[double]$DeltaX = $(Get-Random -Min -10.0 -Max 10.0), 
+# The DeltaY
+[double]$DeltaY = $(Get-Random -Min -10.0 -Max 10.0)
+)
+
+# If both coordinates are empty, we aren't going anywhere.
+# But we _might_ want a point to exist.
+$this.Position = $DeltaX, $DeltaY
+if ($This.IsPenDown) {
+    $this.Steps.Add(" t $deltaX $deltaY")
+} else {
+    $this.Steps.Add(" m $DeltaX $DeltaY")
+}
+
+return $this
+
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>StepSpiral</Name>
         <Script>
                         &lt;#
@@ -4058,22 +4794,58 @@ return $this
 
     To create an inward spiral, use a negative StepSize or StepCount.
 .EXAMPLE
-    turtle StepSpiral save ./StepSpiral.svg
+    turtle StepSpiral 1 90 2 20 save ./StepSpiral.svg
 .EXAMPLE
     turtle @('StepSpiral',3, 120, 'rotate',120 * 3) save ./StepSpiralx3.svg
 .EXAMPLE
-    turtle @('StepSpiral',3, 90, 'rotate',90 * 3) save ./StepSpiralx4.svg
+    turtle @('StepSpiral',3, 90, 'rotate',90 * 4) save ./StepSpiralx4.svg
+.EXAMPLE
+    turtle @('StepSpiral',3, -6, 0, (360/6 * 2), 'rotate',30 * (360/6))
+.EXAMPLE
+    turtle @('StepSpiral',3, -60, 0, (360/60 * 2), 'rotate',60 * (360/60)) morph @(
+        turtle @('StepSpiral',3, -60, 0, (360/60 * 2), 'rotate',60 * (360/60))
+        turtle @('StepSpiral',2, 60, 0, (360/60 * 2), 'rotate',60 * (360/60))
+        turtle @('StepSpiral',3, -60, 0, (360/60 * 2), 'rotate',60 * (360/60))
+    ) save ./StepSpiralSmoothMorph.svg
+.EXAMPLE
+    turtle @('StepSpiral',3, -6, 0, (360/6 * 2), 'rotate',30 * (360/6)) morph @(
+        turtle @('StepSpiral',3, -6, 0, (360/6 * 2), 'rotate',30 * (360/6))
+        turtle @('StepSpiral',3, 6, 0, (360/6 * 2), 'rotate',30 * (360/6))
+        turtle @('StepSpiral',3, -6, 0, (360/6 * 2), 'rotate',30 * (360/6))
+    ) save ./StepSpiralSmoothMorph.svg
 #&gt;
 param(
 # The length of the first step
-[double]$Length = 1,
+[double]$Length = $(Get-Random -Min 1.0 -Max 2.0),
 # The angle to rotate after each step
-[double]$Angle = 90,
+[double]$Angle = $(
+    @(
+        foreach ($n in 3..24) {
+            if ([Math]::Floor(360/$n) -eq (360/$n)) {
+                360/$n
+            }
+        }
+    ) | Get-Random
+),
 # The amount of change per step
-[double]$StepSize = 1,
+[double]$StepSize = 0,
 # The number of steps.
-[int]$StepCount = 20
+[int]$StepCount = 0
 )
+
+if ($Rotation -eq 0) { return $this }
+
+if (-not $StepSize) {
+    $StepSize = $Length * 2
+}
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # we want to use a fixed number of steps
+    # and figure out how many steps at our angle it takes to get there.
+    $revolutions = 4
+    $StepCount = [Math]::Ceiling(($revolutions*360)/$angle)
+}
 
 # If the step size or count is negative
 if (
@@ -4151,11 +4923,11 @@ return $this
 param(
 # The length of both arcs
 [double]
-$Length = 42,
+$Length = $(Get-Random -Min 42 -Max 81),
 
 # The rotation after each step
 [double]
-$Angle = 160,
+$Rotation = $(Get-Random -Min 90 -Max 270),
 
 # The angle of the rays of the sun
 [double]
@@ -4164,11 +4936,27 @@ $RayAngle = 90,
 # The number of steps to draw.
 # In order to close the shape, this multiplied by the angle should be a multiple of 360.
 [int]
-$StepCount = 9
+$StepCount = 0
 )
 
-# If there are no steps to draw, return this
-if ($stepCount -eq 0) { return $this }
+if ($rotation -eq 0 -and $StepCount -eq 0) {
+    return $this
+}
+
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 16)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
 
 # Every step we take
 $null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
@@ -4178,7 +4966,7 @@ $null = foreach ($n in 1..([Math]::Abs($StepCount))) {
         # then arc left
         ArcLeft($length/2, $RayAngle).
         # then rotate.
-        Rotate($Angle)    
+        Rotate($Rotation)    
 }
 
 # Return this so we never break the chain.
@@ -4228,25 +5016,40 @@ return $this
 .LINK
     https://en.wikipedia.org/wiki/Dragon_curve#Terdragon
 .EXAMPLE
-    $turtle.TerdragonCurve().Pattern.Save("$pwd/TerdragonCurve.svg")
+    turtle TerdragonCurve    
 .EXAMPLE
-    $turtle.Clear()
-    $turtle.TerdragonCurve(20,7,90)
-    $turtle.PatternTransform = @{
+    turtle id Terdragon1 TerdragonCurve 42 1
+.EXAMPLE
+    turtle id Terdragon2 TerdragonCurve 42 2
+.EXAMPLE
+    turtle id Terdragon3 TerdragonCurve 42 3
+.EXAMPLE
+    turtle id Terdragon4 TerdragonCurve 42 4
+.EXAMPLE
+    turtle id Terdragon5 TerdragonCurve 42 5
+.EXAMPLE
+    turtle id Terdragon6 TerdragonCurve 42 6
+.EXAMPLE
+    turtle id Terdragon7 TerdragonCurve 42 7
+.EXAMPLE
+    turtle id Terdragon8 TerdragonCurve 42 8
+.EXAMPLE
+    turtle id EndlessTerdragon TerdragonCurve PatternTransform = @{
         'scale' = 0.9
         'rotate' = 45
-    }
-    
-    $turtle.PatternAnimation = "
-    &lt;animateTransform attributeName='patternTransform' attributeType='XML' type='scale' values='1;0.9;1' dur='19s' repeatCount='indefinite' additive='sum' /&gt;
-    &lt;animateTransform attributeName='patternTransform' attributeType='XML' type='skewY' values='30;-30;30' dur='67s' repeatCount='indefinite' additive='sum' /&gt;
-    &lt;animateTransform attributeName='patternTransform' attributeType='XML' type='skewX' values='30;-30;30' dur='83s' repeatCount='indefinite' additive='sum' /&gt;
-    "
-    $turtle.Pattern.Save("$pwd/TerdragonCurve2.svg")
+    } PatternAnimation @(
+        "&lt;animateTransform attributeName='patternTransform' attributeType='XML' type='scale' values='1;0.9;1' dur='19s' repeatCount='indefinite' additive='sum' /&gt;"
+        "&lt;animateTransform attributeName='patternTransform' attributeType='XML' type='skewY' values='30;-30;30' dur='67s' repeatCount='indefinite' additive='sum' /&gt;"
+        "&lt;animateTransform attributeName='patternTransform' attributeType='XML' type='skewX' values='30;-30;30' dur='83s' repeatCount='indefinite' additive='sum' /&gt;"        
+    )     
 #&gt;
 param(
-    [double]$Size = 20,
-    [int]$Order = 8,
+    [double]$Size = $(
+        Get-Random -Min 42 -Max 84
+    ),
+    [int]$Order = (
+        5,6,7,8 | Get-Random
+    ),
     [double]$Angle = 120
 )
 return $this.LSystem('F',  [Ordered]@{
@@ -4280,9 +5083,9 @@ return $this.LSystem('F',  [Ordered]@{
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 200,
+[double]$Size = (Get-Random -Min 100 -Max 200),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 90
 )
@@ -4365,6 +5168,83 @@ return $angle - ($this.Heading % 360)
                     </Script>
       </ScriptMethod>
       <ScriptMethod>
+        <Name>TriFlower</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Draws a triflower pattern.
+.DESCRIPTION
+    Draws a triflower pattern in turtle graphics.
+
+    This pattern consists of a series of polygons and rotations to create a flower-like design.
+.EXAMPLE
+    # Make a random triflower
+    turtle TriFlower 
+.EXAMPLE
+    # Make a TriFlower with one side of 42, 
+    # rotating 6 degrees each step, 
+    # with a second side of 21
+    turtle TriFlower 42 6 21 
+.EXAMPLE
+    # Make a TriFlower
+    turtle TriFlower 42 20 6 18
+.EXAMPLE
+    turtle TriFlower 42 20 6 18
+.EXAMPLE
+    # Triflowers look amazing when morphed
+    turtle TriFlower 42 8 -42 45 morph @(
+        turtle TriFlower 42 8 -42 45
+        turtle TriFlower 42 8 42 45
+        turtle TriFlower 42 8 -42 45
+    )
+.EXAMPLE
+    # We can make a triflower fold in on itself
+    turtle TriFlower 42 15 -42 24 morph @(
+        turtle TriFlower 42 60 -42 24    
+        turtle TriFlower 42 15 -42 24
+        turtle TriFlower 42 60 -42 24
+    )
+#&gt;
+param(
+    # The size of the base shape
+    [double]$Size = (
+        ( Get-Random -Min 42 -Max 420 ) * (1,-1 | Get-Random)
+    ),
+    # The rotation after each step
+    [double]$Rotation = (Get-Random -Min 10.0 -Max 120.0),
+    # The number of sides in each shape
+    [double]$Size2 = (
+        ( Get-Random -Min 21 -Max 210 ) * (1,-1 | Get-Random)
+    ),
+    # The number of steps in the flower.
+    [int]$StepCount = 0
+)
+
+if ($Rotation -eq 0) { return $this }
+
+# If no step count was provided
+if ($StepCount -eq 0) {
+    # pick a random number of rotations
+    $revolutions = (Get-Random -Minimum 1 -Max 16)
+    # and figure out how many steps at our angle it takes to get there.
+    foreach ($n in 2..$revolutions) {
+        $revNumber = ($revolutions * 360)/$Rotation
+        $StepCount = [Math]::Ceiling($revNumber)
+        if ([Math]::Floor($revNumber) -eq $revNumber) {
+            break
+        }
+    }    
+}
+
+$null = foreach ($n in 1..([Math]::Abs($StepCount))) {    
+    $this.RightTriangle($Size, $Size2)
+    $this.Rotate($Rotation)
+}
+
+return $this
+                    </Script>
+      </ScriptMethod>
+      <ScriptMethod>
         <Name>Triplexity</Name>
         <Script>
                         &lt;#
@@ -4387,9 +5267,9 @@ return $angle - ($this.Heading % 360)
 #&gt;
 param(
 # The size of each segment
-[double]$Size = 42,
+[double]$Size = (Get-Random -Min 21 -Max 42),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (2,3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 60
 )
@@ -4418,7 +5298,7 @@ return $this.LSystem('F++F++F',  [Ordered]@{
 #&gt;
 param(
 [double]
-$A = 100,
+$A = $(Get-Random -Min 42 -Max 100),
 
 [double]
 $B = 0
@@ -4492,8 +5372,8 @@ return
 #&gt;
 
 param(
-    [double]$Size = 20,
-    [int]$Order = 6,
+    [double]$Size = (Get-Random -Min 21 -Max 42),
+    [int]$Order = (3,4,5,6, 7, 8 | Get-Random ),
     [double]$Angle = 90
 )
 return $this.LSystem('FX+FX+',  [Ordered]@{
@@ -4501,7 +5381,7 @@ return $this.LSystem('FX+FX+',  [Ordered]@{
     Y = 'FX-Y'
 }, $Order, [Ordered]@{
     '\+'    = { $this.Rotate($Angle) }
-    '-'     = { $this.Rotate($Angle * -1) }
+    '\-'     = { $this.Rotate($Angle * -1) }
     '[F]'  = { $this.Forward($Size) }
 })
 
@@ -4525,7 +5405,7 @@ return $this.LSystem('FX+FX+',  [Ordered]@{
 param(
 # The length of the line.
 [double]
-$Distance
+$Distance = $(Get-Random -Min 1 -Max 100)
 )
 
 $instruction = 
@@ -4970,17 +5850,14 @@ foreach ($v in $value) {
     }
 }
 
-if (($this.'.Duration' -is [TimeSpan]) -and $this.PathAnimation) {
-    $updatedAnimations =
-        @(foreach ($animationXML in $this.PathAnimation -split '(?&lt;=/&gt;)') {
-            $animationXML = $animationXML -as [xml]
-            if (-not $animationXML) { continue }
-            if ($animationXML.animate.attributeName -eq 'd') {
-                $animationXML.animate.dur = "$(($this.'.Duration').TotalSeconds)s"
-            }
-            $animationXML.OuterXml
-        })
-    $this.PathAnimation = $updatedAnimations
+if (($this.'.Duration' -is [TimeSpan]) -and $this.PathAnimation) {    
+    foreach ($animationXML in $this.PathAnimation) {
+        $animationXML = $animationXML -as [xml]
+        if (-not $animationXML) { continue }
+        if ($animationXML.animate.attributeName -eq 'd') {
+            $animationXML.animate.dur = "$(($this.'.Duration').TotalSeconds)s"
+        }
+    }    
 }
                     </SetScriptBlock>
       </ScriptProperty>
@@ -5275,9 +6152,14 @@ if ($fill.Count -gt 1) {
             $gradientTypeHint = ($color -replace 'gradient').ToLower()
         }
         # If the color was `pad`, `reflect`, or `repeat`
-        elseif ($fillColor -in 'pad', 'reflect', 'repeat') {
+        elseif ($color -in 'pad', 'reflect', 'repeat') {
             # take the hint and set the spreadMethod
             $gradientAttributes['spreadMethod'] = $color
+        }
+        # If the color matched '^ra?n(?&gt;dom|d|g)?'
+        elseif ($color -match '^ra?n(?&gt;dom|d|g)?') {
+            # output the color
+            "#{0:x6}" -f (Get-Random -max 0xffffff)
         }
         # If the fill is a dictionary
         elseif ($color -is [Collections.IDictionary]) {
@@ -5306,6 +6188,10 @@ if ($fill.Count -gt 1) {
     # We need to make sure the offset starts at 0% an ends at 100%
     # and so we actually need to divide by one less than our fill color, so we end at 100%.
     $offsetStep = 1 / ($fill.Count - 1)
+    $gradientAttributes.id = 
+        # default our identifier to the current id plus `fill-gradient`
+        # (so we could have multiple gradients without a collision)
+        "$($this.id)-fill-gradient-$($fill -replace '^#' -replace '[\(\)\s]' -join '-')" 
     $Gradient = @(
         # Construct our gradient element.
         "&lt;${gradientTypeHint}Gradient$(
@@ -5354,6 +6240,193 @@ if ($this.'.PathAttribute'.'fill-rule') {
 $fillRule = 'nonzero'
 )
 $this.PathAttribute = [Ordered]@{'fill-rule' = $fillRule.ToLower()}
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FontFamily</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the font family
+.DESCRIPTION
+    Gets the font family of the Turtle, if one has been set.
+
+    If no font family has been set, this returns nothing.
+.EXAMPLE
+    turtle fontfamily sane-serif fontfamily
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-family
+#&gt;
+$this.TextAttribute.'font-family'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the font family
+.DESCRIPTION
+    Sets the font family of the Turtle.
+
+    Any input is acceptable, but it may not be valid.
+    
+    Invalid input will be ignored.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-family
+.EXAMPLE
+    turtle fontfamily sans-serif fontfamily
+#&gt;
+$this.TextAttribute = @{'font-family'= $args }
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FontSize</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the font size
+.DESCRIPTION
+    Gets the font size of the Turtle, if one has been set.
+
+    If no font size has been set, this returns nothing.
+.EXAMPLE
+    turtle fontsize 12 fontsize
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-size
+#&gt;
+$this.TextAttribute.'font-size'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the font size
+.DESCRIPTION
+    Sets the font size of the Turtle.
+
+    Any input is acceptable, but it may not be valid.
+    
+    Invalid input will be ignored.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-size
+.EXAMPLE
+    turtle fontsize 12 fontsize
+
+
+#&gt;
+$this.TextAttribute = @{'font-size'=$args }
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FontStyle</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the font style
+.DESCRIPTION
+    Gets the font style of the Turtle, if one has been set.
+
+    If no font style has been set, this returns nothing.
+.EXAMPLE
+    turtle fontstyle italic fontstyle
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-style
+#&gt;
+$this.TextAttribute.'font-style'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the font style
+.DESCRIPTION
+    Sets the font style of the Turtle.
+
+    Any input is acceptable, but it may not be valid.
+    
+    Invalid input will be ignored.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-style
+.EXAMPLE
+    turtle fontstyle italic fontstyle
+#&gt;
+$this.TextAttribute = @{'font-style'= $args }
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FontVariant</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the font variant
+.DESCRIPTION
+    Gets the font variant of the Turtle, if one has been set.
+
+    If no font variant has been set, this returns nothing.
+.EXAMPLE
+    turtle fontvariant small-caps fontvariant
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-variant
+#&gt;
+$this.TextAttribute.'font-variant'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the font variant
+.DESCRIPTION
+    Sets the font variant of the Turtle.
+
+    Any input is acceptable, but it may not be valid.
+    
+    Invalid input will be ignored.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-variant
+.EXAMPLE
+    turtle fontvariant small-caps fontvariant
+#&gt;
+$this.TextAttribute = @{'font-variant'= $args }
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>FontWeight</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets the font weight
+.DESCRIPTION
+    Gets the font weight of the Turtle, if one has been set.
+
+    If no font weight has been set, this returns nothing.
+.EXAMPLE
+    turtle fontweight bold fontweight
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-weight
+#&gt;
+$this.TextAttribute.'font-weight'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets the font weight
+.DESCRIPTION
+    Sets the font weight of the Turtle.
+
+    Any input is acceptable, but it may not be valid.
+    
+    Invalid input will be ignored.
+.LINK
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/font-weight
+.EXAMPLE
+    turtle fontweight bold fontweight
+#&gt;
+$this.TextAttribute = @{'font-weight'= $args }
 
                     </SetScriptBlock>
       </ScriptProperty>
@@ -5450,24 +6523,85 @@ $this.ViewBox = $viewBox[0],$viewBox[1],$viewbox[-2], $height
 
     This is an SVG path translated into back into human readable text and coordinates.
 #&gt;
+
+# We will always know where we are (relative to where we started, at least)
+# But knowing where we have _been_?  That's going to take a bit of work.
+# SVG paths can be either absolute or relative
+# So to know where we have been, we need to retrace our steps.
+
+# So let's keep our current position
 $currentPosition = [Numerics.Vector2]::new(0,0)
+# make a history list
 $historyList = [Collections.Generic.List[PSObject]]::new()
+# and create a stack to traceback our steps
 $startStack = [Collections.Stack]::new()
-foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') {
+
+# SVG paths proceed letter by letter, 
+# so we want a pattern to split at that point
+$BeforeNextLetter =
+    @(
+        '(?='      # Lookahead for
+        '['        # this set of characters:
+        '\p{L}'    # Any letter
+        '-'        # except
+        '[E]'      # the letter 'e' (used in exponent notation).
+        ']'        # Now close the character set
+        ')'        # and close the lookahead.        
+    ) -join ''
+
+# Get our path data
+$pathData = $this.PathData
+# then split it into steps and remove empty steps.
+$pathSteps = $pathData -join ' ' -split $BeforeNextLetter -ne ''
+
+# Now let's do some history:
+foreach ($pathStep in $pathSteps) {
+    # First, determine what letter we are dealing with    
     $letter = $pathStep[0]
+    # Like a lot of G-Code, SVG paths are case sensitive
+    # so find out if it is uppercase by using a case sensitive comparison.
     $isUpper = "$letter".ToLower() -cne $letter
-    $isLower = -not $isUpper
-    $toBy = if ($isUpper) { 'to'} else { 'by'}    
+    # If it was uppercase,
+    $toBy = 
+        if ($isUpper) {
+            'to' # the movement is absolute (to)
+        } else {
+            'by' # if it is lowercase, the movement is relative (by)
+        }    
+
+    # Now let's turn each step into a floating point (except the letter)
     $stepPoints = $pathStep -replace $letter -replace ',', ' ' -split '\s{1,}' -ne '' -as [float[]]
+    
+    # This next part is a great example of a maxim of mine:
+    # Programming is tedious, not hard.
+
+    # There are only 10 different letters in SVG syntax
+    # Unfortunately, that's 10 slightly different ways to write a bit of a path.
+
+    # They all boil down to: a letter followed by sets of N numbers
+
+    # They almost all treat repeating numbers as additional steps
+
+    # But we still need to handle each slightly differently.
+
+    # So, here we go
+    
+    # In (mostly) alphabetical order:
     
     $historyEntry = 
     switch ($letter) {
-        a {            
+        a {
+            # `a` is for arc path
+            # These take 7 steps
+            # "a $RadiusX $RadiusY $Rotation $IsBigArc $IsSweep $DeltaX $DeltaY"
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=7) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 6)]
-                $comment = "arc $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $comment = "arc $toBy $sequence"                
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
+                # If they are absolute coordinates,
+                # subtract them to get a delta.
                 if ($isUpper) { $delta -= $currentPosition }
+                # Create our history entry
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
                     Letter = "$letter"
@@ -5477,34 +6611,42 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
                     Instruction = "$Letter $sequence"                    
                     Comment = $comment
                 }
+                # update our position and go to the next set of points.
                 $currentPosition += $delta
             }
         }
         c {
-            
+            # `c` is for cubic bezier curve
+            # Cubic bezier curves take 6 points:
+            # "c $ControlX1 $ControlY1 $ControlX2 $ControlY2 $DeltaX $DeltaY"            
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=6) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 5)]
                 $comment = "cubic curve $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
+                # If they are absolute coordinates,
+                # subtract them to get a delta.
                 if ($isUpper) { $delta -= $currentPosition }
+                # Create our history entry
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
                     Letter = "$letter"
                     Start = $currentPosition
                     End = $currentPosition + $delta
                     Delta = $delta
-                    Instruction = "$Letter $sequence"                    
+                    Instruction = "$Letter $sequence"
                     Comment = $comment
                 }
                 $currentPosition += $delta
             }
         }
         l {
-            # line segment
+            # `l` is for line segment
+            # These take pairs of points:
+            # `l $DeltaX $DeltaY`
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=2) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 1)]
                 $comment = "line $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
@@ -5519,24 +6661,32 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
             }
         }
         m { 
-            # movement
+            # `m` is for move
+            # Move is a pair of points
+            # The first pair moves without drawing            
+            # "m $DeltaX $DeltaY"
+            # Any more points are drawn, and effectively become
+            # "l $DeltaX $DeltaY"
+
+            # So let's go over each m in pairs.
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=2) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 1)]
-
                 $comment = "line $toBy $sequence"
-
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
-                
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])                                
                 if ($isUpper) { $delta -= $currentPosition }
-
+                # If we have more than one step
                 if ($stepIndex -gt 0) {                    
                     if ($letter -eq 'm') {
+                        # make it an l or L, depending on the case
                         if ($isUpper) { $letter = 'L' }
                         else { $letter = 'l'}
                     }
-                    $comment = "line $toBy $sequence"                    
+                    $comment = "line $toBy $sequence"
                 } else {
+                    # If it was actually a move we also need to 
                     $comment = "move $toBy $sequence"
+                    # push this into our "start stack".
+                    # Whenever we close paths, this is the point we are closing to.
                     $startStack.Push($currentPosition + $delta)
                 }
                 
@@ -5552,12 +6702,14 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
                 $currentPosition += $delta
             }
         }
-        s {
-            # simple bezier curve
-            for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=4) {
+        q {            
+            # `q` is for quadratic bezier curve
+            # It takes a control point and and an end point
+            # "q $ControlX $controlY $DeltaX $DeltaY"
+            for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=4) {                
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 3)]
-                $comment = "simple bezier curve $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $comment = "quadratic bezier curve $toBy $sequence"
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
@@ -5571,12 +6723,38 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
                 $currentPosition += $delta
             }
         }
+        s {
+            # `s` is a simple or sine bezier curve
+            # It takes a control point and an end point
+            # "q $ControlX $controlY $DeltaX $DeltaY"
+            for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=4) {
+                $sequence = $stepPoints[$stepIndex..($stepIndex + 3)]
+                $comment = "simple bezier curve $toBy $sequence"
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
+                if ($isUpper) { $delta -= $currentPosition }
+                [PSCustomObject]@{
+                    PSTypeName='Turtle.History'
+                    Letter = "$letter"
+                    Start = $currentPosition
+                    End = $currentPosition + $delta
+                    Delta = $delta
+                    Instruction = "$Letter $sequence"
+                    Comment = $comment
+                }                
+                $currentPosition += $delta
+            }
+        }
+        
         t {
-            # continue simple bezier curve            
+            # continue simple bezier curve
+            # This tries to continue the last bezier curve
+            # It only has a deltaX and deltaY.
+            # "t $DeltaX $DeltaY"
+            # It will use the last `s` or `t` as the control point
             for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=2) {
                 $sequence = $stepPoints[$stepIndex..($stepIndex + 1)]
                 $comment = "continue bezier curve $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
+                $delta = [Numerics.Vector2]::new.Invoke($sequence[@(-2,-1)])
                 if ($isUpper) { $delta -= $currentPosition }
                 [PSCustomObject]@{
                     PSTypeName='Turtle.History'
@@ -5590,30 +6768,15 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
                 $currentPosition += $delta
             } 
         }
-        q {            
-            for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex+=4) {
-                
-                $sequence = $stepPoints[$stepIndex..($stepIndex + 3)]
-                $comment = "quadratic bezier curve $toBy $sequence"
-                $delta = [Numerics.Vector2]::new.Invoke($sequence[-2,-1])
-                if ($isUpper) { $delta -= $currentPosition }
-                [PSCustomObject]@{
-                    PSTypeName='Turtle.History'
-                    Letter = "$letter"
-                    Start = $currentPosition
-                    End = $currentPosition + $delta
-                    Delta = $delta
-                    Instruction = "$Letter $sequence"
-                    Comment = $comment
-                }                
-                $currentPosition += $delta
-            }
-        }
+        # `h` is for horizontal and `v` is for vertical
+        # Each of these draw a straight line
+        # "h $Distance"
+        # "v $Distance"
         { $_ -in 'h', 'v' } {
-            for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex++) {                
+            for ($stepIndex = 0; $stepIndex -lt $stepPoints.Length; $stepIndex++) {
                 $sequence = $stepPoints[$stepIndex..$stepIndex]
                 $comment = "$(
-                        if ($letter -eq 'v') { 'vertical' } else {'horizontal'}
+                    if ($letter -eq 'v') { 'vertical' } else {'horizontal'}
                 ) line $toBy $sequence"
                 $delta = 
                     if ($letter -eq 'v') {
@@ -5635,6 +6798,10 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
             }                        
         }        
         z {
+            # `z` is for close
+            # This takes no parameters
+            # Instead it tries to close the shape.
+            # It draws a line back to the last location stack
             $closePosition = $startStack.Pop()
             $delta = $closePosition - $currentPosition
             [PSCustomObject]@{
@@ -5647,13 +6814,15 @@ foreach ($pathStep in $this.PathData -join ' ' -split '(?=[\p{L}-[E]])' -ne '') 
                 Comment = "close path"
             }
             $currentPosition += $delta
-            
-        }                
+        }
     }
 
     $historyList.Add($historyEntry)
 }
 
+# Now that we've done some history, return our results to you. 
+
+# This should give a full history of every move this turtle has made, and exactly where it was after each step.
 
 return $historyList
                     </GetScriptBlock>
@@ -5662,7 +6831,8 @@ return $historyList
         <Name>ID</Name>
         <GetScriptBlock>
                         if ($this.'.ID') { return $this.'.ID'}
-return 'turtle'
+$this.ID = "turtle-$([DateTimeOffset]::Now.Ticks)"
+return $this.'.ID'
 
                     </GetScriptBlock>
         <SetScriptBlock>
@@ -6357,9 +7527,15 @@ $newAnimation = @(foreach ($animation in $PathAnimation) {
     }
 })
 
+$animationXml = $newAnimation -as [xml]
+
+if (-not $animationXml) { return }
+
 $pathAnimation = $this.PathAnimation
 if ($pathAnimation) {
-    $newAnimation = @($pathAnimation) + $newAnimation
+    $newAnimation = @($pathAnimation) + $animationXml
+} else {
+    $newAnimation = @($animationXml)
 }
 $this | Add-Member -MemberType NoteProperty -Force -Name '.PathAnimation' -Value $newAnimation
 
@@ -6394,7 +7570,14 @@ foreach ($key in $PathAttribute.Keys) {
         <Name>PathClass</Name>
         <GetScriptBlock>
                         if ($this.'.PathClass') { return $this.'.PathClass'}
-return 'foreground-stroke'
+
+if ($this.stroke -match 'current|context') {
+    $this.PathClass = 'foreground-stroke'    
+}
+    
+
+return $this.'.PathClass'
+
                     </GetScriptBlock>
         <SetScriptBlock>
                         &lt;#
@@ -6557,7 +7740,7 @@ foreach ($collection in $this.SVGAttribute, $this.Attribute) {
     }
 )&gt;"
 if ($this.Title) { "&lt;title&gt;$([Security.SecurityElement]::Escape($this.Title))&lt;/title&gt;" }
-if ($this.PathAnimation) {$this.PathAnimation}
+if ($this.PathAnimation) {$this.PathAnimation.OuterXml}
 "&lt;/path&gt;"
 )
                     </GetScriptBlock>
@@ -7418,9 +8601,14 @@ if ($stroke.Count -gt 1) {
             $gradientTypeHint = ($color -replace 'gradient').ToLower()
         }
         # If the color was `pad`, `reflect`, or `repeat`
-        elseif ($strokeColor -in 'pad', 'reflect', 'repeat') {
+        elseif ($Color -in 'pad', 'reflect', 'repeat') {
             # take the hint and set the spreadMethod
             $gradientAttributes['spreadMethod'] = $color
+        }
+        # If the color matched '^ra?n(?&gt;dom|d|g)?'
+        elseif ($color -match '^ra?n(?&gt;dom|d|g)?') {
+            # output the color
+            "#{0:x6}" -f (Get-Random -max 0xffffff)
         }
         # If the stroke is a dictionary
         elseif ($color -is [Collections.IDictionary]) {
@@ -7436,7 +8624,7 @@ if ($stroke.Count -gt 1) {
     })
         
     # If we have no stroke colors after filtering, return
-    if (-not $stroke) { return }
+    if (-not $stroke) { return }    
 
     # If our count is one
     if ($stroke.Count -eq 1) {
@@ -7449,6 +8637,10 @@ if ($stroke.Count -gt 1) {
     # We need to make sure the offset starts at 0% an ends at 100%
     # and so we actually need to divide by one less than our stroke color, so we end at 100%.
     $offsetStep = 1 / ($stroke.Count - 1)
+    $gradientAttributes.id = 
+        # default our identifier to the current id plus `stroke-gradient`
+        # (so we could have multiple gradients without a collision)
+        "$($this.id)-stroke-gradient-$($stroke -replace '^#' -replace '[\(\)\s]' -join '-')" 
     $Gradient = @(
         # Construct our gradient element.
         "&lt;${gradientTypeHint}Gradient$(
@@ -7475,6 +8667,10 @@ if (-not $this.'.stroke') {
     $this | Add-Member -MemberType NoteProperty -Name '.Stroke' -Value $stroke -Force
 } else {
     $this.'.stroke' = $stroke
+}
+
+if (($this.'.stroke' -notmatch '(?&gt;currentColor|context)')) {
+    $this.PathClass = @($this.PathClass) -ne 'foreground-stroke'
 }
                     </SetScriptBlock>
       </ScriptProperty>

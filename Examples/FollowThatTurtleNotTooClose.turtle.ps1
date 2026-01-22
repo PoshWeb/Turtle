@@ -36,7 +36,7 @@ if (-not $Proximity) {
 }
 
 # Set up our turtles.
-$followThatTurtle = turtle square $Size stroke '#4488ff' turtles ([Ordered]@{
+$followThatTurtle = turtle id nottooclose square $Size stroke '#4488ff' turtles ([Ordered]@{
     t1 = turtle teleport 0 0 stroke '#4488ff'
     t2 = turtle teleport $Size 0 stroke '#4488ff'
     t3 = turtle teleport $Size $Size stroke '#4488ff'

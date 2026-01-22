@@ -57,6 +57,129 @@ function Get-Turtle {
         # If we only provide the first parameter, we get a golden rectangle
         turtle rectangle 42
     .EXAMPLE
+        ### Right Triangles
+        # We can draw right triangles
+        turtle RightTriangle 3 4
+    .EXAMPLE
+        # Right triangles take two sides
+        # either can be negative
+        turtle RightTriangle 3 4
+        turtle RightTriangle -3 4
+        turtle RightTriangle -3 -4
+        turtle RightTriangle 3 -4
+    .EXAMPLE
+        # We can draw a random right triangle
+        turtle RightTriangle
+    .EXAMPLE
+        # We can a right triangle by a random degree
+        turtle rotate RightTriangle
+    .EXAMPLE
+        # We can easily rotate and repeat right triangles
+        turtle @(
+            'RightTriangle',3,-4,'rotate', 90 * 4
+        )
+    .EXAMPLE
+        # Right triangles are easy to morph
+        turtle @(
+            'RightTriangle',3,-4,'rotate', 90 * 4
+        ) morph @(
+            turtle ('RightTriangle',3,-4,'rotate', 90 * 4)
+            turtle ('RightTriangle',3,4,'rotate', 90 * 4)
+            turtle ('RightTriangle',3,-4,'rotate', 90 * 4)
+        )
+    .EXAMPLE
+        # We can create a parallax by repeating and reflecting triangles
+        turtle @(
+            'RightTriangle', 1,-4
+            'RightTriangle', 2,-4
+            'RightTriangle', 3,-4
+            'RightTriangle', 4,-4
+            'RightTriangle', -4,-4
+            'RightTriangle', -3,-4
+            'RightTriangle', -2,-4
+            'RightTriangle', -1,-4
+        )
+    .EXAMPLE
+        # This can also be morphed to produce a beautiful illusion
+        turtle morph @(
+            turtle @(
+                'RightTriangle', 1,-4
+                'RightTriangle', 2,-4
+                'RightTriangle', 3,-4
+                'RightTriangle', 4,-4
+                'RightTriangle', -4,-4
+                'RightTriangle', -3,-4
+                'RightTriangle', -2,-4
+                'RightTriangle', -1,-4
+            )
+            turtle @(
+                'RightTriangle', -1,-4
+                'RightTriangle', -2,-4
+                'RightTriangle', -3,-4
+                'RightTriangle', -4,-4
+                'RightTriangle', 4,-4
+                'RightTriangle', 3,-4
+                'RightTriangle', 2,-4
+                'RightTriangle', 1,-4
+            )
+            turtle @(
+                'RightTriangle', 1,-4
+                'RightTriangle', 2,-4
+                'RightTriangle', 3,-4
+                'RightTriangle', 4,-4
+                'RightTriangle', -4,-4
+                'RightTriangle', -3,-4
+                'RightTriangle', -2,-4
+                'RightTriangle', -1,-4
+            )
+        )
+    .EXAMPLE
+        # Two sets of right triangles that grow in different directions
+        # produce what looks like a parallax illusion curve        
+        turtle id ParallaxCorner @(foreach ($n in 1..10) {
+            'RightTriangle',(10 - $n),$n
+            'RightTriangle',$n,(10-$n)
+        })
+    .EXAMPLE
+         # We can rotate and repeat this to make a Parallax Astroid
+        turtle id ParallaxAstroid (@(
+            @(foreach ($n in 1..10) {
+                'RightTriangle',(10 - $n),$n
+                'RightTriangle',$n,(10-$n)    
+            })
+            'rotate', 90
+        ) * 4)
+    .EXAMPLE
+        # We can make a pair of parallax astroids and morph them.
+        $parallaxAstroid = turtle id ParallaxAstroid (
+            @(
+                foreach ($n in 1..10) {
+                    'RightTriangle',(10 - $n),$n
+                    'RightTriangle',$n,(10-$n)    
+                }
+                'rotate', 90  
+            ) * 4
+        )
+
+        $parallaxAstroid2 = turtle id ParallaxAstroid (
+            @(
+                foreach ($n in 1..10) {
+                    'RightTriangle',(10 - $n),($n*-1)
+                    'RightTriangle',($n*-1),(10-$n)    
+                }
+                'rotate', 90  
+            ) * 4
+        )
+                
+        $parallaxAstroid | turtle morph @(
+            $parallaxAstroid
+            $parallaxAstroid2
+            $parallaxAstroid
+        ) @(            
+            'pathclass','foreground-stroke foreground-fill'
+            'fillrule','evenodd'
+        )
+    .EXAMPLE
         #### Circles
         # We can draw a circle 
         turtle circle 10
@@ -139,7 +262,7 @@ function Get-Turtle {
         # Let's do the same thing, but with a smaller angle
         turtle ('polygon', 23, 6, 'rotate', -40 * 9)
     .EXAMPLE
-        #### Flowers
+        ### Flowers
         # A flower is a series of repeated polygons and rotations
         turtle Flower    
     .EXAMPLE
@@ -200,6 +323,13 @@ function Get-Turtle {
             $flowerPetals2,
             $flowerPetals
         )
+    .EXAMPLE
+        ### Triflowers
+        # We can make Flowers out of Right Triangles
+        # We call these triflowers
+        turtle triflower 42 15 21 24
+    .EXAMPLE
+        turtle triflower
     .EXAMPLE
         #### Arcs and Suns
         # We can arc right or left
@@ -367,11 +497,11 @@ function Get-Turtle {
         )
     .EXAMPLE
         #### Spirolaterals
-        turtle spirolateral
+        turtle spirolateral 10 90 10
     .EXAMPLE
         turtle spirolateral 50 60 10
     .EXAMPLE
-        turtle spirolateral 50 120 6 @(1,3)            
+        turtle spirolateral 50 120 6 @(1,3)
     .EXAMPLE
         turtle spirolateral 23 144 8
     .EXAMPLE
@@ -819,8 +949,21 @@ function Get-Turtle {
         # The SierpinskiArrowHead Curve is pretty          
         turtle SierpinskiArrowheadCurve 42 4
     .EXAMPLE
+        # So is the SierpinskiCurve
+        turtle SierpinskiCurve 42 4
+    .EXAMPLE
+        # The SierpinskiCurveSquare curve fills a from a corner
+        turtle SierpinskiSquareCurve 42 4
+    .EXAMPLE
+        # If we put four of these next to each other
+        # and turn left, we get a square made of square curves.
+        turtle @('SierpinskiSquareCurve', -42, 4, 'Rotate', -90 * 4) 
+    .EXAMPLE
+        # If we turn right instead, we get a diamond with an empty square at the center        
+        turtle @('SierpinskiSquareCurve', -42, 4, 'Rotate', 90 * 4)     
+    .EXAMPLE
         # The SierpinskiTriangle is a Fractal classic    
-        turtle SierpinskiTriangle 42 4
+        turtle SierpinskiTriangle 42 4    
     .EXAMPLE
         # We can morph with no parameters to try to draw step by step
         # 
@@ -849,9 +992,13 @@ function Get-Turtle {
         turtle @('rotate', 30, 'SierpinskiTriangle',42,4 * 12)
     .EXAMPLE
         turtle @('rotate', 45, 'SierpinskiTriangle',42,4 * 24)
+    .LINK
+        https://psturtle.com/Commands/Get-Turtle
+    .LINK
+        https://psturtle.com/History/
     #>
     [CmdletBinding(PositionalBinding=$false)]
-    [Alias('turtle')]
+    [Alias('turtle','🐢')]
     param(
     # The arguments to pass to turtle.
     [ArgumentCompleter({
@@ -975,10 +1122,24 @@ function Get-Turtle {
         # If we wanted to run a background job        
         if ($PSBoundParameters.AsJob) {
             # remove the -AsJob variable from our parameters
-            $null = $PSBoundParameters.Remove('AsJob')            
+            $null = $PSBoundParameters.Remove('AsJob')
+
             
+            $jobCommand = 
+                $threadJob = 
+                    $ExecutionContext.SessionState.InvokeCommand.GetCommand('Start-ThreadJob', 'Cmdlet')
+            
+            if (-not $threadJob) {
+                $jobCommand = $ExecutionContext.SessionState.InvokeCommand.GetCommand('Start-Job', 'Cmdlet')                
+            }
+
+            if (-not $jobCommand) {
+                Write-Error "No Job Command found.  Start-ThreadJob or Start-Job must be loaded"
+                return
+            }
+                        
             # and then start a thread job that will import the module and run the command.
-            return Start-ThreadJob -ScriptBlock {
+            return & $jobCommand -ScriptBlock {
                 param([Collections.IDictionary]$IO)
                 Import-Module -Name $io.ModulePath
                 $argList = @($IO.ArgumentList)
@@ -1036,7 +1197,13 @@ function Get-Turtle {
         # and keep track of when it became unbalanced.
         $unbalancedAt = $null
         foreach ($match in [Regex]::Matches(
-                ($wordsAndArguments -join ' ' ), '[\[\]]'
+                (@(
+                    foreach ($arg in $wordsAndArguments) {
+                        if ($arg -is [string]) {
+                            $arg
+                        }
+                    }
+                ) -join ' '), '[\[\]]'
             )
         ) {
             # To do this, we increment or decrement depth for brackets `[]`
@@ -1089,7 +1256,7 @@ $(
         for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
             $arg = $wordsAndArguments[$argIndex]
             # If the argument is not in the member names list, we can complain about it.
-            if ($arg -notin $memberNames) {
+            if ($arg -is [string] -and $arg -notin $memberNames) {
                 if (
                     # (we might not want to, if it starts with a bracket)
                     -not $currentMember -and $arg -is [string] -and
@@ -1140,13 +1307,12 @@ $(
                         if ("$bracket" -eq '[') { $bracketDepth++ }
                         if ("$bracket" -eq ']') { $bracketDepth-- } 
                     }
-                }                
-                # If the next word is a method name, and our brackets are balanced
-                if ($wordsAndArguments[$methodArgIndex] -in $memberNames -and -not $bracketDepth) {
-                    # break out of the loop.
-                    break
+                    # If the next word is a method name, and our brackets are balanced
+                    if ($wordsAndArguments[$methodArgIndex] -in $memberNames -and -not $bracketDepth) {
+                        # break out of the loop.
+                        break
+                    }
                 }
-                
             }
             # Now we know how far we had to look to get to the next member name.
 
@@ -1164,7 +1330,10 @@ $(
                             $HelpWanted = $true
                             continue
                         }
-                        if ($HelpWanted -and $word -in 'example', 'examples', 'parameter','parameters','online') {
+                        if ($HelpWanted -and 
+                            $word -is [string] -and 
+                            $word -in 'example', 'examples', 'parameter','parameters','online'
+                        ) {
                             if ($word -in 'example','examples') {
                                 $switches['Examples'] = $true
                             }
@@ -1176,7 +1345,7 @@ $(
                             }
                             continue
                         }
-                        if ($word -match '^[-/]+?[\D-[\.]]') {
+                        if ($word -is [string] -and $word -match '^[-/]+?[\D-[\.]]') {
                             $switchInfo = $word -replace '^[-/]+'
                             $switchName, $switchValue = $switchInfo -split ':', 2
                             if ($null -eq ($switchName -as [double])) {
@@ -1190,12 +1359,12 @@ $(
                             }                            
                         }
                         # If the word started with a bracket, and we haven't removed any
-                        if ("$word".StartsWith('[') -and -not $debracketCount) {
+                        if ($word -is [string] -and $word.StartsWith('[') -and -not $debracketCount) {
                             $word = $word -replace '^\[' # remove it
                             $debracketCount++ # and increment our removal counter.
                         }
                         # If the word ended with a bracket, and we have debracketed once
-                        if ("$word".EndsWith(']') -and $debracketCount -eq 1) {
+                        if ($word -is [string] -and $word.EndsWith(']') -and $debracketCount -eq 1) {
                             # remove the closing bracket
                             $word = $word -replace '\]$'
                             # and increment our removal counter

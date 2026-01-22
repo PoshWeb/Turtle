@@ -27,7 +27,7 @@ if (-not $StepCount) {
 }
 
 # Set up our turtles.
-$followThatTurtle = turtle stroke '#4488ff' square $Size turtles ([Ordered]@{
+$followThatTurtle = turtle id FollowThatTurtle stroke '#4488ff' square $Size turtles ([Ordered]@{
     t1 = turtle teleport 0 0 stroke '#4488ff'
     t2 = turtle teleport $Size 0 stroke '#4488ff'
     t3 = turtle teleport $Size $Size stroke '#4488ff' 

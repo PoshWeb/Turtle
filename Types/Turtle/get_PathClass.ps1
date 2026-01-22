@@ -1,2 +1,8 @@
 if ($this.'.PathClass') { return $this.'.PathClass'}
-return 'foreground-stroke'
+
+if ($this.stroke -match 'current|context') {
+    $this.PathClass = 'foreground-stroke'    
+}
+    
+
+return $this.'.PathClass'

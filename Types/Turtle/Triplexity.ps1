@@ -18,9 +18,9 @@
 #>
 param(
 # The size of each segment
-[double]$Size = 42,
+[double]$Size = (Get-Random -Min 21 -Max 42),
 # The order of magnitude (the number of expansions)
-[int]$Order = 4,
+[int]$Order = (2,3,4 | Get-Random),
 # The default angle.
 [double]$Angle = 60
 )

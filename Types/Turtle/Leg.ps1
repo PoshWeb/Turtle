@@ -38,6 +38,17 @@ foreach ($arg in $args) {
     }
 }
 
+if (-not $pairs) {
+    $pairs += ,@(
+        Get-Random -Minimum 50 -Maximum 100
+        Get-Random -Minimum 30 -Maximum 90
+    )
+    $pairs += ,@(
+        Get-Random -Minimum 50 -Maximum 100
+        Get-Random -Minimum 30 -Maximum 90
+    )
+}
+
 foreach ($pair in $pairs) {
     $this = $this.Forward($pair[0]).Rotate($pair[1])
 }

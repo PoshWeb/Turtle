@@ -11,11 +11,11 @@
 param(
 # The radius of a the circle, were it to complete the arc.
 [double]
-$Radius = 10,
+$Radius = (Get-Random -Min 42 -Max 84),
 
 # The angle of the arc
 [double]
-$Angle = 60,
+$Angle = (Get-Random -Min 30 -Max 90),
 
 # The number of steps.  If not provided, will default to half of the angle.
 [int]
