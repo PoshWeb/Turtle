@@ -11,9 +11,9 @@
     https://feathericons.com/
 #>
 param(
+# The feather icon name
 [string]
 $Icon = 'chevron-right',
-
 [uri]
 $FeatherCDN = "https://cdn.jsdelivr.net/gh/feathericons/feather@latest/icons/"
 )
@@ -21,12 +21,22 @@ $FeatherCDN = "https://cdn.jsdelivr.net/gh/feathericons/feather@latest/icons/"
 if (-not $script:FeatherIconCache) {
     $script:FeatherIconCache = [Ordered]@{}
 }
-$icon = $icon.ToLower() -replace '\.svg$'
 
-if (-not $script:FeatherIconCache[$icon]) {
-    $script:FeatherIconCache[$icon] = Invoke-RestMethod "$FeatherCDN/$Icon.svg"
+$iconUri =
+    (
+        $FeatherCDN -replace '^https?://' -replace '^',
+            'https://' -replace '/$'
+    ), (
+        $icon.ToLower() -replace '\.svg$' -replace '^/' -replace '$' -replace '\s',
+            '-' -replace '$', '.svg'
+    ) -join '/'
+
+if (-not $script:FeatherIconCache[$iconUri]) {
+    $script:FeatherIconCache[$iconUri] = try {
+        Invoke-RestMethod $iconUri
+    } catch {
+        Write-Warning "Could not get $iconUri : $_"
+    }
 }
 
-$script:FeatherIconCache[$icon].OuterXml
-
- 
+$script:FeatherIconCache[$iconUri].OuterXml
