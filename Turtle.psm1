@@ -10,6 +10,11 @@ $commandsPath = Join-Path $PSScriptRoot Commands
     . $file.FullName
 }
 
+if ($global:OFS -ne ' ') {
+    Write-Warning "Turtle requires `$OFS to be a single space for SVG serialization. Setting `$global:OFS to ' '."
+    $global:OFS = ' '
+}
+
 $myModule = $MyInvocation.MyCommand.ScriptBlock.Module
 $ExecutionContext.SessionState.PSVariable.Set($myModule.Name, $myModule)
 $myModule.pstypenames.insert(0, $myModule.Name)
