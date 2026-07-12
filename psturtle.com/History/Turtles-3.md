@@ -89,9 +89,11 @@ Around the same time, manufacuters began to experiment 3D printing.
 
 If you hooked up an extruder to a Turtle, instead of a pen, you could theoretically make things using less waste material.
 
-3D Printers are, like all CNC machines, descendents of the first generation of Turtles.  The primary difference is that a 3D printer addi
+3D Printers are, like all CNC machines, descendents of the first generation of Turtles.
 
-The extruder is a turtle, and, instead of drawing with a pen, you draw by extruding plastic.
+The primary difference is that a 3D printers "draw" with material, instead of painting with pixels.
+
+The extruder is a turtle, and, instead of drawing with a pen, you draw by extruding material.
 
 With the explosive growth of 3d printers after the popularization of [RepRap](https://en.wikipedia.org/wiki/RepRap), millions more people started to play with Turtles (even if they weren't realizing it).
 
@@ -103,7 +105,7 @@ In 2006, someone named Gregor Lingl started making Turtle for Python.
 
 [Python Turtle](https://docs.python.org/3/library/turtle.html) got pretty popular over the years.
 
-It's now become a core part of of Python, and Python turtle examples are everywhere.  There's even on [online sandbox](https://pythonsandbox.com/turtle)!
+It's now become a core part of Python, and Python turtle examples are everywhere.  There's even on [online sandbox](https://pythonsandbox.com/turtle)!
 
 Python turtle helped bring a new generation of people to turtle, and has generated some great visualizations over the years.
 
