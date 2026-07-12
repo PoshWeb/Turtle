@@ -22,7 +22,10 @@
     fd = 'Forward'
     lt = 'Left'
     rt = 'Right'
-    bk = 'Backward' 
+    bk = 'Backward'
+    
+    # Turtle Community Names
+    triagon = 'triti'
     
     # Python Turtle Compatibility
     SetPos = 'GoTo'
