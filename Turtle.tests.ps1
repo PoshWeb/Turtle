@@ -87,5 +87,32 @@ describe Turtle {
             }
         }
     }
+
+    context 'Turtle OFS compatibility' {
+        it 'Warns and sets global OFS when imported with a custom global OFS' {
+            $originalOFS = $global:OFS
+            try {
+                Remove-Module Turtle -ErrorAction Ignore
+                $global:OFS = '|||'
+
+                $importOutput = & {
+                    Import-Module (Join-Path $PSScriptRoot 'Turtle.psd1') -Force
+                } 3>&1
+                $importWarnings = @($importOutput | Where-Object { $_ -is [Management.Automation.WarningRecord] })
+
+                ($importWarnings.Message -join "`n") | Should -Match 'Setting \$global:OFS'
+                $global:OFS | Should -Be ' '
+
+                $svg = (turtle square 10).SVG.OuterXml
+                $svg | Should -Not -Match '\|\|\|'
+                $svg | Should -Match 'viewBox=.0 0 '
+            }
+            finally {
+                $global:OFS = $originalOFS
+                Remove-Module Turtle -ErrorAction Ignore
+                Import-Module (Join-Path $PSScriptRoot 'Turtle.psd1') -Force | Out-Null
+            }
+        }
+    }
 }
 
