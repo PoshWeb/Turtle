@@ -27,8 +27,8 @@ $Spread = $(Get-Random -Minimum 2.3 -Maximum 4.2),
 $Extent = 1.0,
 
 # If true, will leap between petals, rather than draw a line.
-[bool]
-$Leap
+[double]
+$Jump = 0.0
 )
 
 if (-not $this) {$this = turtle}
@@ -38,11 +38,12 @@ if ($petals -eq 0) { $petals = 1 }
 $turtle = $this
 foreach ($n in 1..([Math]::Abs($Petals))) {
     $turtle = $turtle.Circle($Radius, $Extent).Rotate(360/$Petals)
-    if ($leap -and $turtle.IsPenDown) {
-        $turtle = $turtle.PenUp().Forward($spread).PenDown()
-    } else {
-        $turtle = $turtle.Forward($spread)
-    }    
+    
+    if ($Jump) {
+        $turtle = $turtle.Jump($Jump)
+    }
+
+    $turtle = $turtle.Forward($spread)        
 }
 
 return $turtle
