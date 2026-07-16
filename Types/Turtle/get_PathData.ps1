@@ -21,7 +21,8 @@
 .EXAMPLE
     turtle square 42 pathdata
 #>
-@(
+if ($this.'#PathData') { return $this.'#PathData'} 
+@(    
     # Let's call this trick Schrödinger's rounding.
     # We want to be able to render our shapes with a custom precision
     # but we don't want to slow down in rounding or only be able to round once.

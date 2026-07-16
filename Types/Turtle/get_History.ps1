@@ -285,7 +285,9 @@ foreach ($pathStep in $pathSteps) {
             # This takes no parameters
             # Instead it tries to close the shape.
             # It draws a line back to the last location stack
-            $closePosition = $startStack.Pop()
+            $closePosition = 
+                if ($startStack.Count) { $startStack.Pop() }
+                else { [Numerics.Vector2]::New(0,0) }
             $delta = $closePosition - $currentPosition
             [PSCustomObject]@{
                 PSTypeName='Turtle.History'
