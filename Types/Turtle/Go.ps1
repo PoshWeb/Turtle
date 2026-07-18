@@ -7,12 +7,17 @@
     $turtle = turtle 
     $turtle.Go("square", 42)
 #>
+param()
 $currentTurtle = if ($this) { $this } else { turtle }
+$ArgumentList = @($args)
+
+if (-not $ArgumentList) { return $currentTurtle }
+
 $turtleType = $(Get-TypeData -TypeName Turtle)
 
 $memberNames = @($turtleType.Members.Keys)
 
-$ArgumentList = @($args)
+
 # First we want to split each argument into words.
 # This way, it is roughly the same if you say:
 # * `turtle 'forward 10'`
