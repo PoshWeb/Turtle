@@ -3396,6 +3396,8 @@ foreach ($variableName in $variable.Keys) {
 $centerX          = $turtle.Position.X
 $centerY          = $turtle.Position.Y
 
+$radian = [Math]::PI / 180
+
 Write-Verbose "Drawing Polar Equation $equation of radius $radius"
 $localEquation = [ScriptBlock]::Create("$Equation")
 
