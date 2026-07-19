@@ -10,9 +10,9 @@ $commandsPath = Join-Path $PSScriptRoot Commands
     . $file.FullName
 }
 
-if ($global:OFS -ne ' ') {
-    Write-Warning "Turtle requires `$OFS to be a single space for SVG serialization. Setting `$global:OFS to ' '."
-    $global:OFS = ' '
+if ($ofs) {
+    Write-Warning "Turtle requires `$ofs to be a single space for SVG serialization. Setting `$ofs to ' '."
+    $ofs = ' '
 }
 
 $myModule = $MyInvocation.MyCommand.ScriptBlock.Module
