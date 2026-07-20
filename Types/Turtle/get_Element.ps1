@@ -100,7 +100,11 @@ if ($this.'.Element'.ElementName) {
                         } elseif ($child -is [Collections.IDictionary] -and $child.ElementName) {
                             # and dictionaries with an element name will recurisvely call ourselves.
                             $child | & $MyInvocation.MyCommand.ScriptBlock
-                        } else {
+                        } 
+                        elseif ($child -is [Xml.XmlText]) {
+                            "<![CDATA[$($child.InnerText)]]>"                            
+                        }
+                        else {
                             # Any other input will be stringified
                             "$child"
                         }
