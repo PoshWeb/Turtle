@@ -44,9 +44,35 @@ if ($this.'.Element'.ElementName) {
                 }
             )>$(
                 # Now include any child elements.
-                # First, if we have drawn anything in our turtle, include that
-                if ($this.Steps -or $this.Text -or $this.Turtles.Count) {
-                    $this.SVG.OuterXml
+
+                # If this defines any steps or text
+                if ($this.Steps -or $this.Text) {
+                    $this.SVG.OuterXml # we will need SVG
+                } elseif (
+                    # Otherwise, if the Turtle has turtles
+                    $this.Turtles.Count
+                ) {
+                    # Go to each turtle
+                    foreach ($child in $this.Turtles.Values) {
+
+                        # Get it's element
+                        $childElement = $child.Element
+
+                        # That element could be XML or an XML Fragment
+                        if ($childElement.OuterXml) {
+                            # if so, that's our child element
+                            $childElement.OuterXml
+                        } elseif ($childElement) {
+                            # It could also be another series of elements
+                            # Stringify them
+                            "$childElement"
+                        } else {
+                            # Otherwise, presume the child did not expose an element
+                            # (aka, it wasn't a Turtle)
+                            # and output the child as a string.
+                            "$child"
+                        }
+                    }
                 }
                 @(foreach ($childCollection in 'child','ChildNodes','Children','Content') {
                     if (-not $in.$childCollection) {
