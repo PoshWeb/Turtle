@@ -6787,9 +6787,47 @@ if ($this.'.Element'.ElementName) {
                 }
             )&gt;$(
                 # Now include any child elements.
-                # First, if we have drawn anything in our turtle, include that
-                if ($this.Steps -or $this.Text -or $this.Turtles.Count) {
-                    $this.SVG.OuterXml
+
+                # If this defines any steps or text
+                if ($this.Steps -or $this.Text) {
+                    $this.SVG.OuterXml # we will need SVG
+                } 
+                elseif ($this.Markdown) {
+                    $this.Markdown -join [Environment]::NewLine |
+                        ConvertFrom-Markdown |
+                            Select-Object -ExpandProperty Html
+                }
+                elseif (
+                    # Otherwise, if the Turtle has turtles
+                    $this.Turtles.Count
+                ) {
+                    # Go to each turtle
+                    foreach ($child in $this.Turtles.Values) {
+
+                        # Get it's element
+                        $childElement = $child.Element
+
+                        # That element could be XML or an XML Fragment
+                        if ($childElement.OuterXml) {
+                            # if so, that's our child element
+                            $childElement.OuterXml
+                        } elseif ($childElement.Markdown) {
+                            "&lt;article&gt;$(
+                                $childElement.Markdown -join [Environment]::Newline |
+                                    ConvertFrom-Markdown
+                            )&lt;/article&gt;"
+                        } elseif ($childElement) {
+                            # It could also be another series of elements
+                            # Stringify them
+                            "$childElement"
+                        }
+                        else {
+                            # Otherwise, presume the child did not expose an element
+                            # (aka, it wasn't a Turtle)
+                            # and output the child as a string.
+                            "$child"
+                        }                        
+                    }
                 }
                 @(foreach ($childCollection in 'child','ChildNodes','Children','Content') {
                     if (-not $in.$childCollection) {
@@ -6827,6 +6865,20 @@ if ($this.'.Element'.ElementName) {
         $elementMarkup
     }
     return
+}
+elseif ($this.Markdown) {
+    $article = "&lt;article&gt;$(
+        $this.Markdown -join [Environment]::NewLine |
+            ConvertFrom-Markdown |
+                Select-Object -ExpandProperty Html
+    )&lt;/article&gt;"
+    $articleXml = $article -as [xml]
+    if ($articleXml) {
+        $articleXml
+    } else {
+        $article
+    }
+    return 
 }
 else {
     return $this.SVG    
@@ -7933,6 +7985,35 @@ if (-not $joinedArgs) {
     $this.Attribute['systemLanguage'] = $joinedArgs
     $this.SVGAttribute['systemLanguage'] = $joinedArgs
 }
+
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Markdown</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Turtle's Markdown
+.DESCRIPTION
+    Gets the Markdown property of a Turtle.
+#&gt;
+param()
+
+return $this.'#Markdown'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets a Turtle's Markdown
+.DESCRIPTION
+    Sets the Markdown property of a Turtle.
+#&gt;
+param()
+
+$unrolledArgs = @($args | . { process { $_ } })
+if (-not $this) { $this = turtle }
+$this | Add-Member NoteProperty '#Markdown' $unrolledArgs -Force
 
                     </SetScriptBlock>
       </ScriptProperty>
@@ -10363,8 +10444,8 @@ foreach ($v in $value) {
     } elseif ($v.pstypenames -contains 'Turtle') {
         # If it was a turtle, just add it
 
-        # If the turtle had an ID, use it
-        if ($v.ID -ne 'Turtle') {
+        # If the turtle had a non-timestamp id, use it
+        if ($v.ID -notmatch 'turtle-\d{18,}') {
             $this.'.Turtles'[$v.ID] = $v
         } else {
             # otherwise, provide it an auto incremented ID
