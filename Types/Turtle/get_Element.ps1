@@ -102,7 +102,7 @@ if ($this.'.Element'.ElementName) {
                             $child | & $MyInvocation.MyCommand.ScriptBlock
                         } 
                         elseif ($child -is [Xml.XmlText]) {
-                            "<![CDATA[$($child.InnerText)]]>"                            
+                            [Security.SecurityElement]::Escape($child.InnerText)
                         }
                         else {
                             # Any other input will be stringified
