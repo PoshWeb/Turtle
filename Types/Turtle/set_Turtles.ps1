@@ -49,8 +49,8 @@ foreach ($v in $value) {
     } elseif ($v.pstypenames -contains 'Turtle') {
         # If it was a turtle, just add it
 
-        # If the turtle had an ID, use it
-        if ($v.ID -ne 'Turtle') {
+        # If the turtle had a non-timestamp id, use it
+        if ($v.ID -notmatch 'turtle-\d{18,}') {
             $this.'.Turtles'[$v.ID] = $v
         } else {
             # otherwise, provide it an auto incremented ID
