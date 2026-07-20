@@ -48,7 +48,13 @@ if ($this.'.Element'.ElementName) {
                 # If this defines any steps or text
                 if ($this.Steps -or $this.Text) {
                     $this.SVG.OuterXml # we will need SVG
-                } elseif (
+                } 
+                elseif ($this.Markdown) {
+                    $this.Markdown -join [Environment]::NewLine |
+                        ConvertFrom-Markdown |
+                            Select-Object -ExpandProperty Html
+                }
+                elseif (
                     # Otherwise, if the Turtle has turtles
                     $this.Turtles.Count
                 ) {
@@ -62,16 +68,22 @@ if ($this.'.Element'.ElementName) {
                         if ($childElement.OuterXml) {
                             # if so, that's our child element
                             $childElement.OuterXml
+                        } elseif ($childElement.Markdown) {
+                            "<article>$(
+                                $childElement.Markdown -join [Environment]::Newline |
+                                    ConvertFrom-Markdown
+                            )</article>"
                         } elseif ($childElement) {
                             # It could also be another series of elements
                             # Stringify them
                             "$childElement"
-                        } else {
+                        }
+                        else {
                             # Otherwise, presume the child did not expose an element
                             # (aka, it wasn't a Turtle)
                             # and output the child as a string.
                             "$child"
-                        }
+                        }                        
                     }
                 }
                 @(foreach ($childCollection in 'child','ChildNodes','Children','Content') {
@@ -110,6 +122,20 @@ if ($this.'.Element'.ElementName) {
         $elementMarkup
     }
     return
+}
+elseif ($this.Markdown) {
+    $article = "<article>$(
+        $this.Markdown -join [Environment]::NewLine |
+            ConvertFrom-Markdown |
+                Select-Object -ExpandProperty Html
+    )</article>"
+    $articleXml = $article -as [xml]
+    if ($articleXml) {
+        $articleXml
+    } else {
+        $article
+    }
+    return 
 }
 else {
     return $this.SVG    
