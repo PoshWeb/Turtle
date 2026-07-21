@@ -20,9 +20,8 @@ $viewBox = ($this.Maximum - $this.Minimum)
 $precision = $this.Precision
 filter roundToPrecision { [Math]::Round($_, $precision)}
 
-
-$viewX = [Math]::Round($viewBox.X, 10)
-$viewY = [Math]::Round($viewBox.Y, 10)
+$viewX = [Math]::Round($viewBox.X)
+$viewY = [Math]::Round($viewBox.Y)
 
 if ($viewX -and -not $viewY) {
     $viewY = $viewX
@@ -31,13 +30,29 @@ if ($viewY -and -not $viewX) {
     $viewX = $viewY
 }
 
+if (
+    (-not $viewX -or -not $viewY) -and 
+    $this.Turtles
+) {
+    $MaxX, $MaxY = 0, 0
+    foreach ($turtle in $this.Turtles.Values) {
+        if ($turtle.Width -gt $MaxX) {
+            $MaxX = $turtle.Width
+        }
+        if ($turtle.Height -gt $MaxY) {
+            $MaxY = $turtle.hEIGHT
+        }
+    }
+    if ($MaxX -and -not $viewX) {
+        $viewX = [Math]::Round($MaxX)
+    }
+    if ($MaxY -and -not $viewY) {
+        $viewY = [Math]::Round($MaxY)
+    }
+}
 
 # and return the viewbox
-if ($precision) {
-    return 0, 0, $viewX, $viewY | roundToPrecision
-} else {
-    return 0, 0, $viewX, $viewY
-}
+return 0, 0, $viewX, $viewY
 
 
 

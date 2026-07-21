@@ -13,6 +13,19 @@ if ($this.'.ViewBox') {
 }
 
 $viewX = $this.Maximum.X + ($this.Minimum.X * -1)
+
+if (-not $viewX -and $this.Turtles) {
+    $Max = 0 
+    foreach ($turtle in $this.Turtles.Values) {
+        if ($turtle.Width -gt $max) {
+            $max = $turtle.Width
+        }
+    }
+    return $max
+} else {
+    return $viewX
+}
+
 return $viewX
 
 
