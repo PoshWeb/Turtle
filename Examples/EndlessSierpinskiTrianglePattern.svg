@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
   <defs>
-    <pattern id="EndlessSierpinskiTriangle-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="800" height="692.820312" transform-origin="50% 50%" patternTransform="scale(0.66)">
+    <pattern id="EndlessSierpinskiTriangle-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="800" height="693" transform-origin="50% 50%" patternTransform="scale(0.66)">
       <animateTransform attributeName="patternTransform" attributeType="XML" type="scale" values="0.66;0.33;0.66" dur="19s" repeatCount="indefinite" additive="sum" />
       <animateTransform attributeName="patternTransform" attributeType="XML" type="rotate" from="0" to="360" dur="29s" repeatCount="indefinite" additive="sum" />
       <animateTransform attributeName="patternTransform" attributeType="XML" type="skewX" values="30;-30;30" dur="67s" repeatCount="indefinite" additive="sum" />
