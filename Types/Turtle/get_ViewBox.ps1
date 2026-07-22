@@ -20,8 +20,8 @@ $viewBox = ($this.Maximum - $this.Minimum)
 $precision = $this.Precision
 filter roundToPrecision { [Math]::Round($_, $precision)}
 
-$viewX = [Math]::Round($viewBox.X)
-$viewY = [Math]::Round($viewBox.Y)
+$viewX = [Math]::Round($viewBox.X, $precision)
+$viewY = [Math]::Round($viewBox.Y, $precision)
 
 if ($viewX -and -not $viewY) {
     $viewY = $viewX
@@ -51,8 +51,12 @@ if (
     }
 }
 
-# and return the viewbox
-return 0, 0, $viewX, $viewY
+if ($precision) {
+    return 0, 0, [Math]::Round($viewX, $precision) , [Math]::Round($viewY, $precision)
+} else {
+    # and return the viewbox
+    return 0, 0, $viewX, $viewY
+}
 
 
 
