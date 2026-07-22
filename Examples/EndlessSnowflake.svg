@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
   <defs>
-    <pattern id="EndlessSnowflake-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="810" height="935" transform-origin="50% 50%" patternTransform="scale(0.33)">
+    <pattern id="EndlessSnowflake-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="810" height="935.307617" transform-origin="50% 50%" patternTransform="scale(0.33)">
       <animateTransform type="scale" values="0.66;0.33;0.66" repeatCount="indefinite" dur="23s" additive="sum" attributeType="XML" attributeName="patternTransform" />
       <animateTransform type="rotate" values="0;360" repeatCount="indefinite" dur="41s" additive="sum" attributeType="XML" attributeName="patternTransform" />
       <animateTransform type="skewX" values="-30;30;-30" repeatCount="indefinite" dur="83s" additive="sum" attributeType="XML" attributeName="patternTransform" />
