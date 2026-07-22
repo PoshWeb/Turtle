@@ -9,13 +9,48 @@
 #>
 param()
 $currentTurtle = if ($this) { $this } else { turtle }
-$ArgumentList = @($args)
+# Unroll our arguments so we handle lists of lists
+$ArgumentList = @($args | . {process { $_ }})
 
 if (-not $ArgumentList) { return $currentTurtle }
 
 $turtleType = $(Get-TypeData -TypeName Turtle)
 
-$memberNames = @($turtleType.Members.Keys)
+$memberNames = @(
+    $turtleType.Members.Keys
+)
+
+if ($VerbosePreference -notin 'ignore','silentlyContinue') {
+    Write-Verbose "Turtle Go`n`t$(
+        @(foreach ($arg in $ArgumentList) {
+            $arg
+        }) -join "`n`t"
+    )"
+}
+
+$helpfulKeywords = @(
+    '?'
+    '--help'
+    'help'
+    '/help'
+    '/?'
+)
+
+filter getScriptHelp {
+    $scriptBlock = $_
+    $Name = $args -join ''
+    $ExecutionContext.SessionState.PSVariable.Set("function:$Name",$scriptBlock)            
+    if ($switches -is [Collections.IDictionary]) {
+        if ($switches.Syntax) {
+            Get-Command $Name -Syntax
+        } else {
+            Get-Help $Name @switches
+        }                
+    } else {
+        Get-Help $Name
+    }
+    $ExecutionContext.SessionState.PSVariable.Remove("function:$Name")
+}
 
 
 # First we want to split each argument into words.
@@ -184,7 +219,7 @@ for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
                         $switches['Examples'] = $true
                     }
                     if ($word -in 'parameter','parameters') {
-                        $switches['Parameters'] = '*'
+                        $switches['Parameter'] = '*'
                     }
                     if ($word -eq 'online') {
                         $switches['Online'] = $true
