@@ -11231,6 +11231,17 @@ foreach ($javaScriptProperty in $this.psobject.properties | Sort-Object Name) {
 }</Value>
       </NoteProperty>
       <NoteProperty>
+        <Name>rhombus.js</Name>
+        <Value>function rhombus(side1 = 42, side2 = 42, angle = 42) {
+    return this.
+        forward(side1).rotate(angle).
+        forward(side2).rotate(180-angle).
+        forward(side1).rotate(angle).
+        forward(side2).rotate(180-angle)
+}
+</Value>
+      </NoteProperty>
+      <NoteProperty>
         <Name>rotate.js</Name>
         <Value>function rotate(angle) { this.heading += Number(angle); return this }</Value>
       </NoteProperty>
