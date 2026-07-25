@@ -205,7 +205,7 @@ for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
     $argList = 
         @(if ($methodArgIndex -ne ($argIndex + 1)) {
             # We only want to remove one pair of brackets
-            $debracketCount = 0
+            $bracketCount = 0
             foreach ($word in $wordsAndArguments[($argIndex + 1)..($methodArgIndex - 1)]) {
                 if ($word -in $helpfulKeywords) {
                     $HelpWanted = $true
@@ -239,20 +239,21 @@ for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
                         continue
                     }                            
                 }
-                # If the word started with a bracket, and we haven't removed any
-                if ($word -is [string] -and $word.StartsWith('[') -and -not $debracketCount) {
+                
+                # If the word started with a bracket, and it's our first bracket
+                if ($word -is [string] -and $word.StartsWith('[') -and -not $bracketCount) {
                     $word = $word -replace '^\[' # remove it
-                    $debracketCount++ # and increment our removal counter.
+                    $bracketCount++ # and increment our bracket counter.
                     if (-not $word) {
                         continue
                     }
                 }
-                # If the word ended with a bracket, and we have debracketed once
-                if ($word -is [string] -and $word.EndsWith(']') -and $debracketCount -eq 1) {
+                # If the word ended with a bracket, and we have only one bracket
+                if ($word -is [string] -and $word.EndsWith(']') -and $bracketCount -eq 1) {
                     # remove the closing bracket
                     $word = $word -replace '\]$'
-                    # and decrement our removal counter
-                    $debracketCount--
+                    # and increment our removal counter
+                    $bracketCount++
                     if (-not $word) {
                         continue
                     }
