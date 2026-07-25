@@ -11121,6 +11121,15 @@ foreach ($javaScriptProperty in $this.psobject.properties | Sort-Object Name) {
         <Value>isPenDown: true</Value>
       </NoteProperty>
       <NoteProperty>
+        <Name>jump.js</Name>
+        <Value>function jump(distance) {
+    return this.penUp().step(
+        distance * Math.cos(this.heading * Math.PI / 180),
+        distance * Math.sin(this.heading * Math.PI / 180)
+    ).penDown()
+}</Value>
+      </NoteProperty>
+      <NoteProperty>
         <Name>max.js</Name>
         <Value>max: ({x:0.0, y:0.0})</Value>
       </NoteProperty>
