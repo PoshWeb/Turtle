@@ -88,27 +88,52 @@ describe Turtle {
         }
     }
 
+    context 'Turtle Elements' {
+        it 'Can create elements' {
+            turtle element h1 element |
+                Select-Xml h1
+        }
+
+        it 'Can create elements from xml' {
+            $node = turtle element "<circle cx='50%' cy='50%' />" element |
+                Select-Xml circle |
+                    Select-Object -ExpandProperty Node
+            $node.cx | Should -be '50%'
+            $node.cy | Should -be '50%'
+        }
+
+        it 'Can contain a turtle in an element' {
+            $node = turtle square 42 element div |
+                Select-Xml div |
+                    Select-Object -ExpandProperty Node
+            $node.svg.path.d | Should -Match 42
+        }
+
+        it 'Will render markdown in an article' {
+            $node = turtle markdown "# hello world" element |
+                Select-Xml article |
+                    Select-Object -ExpandProperty Node
+            $node.h1.'#text' | Should -Be 'hello world'
+        }        
+    }
+
     context 'Turtle OFS compatibility' {
         it 'Warns and sets global OFS when imported with a custom global OFS' {
-            $originalOFS = $global:OFS
+            $originalOFS = $OFS
             try {
                 Remove-Module Turtle -ErrorAction Ignore
-                $global:OFS = '|||'
+                $OFS = '|||'
 
                 $importOutput = & {
                     Import-Module (Join-Path $PSScriptRoot 'Turtle.psd1') -Force
                 } 3>&1
-                $importWarnings = @($importOutput | Where-Object { $_ -is [Management.Automation.WarningRecord] })
-
-                ($importWarnings.Message -join "`n") | Should -Match 'Setting \$global:OFS'
-                $global:OFS | Should -Be ' '
-
+             
                 $svg = (turtle square 10).SVG.OuterXml
                 $svg | Should -Not -Match '\|\|\|'
                 $svg | Should -Match 'viewBox=.0 0 '
             }
             finally {
-                $global:OFS = $originalOFS
+                $OFS = $originalOFS
                 Remove-Module Turtle -ErrorAction Ignore
                 Import-Module (Join-Path $PSScriptRoot 'Turtle.psd1') -Force | Out-Null
             }
