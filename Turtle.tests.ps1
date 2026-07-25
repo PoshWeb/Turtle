@@ -122,7 +122,7 @@ describe Turtle {
             $originalOFS = $OFS
             try {
                 Remove-Module Turtle -ErrorAction Ignore
-                $OFS = '|||'
+                $global:OFS = '|||'
 
                 $importOutput = & {
                     Import-Module (Join-Path $PSScriptRoot 'Turtle.psd1') -Force
