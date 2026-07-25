@@ -17,10 +17,36 @@
 .EXAMPLE
     # We can put a turtle inside of an aribtrary element
     turtle SpiderWeb element '<div />'
+.EXAMPLE
+    # If we just define text and ask for an element, we get a paragraph (`<p>`)
+    turtle text "hello world" element
+.EXAMPLE
+    # If we just define markdown and ask for an element, we get an `<article>`
+    turtle markdown "# hello world" element
 #>
+param()
+
+# The Turtle can be rendered in many elements.
+
+# We can render the turtle in an arbitrary 
+
+filter asXmlOrText {
+    $asXml = $_ -as [xml]
+    if ($asXml) { $asXml } else { $_ }
+}
+
+filter addAttributes {
+    if (-not $this.Attribute.Count) { return }
+    ' ' + (@(foreach ($attr in $this.Attribute.GetEnumerator()) {
+        if ($attr.Key -match '/') { continue }
+        "$($attr.Key)='$(
+            [Web.HttpUtility]::HtmlAttributeEncode($attr.Value)
+        )'"
+    }) -join ' ')
+}
 
 # If we have set an element name
-if ($this.'.Element'.ElementName) {
+if ($this.'#Element'.ElementName) {
 
     # make this little filter to recursively turn the element back into XML
     filter toElement {
@@ -48,7 +74,7 @@ if ($this.'.Element'.ElementName) {
                 # If this defines any steps or text
                 if ($this.Steps -or $this.Text) {
                     $this.SVG.OuterXml # we will need SVG
-                } 
+                }                
                 elseif ($this.Markdown) {
                     $this.Markdown -join [Environment]::NewLine |
                         ConvertFrom-Markdown |
@@ -118,31 +144,24 @@ if ($this.'.Element'.ElementName) {
         }
     }
 
-    $elementMarkup = $this.'.Element' | toElement
-    $elementXml = $elementMarkup -as [xml]
-    if ($elementXml) {
-        $elementXml
-    } else {
-        $elementMarkup
-    }
-    return
+    $elementMarkup = $this.'#Element' | toElement
+
+    return $elementMarkup | asXmlOrText
 }
 elseif ($this.Markdown) {
-    $article = "<article>$(
+    $article = "<article$(addAttributes)>$(
         $this.Markdown -join [Environment]::NewLine |
             ConvertFrom-Markdown |
                 Select-Object -ExpandProperty Html
     )</article>"
-    $articleXml = $article -as [xml]
-    if ($articleXml) {
-        $articleXml
-    } else {
-        $article
-    }
-    return 
+    return $article | asXmlOrText
+}
+elseif ($this.Text -and -not $this.Steps) {
+    $paragraph = "<p$(addAttributes)>$([Security.SecurityElement]::Escape($this.Text))</p>"
+    return $paragraph | asXmlOrText
 }
 else {
-    return $this.SVG    
+    return $this.SVG
 }
 
 return
