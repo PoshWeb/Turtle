@@ -11247,6 +11247,12 @@ foreach ($javaScriptProperty in $this.psobject.properties | Sort-Object Name) {
 }</Value>
       </NoteProperty>
       <NoteProperty>
+        <Name>square.js</Name>
+        <Value>function square(size = 42) {
+    return this.polygon(42, 4)
+}</Value>
+      </NoteProperty>
+      <NoteProperty>
         <Name>step.js</Name>
         <Value>function step(dx,dy) {
     if (this.isPenDown) { this.steps.push(` l ${dx} ${dy} `) }
