@@ -11057,6 +11057,12 @@ foreach ($javaScriptProperty in $this.psobject.properties | Sort-Object Name) {
                     </GetScriptBlock>
       </ScriptProperty>
       <NoteProperty>
+        <Name>backward.js</Name>
+        <Value>function backward(distance) {
+    return this.forward(distance * -1)
+}</Value>
+      </NoteProperty>
+      <NoteProperty>
         <Name>forward.js</Name>
         <Value>function forward(distance) {
     return this.step(
