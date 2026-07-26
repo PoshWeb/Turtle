@@ -61,11 +61,11 @@ filter getScriptHelp {
 $wordsAndArguments = @(foreach ($arg in $ArgumentList) {
     # If the argument is a string, and it starts with whitespace            
     if ($arg -is [string]) {
-        if ($arg -match '^[\r\n\s]+') {
-            $arg -split '\s{1,}'
-        } else {
+        #if ($arg -match '^[\r\n\s]+') {
+            # $arg -split '\s{1,}'
+        # } else {
             $arg
-        }
+        #}
     } else {
         # otherwise, leave the argument alone.
         $arg
