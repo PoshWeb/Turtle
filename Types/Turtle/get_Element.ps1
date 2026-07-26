@@ -160,6 +160,9 @@ elseif ($this.Text -and -not $this.Steps) {
     $paragraph = "<p$(addAttributes)>$([Security.SecurityElement]::Escape($this.Text))</p>"
     return $paragraph | asXmlOrText
 }
+elseif ($this.Style -and -not $this.Steps) {
+    return $this.Style
+}
 else {
     return $this.SVG
 }
