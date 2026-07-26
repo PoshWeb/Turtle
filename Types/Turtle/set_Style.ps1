@@ -10,7 +10,9 @@
 .EXAMPLE
     turtle style abc
 .EXAMPLE
-    turtle style "@import url('https://fonts.googleapis.com/css?family=Abel')" text 'Hello World' textattribute @{'font-family'='Abel';'font-size'='3em'} fill 'red' save ./t.png show 
+    turtle style "@import url('https://fonts.googleapis.com/css?family=Abel')" text 'Hello World' textattribute @{
+        'font-family'='Abel';'font-size'='3em'
+    } fill 'red'
 #>
 param(
 [PSObject[]]
@@ -75,8 +77,8 @@ filter toCss {
     }
 }
 
-if (-not $this.'.style') {
-    $this | Add-Member NoteProperty '.style' @() -Force 
+if (-not $this.'#Style') {
+    $this | Add-Member NoteProperty '#Style' @() -Force 
 }
-$this.'.style' += $style |toCss
+$this.'#Style' += $style |toCss
 

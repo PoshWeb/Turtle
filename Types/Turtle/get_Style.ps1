@@ -10,8 +10,9 @@
 #>
 param()
 
-if (-not $this.'.style') {
-    $this | Add-Member NoteProperty '.style' @() -Force
+# If we don't already have a list of styles
+if (-not $this.'#style') {
+    $this | Add-Member NoteProperty '#style' @() -Force
 }
 
 $keyframe = $this.Keyframe
@@ -52,8 +53,8 @@ foreach ($keyframeName in $keyframe.Keys) {
     "    animation-iteration-count: infinite;"
     "}"
 }
-if ($this.'.Style') {
-    "$($this.'.Style' -join (';' + [Environment]::NewLine))"
+if ($this.'#Style') {
+    "$($this.'#Style' -join (';' + [Environment]::NewLine))"
 }
 ) 
 
@@ -62,13 +63,15 @@ if ($styleElementParts) {
     try {
         # so if we have an error with unescaped content
         return [xml]@("<style>"
-        $styleElementParts -join [Environment]::NewLine
+        $styleElementParts -join [Environment]::NewLine -replace '\};','}'
         "</style>")    
     } catch {
         # catch it and escape the content
         return [xml]@(
             "<style>"
-                [Security.SecurityElement]::Escape($styleElementParts -join [Environment]::NewLine)
+                [Security.SecurityElement]::Escape(
+                    $styleElementParts -join [Environment]::NewLine -replace '\};','}'
+                )
             "</style>"
         )
     }
@@ -76,4 +79,4 @@ if ($styleElementParts) {
     return ''
 }
 
-return $this.'.style'
+return $this.'#Style'
