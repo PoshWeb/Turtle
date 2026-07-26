@@ -43,7 +43,9 @@ if (
 }
 
 # If we want to draw a curvy turtle
-if ($null -ne ($Curvature -as [double])) {
+if ($null -ne $Curvature -and (
+    $null -ne ($Curvature -as [double])
+)) {
     $stepCurve = @(
         $DeltaX
         $DeltaY
