@@ -14,6 +14,6 @@
     animation-iteration-count: infinite;
 }
 </style>
-  <path id="wiggle-square-path" d="m 0 0 t 42 0 t 0 42 t -42 0 t -0 -42" stroke="#224488" stroke-width="0.25%" fill="#4488ff" class="wiggle3d" transform-origin="50% 50%">
+  <path id="wiggle-square-path" d="m 0 0   l 42 0 l 0 42 l -42 0 l -0 -42" stroke="#224488" stroke-width="0.25%" fill="#4488ff" class="wiggle3d" transform-origin="50% 50%">
   </path>
 </svg>
