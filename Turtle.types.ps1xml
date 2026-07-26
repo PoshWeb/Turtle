@@ -2077,7 +2077,7 @@ for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
             $memberInfo -is [Management.Automation.PSMethod]
         ) {                    
             # If we have arguments,
-            if ($argList.Length) {
+            if ($argList) {
                 # and a script method
                 if ($memberInfo -is [Management.Automation.Runspaces.ScriptMethodData]) {
                     # Check to see if we want help.
@@ -2115,7 +2115,7 @@ for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
             # If the member is a property, we can get it or set it.
 
             # If we have any arguments,
-            if ($argList) {
+            if ($argList.Length) {
                 # and we want help
                 if ($HelpWanted -and $memberInfo.SetScriptBlock) {                            
                     # get help about the set.
@@ -2126,7 +2126,7 @@ for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
                         $desiredType = $memberInfo.SetScriptBlock.Ast.ParamBlock.Parameters.StaticType
                         if ($desiredType -is [Type] -and
                             $argList.Length -eq 1 -and
-                            $argList[0] -as $desiredType) {
+                            $null -ne ($argList[0] -as $desiredType)) {
                             $argList = $argList[0] -as $desiredType
                         }                            
                     }
@@ -2136,9 +2136,15 @@ for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
                         $currentTurtle.$currentMember = $argList
                     } catch {
                         # If that fails,
-                        $ex  = $_
-                        # use .WriteError for a cleaner error.
-                        $PSCmdlet.WriteError($ex)
+                        $ex  = $_                        
+                        # If we are running with a cmdlet,
+                        if ($PSCmdlet) {                            
+                            # use .WriteError for a cleaner error.                            
+                            $PSCmdlet.WriteError($ex)
+                        } else {
+                            # otherwise, use Write-Error.
+                            Write-Error -ErrorRecord $ex
+                        }                        
                     }
                 }
                 
