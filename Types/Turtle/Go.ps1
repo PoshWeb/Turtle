@@ -271,7 +271,7 @@ for ($argIndex =0; $argIndex -lt $wordsAndArguments.Length; $argIndex++) {
             $memberInfo -is [Management.Automation.PSMethod]
         ) {                    
             # If we have arguments,
-            if ($argList) {
+            if ($argList.Length) {
                 # and a script method
                 if ($memberInfo -is [Management.Automation.Runspaces.ScriptMethodData]) {
                     # Check to see if we want help.
