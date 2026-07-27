@@ -7163,6 +7163,8 @@ filter addAttributes {
     }) -join ' ')
 }
 
+$turtleStyle = $this.Style
+
 # If we have set an element name
 if ($this.'#Element'.ElementName) {
 
@@ -7278,8 +7280,12 @@ elseif ($this.Text -and -not $this.Steps) {
     $paragraph = "&lt;p$(addAttributes)&gt;$([Security.SecurityElement]::Escape($this.Text))&lt;/p&gt;"
     return $paragraph | asXmlOrText
 }
-elseif ($this.Style -and -not $this.Steps) {
-    return $this.Style
+elseif ($turtleStyle -and -not $this.Steps) {
+    # Fun factoid:
+    # Most of CSS will work in XML, but not all.
+    # Any syntax references (i.e. `&lt;color&gt;`) do not work if XML encoded.
+    # Therefore, we should return this element as string
+    return "&lt;style&gt;$($turtleStyle.Style.style)&lt;/style&gt;"
 }
 else {
     return $this.SVG
