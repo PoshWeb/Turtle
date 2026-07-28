@@ -14,6 +14,6 @@
     animation-iteration-count: infinite;
 }
 </style>
-  <path id="moving-square-path" d="m 0 0   l 42 0 l 0 42 l -42 0 l -0 -42" stroke="currentcolor" stroke-width="0.25%" fill="transparent" class="moving-in-3d" transform-origin="50% 50%">
+  <path id="moving-square-path" d="m 0 0   l 42 0 l 0 42 l -42 0 l -0 -42" stroke="#224488" stroke-width="0.25%" fill="transparent" class="moving-in-3d" transform-origin="50% 50%">
   </path>
 </svg>
