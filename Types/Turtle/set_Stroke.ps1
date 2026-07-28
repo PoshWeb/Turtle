@@ -66,6 +66,9 @@ if ($stroke.Count -gt 1) {
             }
         }
         # Otherwise output the color
+        elseif ($this.Palette.$color) {
+            $this.Palette.$color
+        }
         else {
             $color
         }
@@ -77,7 +80,7 @@ if ($stroke.Count -gt 1) {
     # If our count is one
     if ($stroke.Count -eq 1) {
         # it's not really going to be a gradient, so just use the one color.
-        $this | Add-Member -MemberType NoteProperty -Name '.Stroke' -Value $stroke -Force
+        $this | Add-Member -MemberType NoteProperty -Name '#stroke' -Value $stroke -Force
         return    
     }
 
@@ -110,13 +113,29 @@ if ($stroke.Count -gt 1) {
     $this.Defines += $Gradient
     # and set stroke to this gradient.
     $stroke = "url(`"#$($gradientAttributes.id)`")"
-}
-if (-not $this.'.stroke') {
-    $this | Add-Member -MemberType NoteProperty -Name '.Stroke' -Value $stroke -Force
 } else {
-    $this.'.stroke' = $stroke
+    $stroke = @(
+        switch ($stroke) {
+            random {
+                "#{0:x6}" -f (Get-Random -max 0xffffff)
+            }                        
+            default {
+                if ($this.Palette.$_) {
+                    $this.Palette.$_
+                } else {
+                    $_
+                }
+                
+            }
+        }
+    )
+}
+if (-not $this.'#stroke') {
+    $this | Add-Member -MemberType NoteProperty -Name '#stroke' -Value $stroke -Force
+} else {
+    $this.'#stroke' = $stroke
 }
 
-if (($this.'.stroke' -notmatch '(?>currentColor|context)')) {
+if (($this.'#stroke' -notmatch '(?>currentColor|context)')) {
     $this.PathClass = @($this.PathClass) -ne 'foreground-stroke'
 }

@@ -66,6 +66,9 @@ if ($fill.Count -gt 1) {
             }
         }
         # Otherwise output the color
+        elseif ($this.Palette.$color) {
+            $this.Palette.$color
+        }
         else {
             $color
         }
@@ -77,7 +80,7 @@ if ($fill.Count -gt 1) {
     # If our count is one
     if ($fill.Count -eq 1) {
         # it's not really going to be a gradient, so just use the one color.
-        $this | Add-Member -MemberType NoteProperty -Name '.Fill' -Value $Fill -Force
+        $this | Add-Member -MemberType NoteProperty -Name '#fill' -Value $Fill -Force
         return    
     }
 
@@ -110,9 +113,26 @@ if ($fill.Count -gt 1) {
     $this.Defines += $Gradient
     # and set fill to this gradient.
     $fill = "url(`"#$($gradientAttributes.id)`")"
-}
-if (-not $this.'.Fill') {
-    $this | Add-Member -MemberType NoteProperty -Name '.Fill' -Value $Fill -Force
 } else {
-    $this.'.Fill' = $Fill
+    $fill = @(
+        switch ($fill) {
+            random {
+                "#{0:x6}" -f (Get-Random -max 0xffffff)
+            }                        
+            default {
+                if ($this.Palette.$_) {
+                    $this.Palette.$_
+                } else {
+                    $_
+                }
+                
+            }
+        }
+    )
+}
+
+if (-not $this.'#fill') {    
+    $this | Add-Member -MemberType NoteProperty -Name '#fill' -Value $fill -Force
+} else {
+    $this.'#fill' = $Fill
 }
