@@ -7611,6 +7611,9 @@ if ($fill.Count -gt 1) {
             }
         }
         # Otherwise output the color
+        elseif ($this.Palette.$color) {
+            $this.Palette.$color
+        }
         else {
             $color
         }
@@ -7622,7 +7625,7 @@ if ($fill.Count -gt 1) {
     # If our count is one
     if ($fill.Count -eq 1) {
         # it's not really going to be a gradient, so just use the one color.
-        $this | Add-Member -MemberType NoteProperty -Name '.Fill' -Value $Fill -Force
+        $this | Add-Member -MemberType NoteProperty -Name '#fill' -Value $Fill -Force
         return    
     }
 
@@ -7655,11 +7658,28 @@ if ($fill.Count -gt 1) {
     $this.Defines += $Gradient
     # and set fill to this gradient.
     $fill = "url(`"#$($gradientAttributes.id)`")"
-}
-if (-not $this.'.Fill') {
-    $this | Add-Member -MemberType NoteProperty -Name '.Fill' -Value $Fill -Force
 } else {
-    $this.'.Fill' = $Fill
+    $fill = @(
+        switch ($fill) {
+            random {
+                "#{0:x6}" -f (Get-Random -max 0xffffff)
+            }                        
+            default {
+                if ($this.Palette.$_) {
+                    $this.Palette.$_
+                } else {
+                    $_
+                }
+                
+            }
+        }
+    )
+}
+
+if (-not $this.'#fill') {    
+    $this | Add-Member -MemberType NoteProperty -Name '#fill' -Value $fill -Force
+} else {
+    $this.'#fill' = $Fill
 }
                     </SetScriptBlock>
       </ScriptProperty>
@@ -8927,6 +8947,51 @@ $this | Add-Member NoteProperty '.Opacity' $Opacity -Force
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
+        <Name>Palette</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets a Turtle's Palette
+.DESCRIPTION
+    Gets a Turtle's Palette.
+
+    A Palette is a custom list of properties that should describe colors.
+
+    This will generate a CSS palette, available in the `.style` and `.css` properties.
+    
+    This will also allow the color names in the palette to be used in `.stroke` and `.fill` values.
+#&gt;
+return $this.'#Palette'
+
+                    </GetScriptBlock>
+        <SetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Sets a Turtle's Palette
+.DESCRIPTION
+    Sets a Turtle's Palette.
+
+    A Palette is a custom list of properties that should describe colors.
+
+    This will generate a CSS palette, available in the `.style` and `.css` properties.
+    
+    This will also allow the color names in the palette to be used in `.stroke` and `.fill` values.
+#&gt;
+param(
+[Collections.IDictionary]
+$Palette
+)
+
+if (-not $this.'#Palette') {
+    $this | Add-Member NoteProperty '#Palette' ([Ordered]@{})    
+}
+
+foreach ($key in $Palette.Keys) {
+    $this.'#Palette'[$key] = $Palette[$key]
+}
+                    </SetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
         <Name>PathAnimation</Name>
         <GetScriptBlock>
                         &lt;#
@@ -10130,6 +10195,9 @@ if ($stroke.Count -gt 1) {
             }
         }
         # Otherwise output the color
+        elseif ($this.Palette.$color) {
+            $this.Palette.$color
+        }
         else {
             $color
         }
@@ -10141,7 +10209,7 @@ if ($stroke.Count -gt 1) {
     # If our count is one
     if ($stroke.Count -eq 1) {
         # it's not really going to be a gradient, so just use the one color.
-        $this | Add-Member -MemberType NoteProperty -Name '.Stroke' -Value $stroke -Force
+        $this | Add-Member -MemberType NoteProperty -Name '#stroke' -Value $stroke -Force
         return    
     }
 
@@ -10174,14 +10242,30 @@ if ($stroke.Count -gt 1) {
     $this.Defines += $Gradient
     # and set stroke to this gradient.
     $stroke = "url(`"#$($gradientAttributes.id)`")"
-}
-if (-not $this.'.stroke') {
-    $this | Add-Member -MemberType NoteProperty -Name '.Stroke' -Value $stroke -Force
 } else {
-    $this.'.stroke' = $stroke
+    $stroke = @(
+        switch ($stroke) {
+            random {
+                "#{0:x6}" -f (Get-Random -max 0xffffff)
+            }                        
+            default {
+                if ($this.Palette.$_) {
+                    $this.Palette.$_
+                } else {
+                    $_
+                }
+                
+            }
+        }
+    )
+}
+if (-not $this.'#stroke') {
+    $this | Add-Member -MemberType NoteProperty -Name '#stroke' -Value $stroke -Force
+} else {
+    $this.'#stroke' = $stroke
 }
 
-if (($this.'.stroke' -notmatch '(?&gt;currentColor|context)')) {
+if (($this.'#stroke' -notmatch '(?&gt;currentColor|context)')) {
     $this.PathClass = @($this.PathClass) -ne 'foreground-stroke'
 }
                     </SetScriptBlock>
@@ -10218,28 +10302,112 @@ param()
 
 # If we don't already have a list of styles
 if (-not $this.'#style') {
+    # Initialize one
     $this | Add-Member NoteProperty '#style' @() -Force
 }
 
+
+# Several parts of &lt;style&gt; come from properties.
+# This will apply these properties before applying any custom styles
+
+# These include:
+# * `.Keyframe`
 $keyframe = $this.Keyframe
+# * `.Variable`
 $myVariables = $this.Variable
+# * `.Palette`
+$palette = $this.Palette
+
+if ($palette) {
+    filter GetLuma {
+        $colorString = $_
+        # Convert the background color to a uint32
+        $rgb = ($colorString -replace "#", "0x" -replace ';') -as [int32]
+                
+        # Get each value as a percent:        
+        $r = ([float][byte](($rgb -band 0xff0000) -shr 16)/255)
+        $g = ([float][byte](($rgb -band 0x00ff00) -shr 8)/255)
+        $b = ([float][byte]($rgb -band 0x0000ff)/255)
+                            
+        # Calculate the luma of the background color
+        0.2126 * $R + 0.7152 * $G + 0.0722 * $B    
+    } 
+    
+    $measureLumas = 
+        @($palette.Values) -match '^#' | 
+            GetLuma |
+                Measure-Object -Minimum -Maximum -Average -StandardDeviation
+    
+}
+
+# Variables can have any type
 $cssTypePattern = '^(?&lt;type&gt;\&lt;[\w-].+?\&gt;)[\:\=]?'
-$myCssVariables = foreach ($variableKey in $myVariables.Keys -match '^--') {
-    $variableValue = $myVariables[$variableKey]            
-    if ($variableValue -match $cssTypePattern) {
-        $variableValue = $variableValue -replace $cssTypePattern
-        "@property $variableKey { syntax: '$(
-            [Security.SecurityElement]::Escape($matches.type)
-        )'; initial-value: $($variableValue -replace $cssTypePattern)}"
+
+$myCssVariables = @(    
+    if ($palette) {
+        # First up: palettes.
+        foreach ($color in $palette.Keys) {
+            # Declare a CSS property for each item in the palette.
+            # Palettes (mostly) presume a type
+            "@property --$($color -replace '^--'){ syntax: '$(            
+                [Security.SecurityElement]::Escape($(            
+                    if ($palette[$color] -match '^\s{0,}[''"]') {
+                        '*'
+                    } 
+                    elseif ($palette[$color] -match '^\s{0,}\#[a-f0-9]+\s{0,}$') {
+                        '&lt;color&gt;'
+                    }
+                    elseif ($palette[$color].GetType().IsPrimative) {
+                        '&lt;number&gt;'
+                    }
+                    else {
+                        '&lt;color&gt;'
+                    } 
+                ))
+            )';initial-value: $(
+                if ($palette[$color] -is [bool]) {
+                    $palette[$color] -as [int]
+                } else {
+                    $palette[$color]
+                }            
+            );inherits:true}"
+        }        
     }
-    "$variableKey",':', $variableValue -join ''
-}
+    
+
+    # Next up, actual variables.
+    foreach ($variableKey in $myVariables.Keys -match '^--') {
+        $variableValue = $myVariables[$variableKey]
+        if ($variableValue -match $cssTypePattern) {
+            $variableValue = $variableValue -replace $cssTypePattern
+            "@property $variableKey { syntax: '$(
+                [Security.SecurityElement]::Escape($matches.type)
+            )';initial-value:$($variableValue -replace $cssTypePattern)}"
+        }
+        "$variableKey",':', $variableValue -join ''
+    }
+)
+
 $styleElementParts = @(
-if ($myCssVariables) {
-    "#$($this.id)-path, #$($this.id)-text {"
-        ($myCssVariables -join (';' + [Environment]::NewLine + (' ' * 4)))
-    "}"            
+if ($palette) {              
+    ":root {"        
+        "  color-scheme: $(
+            if ($measureLumas.Maximum -ge 0.4) { 'light' }
+        ) $(
+            if ($measureLumas.Minimum -lt 0.4) { 'dark' }
+        );"
+
+        # Declare palette variables explicitly, 
+        # in case `syntax: '&lt;color&gt;'` was unrecognized.
+        foreach ($color in $palette.Keys) {
+            "  --$($color -replace '^--'): $($palette[$color]);"
+        }
+    "}"
 }
+if ($myCssVariables) {
+    $myCssVariables -join (';' + [Environment]::NewLine)
+}
+
 foreach ($keyframeName in $keyframe.Keys) {
     $keyframeKeyframes = $keyframe[$keyframeName]
     "@keyframes $keyframeName {"
@@ -10269,14 +10437,14 @@ if ($styleElementParts) {
     try {
         # so if we have an error with unescaped content
         return [xml]@("&lt;style&gt;"
-        $styleElementParts -join [Environment]::NewLine -replace '\};','}'
+            ($styleElementParts -join [Environment]::NewLine -replace '\};','}')
         "&lt;/style&gt;")    
     } catch {
         # catch it and escape the content
         return [xml]@(
             "&lt;style&gt;"
                 [Security.SecurityElement]::Escape(
-                    $styleElementParts -join [Environment]::NewLine -replace '\};','}'
+                    ($styleElementParts -join [Environment]::NewLine -replace '\};','}')
                 )
             "&lt;/style&gt;"
         )
