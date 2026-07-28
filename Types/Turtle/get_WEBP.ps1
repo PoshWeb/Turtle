@@ -1,3 +1,17 @@
+<#
+.SYNOPSIS
+    Gets the Turtle as a WEBP
+.DESCRIPTION
+    Gets the Turtle as a WEBP.
+
+    This will only rasterize the Turtle's SVG.
+.NOTES
+    This will not work if `$env:TURTLE_BOT` is set.
+#>
+if ($env:TURTLE_BOT) {
+    return 
+}
+
 $chromiumNames = 'chromium','chrome'
 foreach ($browserName in $chromiumNames) {
     $chromiumCommand = 
