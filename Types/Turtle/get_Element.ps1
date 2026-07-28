@@ -47,10 +47,10 @@ filter addAttributes {
 
 $turtleStyle = $this.Style
 
-# If we have set an element name
-if ($this.'#Element'.ElementName) {
+# If we have set an element
+if ($this.'#Element') {
 
-    # make this little filter to recursively turn the element back into XML
+    # make this little filter to recursively turn the element back into markup
     filter toElement {
         $in = $_
         # If the input was a dictionary with an element name
@@ -141,8 +141,8 @@ if ($this.'#Element'.ElementName) {
                 }) -join ([Environment]::NewLine)
             )</$($in.ElementName)>"
         }
-        if ($_ -is [string]) {
-            $_
+        elseif ($in -is [string]) {
+            $in
         }
     }
 
@@ -167,7 +167,7 @@ elseif ($turtleStyle -and -not $this.Steps) {
     # Most of CSS will work in XML, but not all.
     # Any syntax references (i.e. `<color>`) do not work if XML encoded.
     # Therefore, we should return this element as string
-    return "<style>$($turtleStyle.Style.style)</style>"
+    return "<style>$($turtleStyle.style)</style>"
 }
 else {
     return $this.SVG

@@ -17,10 +17,22 @@
 .EXAMPLE
     # We can put a turtle inside of an aribtrary element
     turtle SpiderWeb element '<div />'
+.EXAMPLE
+    turtle element "
+        <>
+            <Example />
+            <Links />
+        </>
+    " element
 #>
 
 param()
 
+if (-not $this) {
+    $this = turtle
+}
+
+# If we have not set an element, initialize it to a property bag.
 if (-not $this.'#Element') {
     $this | Add-Member NoteProperty '#Element' -Value ([Ordered]@{
         ElementName=''
@@ -102,8 +114,12 @@ foreach ($element in $unrolledArgs){
         continue        
     }
 
+    
     if ($elementName) {
-        
+        $this.'#Element'.ElementName = $element
+    } else {
+        $this.'#Element' = $element
     }
 }
 
+return $this
