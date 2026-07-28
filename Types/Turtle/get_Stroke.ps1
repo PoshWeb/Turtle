@@ -15,15 +15,15 @@
     turtle square 42 stroke '#4488ff'
 .EXAMPLE
     # Draw a red, green, blue gradient
-    turtle square 42 stroke red green blue show
+    turtle square 42 stroke red green blue
 .EXAMPLE
     # Draw a red, green, blue linear gradient
-    turtle square 42 stroke red green blue linear show
+    turtle square 42 stroke red green blue linear
 .EXAMPLE
-    turtle flower stroke red green blue strokerule evenodd show         
+    turtle flower stroke red green blue 
 #>
-if ($this.'.Stroke') {
-    return $this.'.Stroke'
+if ($this.'#Stroke') {
+    return $this.'#Stroke'
 } else {
     return 'currentcolor'
 }
