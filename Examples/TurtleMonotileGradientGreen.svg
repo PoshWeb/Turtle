@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 276 199.185852" transform-origin="50% 50%" width="100%" height="100%">
+  <defs>
+    <linearGradient id="TurtleMonotile-fill-gradient-4488ff-224488">
+      <stop offset="0%" stop-color="#4488ff" />
+      <stop offset="100%" stop-color="#224488" />
+    </linearGradient>
+    <linearGradient id="TurtleMonotile-stroke-gradient-224488-4488ff">
+      <stop offset="0%" stop-color="#224488" />
+      <stop offset="100%" stop-color="#4488ff" />
+    </linearGradient>
+    <linearGradient id="TurtleMonotile-fill-gradient-448822-228844">
+      <stop offset="0%" stop-color="#448822" />
+      <stop offset="100%" stop-color="#228844" />
+    </linearGradient>
+    <linearGradient id="TurtleMonotile-stroke-gradient-228844-448822">
+      <stop offset="0%" stop-color="#228844" />
+      <stop offset="100%" stop-color="#448822" />
+    </linearGradient>
+  </defs>
+  <path id="TurtleMonotile-path" d="m 0 0   l 46 0 l 23 39.837169 l 69 -39.837169 l 69 39.837169 l 69 39.837169 l 0 79.674337 l -46 0 l -23 39.837169 l -69 -39.837169 l -69 39.837169 l -23 -39.837169 l 23 -39.837169 l -69 -39.837169 l -0 -79.674337" stroke="url(&quot;#TurtleMonotile-stroke-gradient-228844-448822&quot;)" stroke-width="0.25%" fill="transparent" class="" transform-origin="50% 50%">
+  </path>
+</svg>
