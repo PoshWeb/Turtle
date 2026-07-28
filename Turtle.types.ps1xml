@@ -8336,7 +8336,21 @@ if ($null -eq $this.'.IsPenDown') {
       <ScriptProperty>
         <Name>JPEG</Name>
         <GetScriptBlock>
-                        $chromiumNames = 'chromium','chrome'
+                        &lt;#
+.SYNOPSIS
+    Gets the Turtle as a JPEG
+.DESCRIPTION
+    Gets the Turtle as a JPEG image.
+
+    This will only rasterize the Turtle's SVG.
+.NOTES
+    This will not work if `$env:TURTLE_BOT` is set.    
+#&gt;
+if ($env:TURTLE_BOT) {
+    return 
+}
+
+$chromiumNames = 'chromium','chrome'
 foreach ($browserName in $chromiumNames) {
     $chromiumCommand = 
         $ExecutionContext.SessionState.InvokeCommand.GetCommand($browserName,'Application')
@@ -9797,7 +9811,20 @@ $this | Add-Member -MemberType NoteProperty -Force -Name '.PatternTransform' -Va
       <ScriptProperty>
         <Name>PNG</Name>
         <GetScriptBlock>
-                        $chromiumNames = 'chromium','chrome'
+                        &lt;#
+.SYNOPSIS
+    Gets the Turtle as a PNG
+.DESCRIPTION
+    Gets the Turtle as a PNG.
+
+    This will only rasterize the Turtle's SVG.
+.NOTES
+    This will not work if `$env:TURTLE_BOT` is set.    
+#&gt;
+if ($env:TURTLE_BOT) {
+    return 
+}
+$chromiumNames = 'chromium','chrome'
 foreach ($browserName in $chromiumNames) {
     $chromiumCommand = 
         $ExecutionContext.SessionState.InvokeCommand.GetCommand($browserName,'Application')
@@ -11354,7 +11381,21 @@ $this | Add-Member -MemberType NoteProperty -Force -Name '.ViewBox' -Value $view
       <ScriptProperty>
         <Name>WEBP</Name>
         <GetScriptBlock>
-                        $chromiumNames = 'chromium','chrome'
+                        &lt;#
+.SYNOPSIS
+    Gets the Turtle as a WEBP
+.DESCRIPTION
+    Gets the Turtle as a WEBP.
+
+    This will only rasterize the Turtle's SVG.
+.NOTES
+    This will not work if `$env:TURTLE_BOT` is set.
+#&gt;
+if ($env:TURTLE_BOT) {
+    return 
+}
+
+$chromiumNames = 'chromium','chrome'
 foreach ($browserName in $chromiumNames) {
     $chromiumCommand = 
         $ExecutionContext.SessionState.InvokeCommand.GetCommand($browserName,'Application')
