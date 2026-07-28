@@ -7253,10 +7253,10 @@ filter addAttributes {
 
 $turtleStyle = $this.Style
 
-# If we have set an element name
-if ($this.'#Element'.ElementName) {
+# If we have set an element
+if ($this.'#Element') {
 
-    # make this little filter to recursively turn the element back into XML
+    # make this little filter to recursively turn the element back into markup
     filter toElement {
         $in = $_
         # If the input was a dictionary with an element name
@@ -7347,8 +7347,8 @@ if ($this.'#Element'.ElementName) {
                 }) -join ([Environment]::NewLine)
             )&lt;/$($in.ElementName)&gt;"
         }
-        if ($_ -is [string]) {
-            $_
+        elseif ($in -is [string]) {
+            $in
         }
     }
 
@@ -7373,7 +7373,7 @@ elseif ($turtleStyle -and -not $this.Steps) {
     # Most of CSS will work in XML, but not all.
     # Any syntax references (i.e. `&lt;color&gt;`) do not work if XML encoded.
     # Therefore, we should return this element as string
-    return "&lt;style&gt;$($turtleStyle.Style.style)&lt;/style&gt;"
+    return "&lt;style&gt;$($turtleStyle.style)&lt;/style&gt;"
 }
 else {
     return $this.SVG
@@ -7402,10 +7402,22 @@ return
 .EXAMPLE
     # We can put a turtle inside of an aribtrary element
     turtle SpiderWeb element '&lt;div /&gt;'
+.EXAMPLE
+    turtle element "
+        &lt;&gt;
+            &lt;Example /&gt;
+            &lt;Links /&gt;
+        &lt;/&gt;
+    " element
 #&gt;
 
 param()
 
+if (-not $this) {
+    $this = turtle
+}
+
+# If we have not set an element, initialize it to a property bag.
 if (-not $this.'#Element') {
     $this | Add-Member NoteProperty '#Element' -Value ([Ordered]@{
         ElementName=''
@@ -7487,12 +7499,15 @@ foreach ($element in $unrolledArgs){
         continue        
     }
 
+    
     if ($elementName) {
-        
+        $this.'#Element'.ElementName = $element
+    } else {
+        $this.'#Element' = $element
     }
 }
 
-
+return $this
                     </SetScriptBlock>
       </ScriptProperty>
       <ScriptProperty>
