@@ -22,7 +22,7 @@
 .EXAMPLE
     turtle flower fill red green blue fillrule evenodd show
 #>
-if ($this.'.Fill') { 
-    return $this.'.Fill'
+if ($this.'#fill') { 
+    return $this.'#fill'
 }
 return 'transparent'
