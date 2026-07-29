@@ -144,6 +144,11 @@ if ($this.'#Element') {
         elseif ($in -is [string]) {
             $in
         }
+        elseif ($in -is [object[]]) {
+            foreach ($inin in $in) {
+                "$inin"
+            }
+        }
     }
 
     $elementMarkup = $this.'#Element' | toElement
