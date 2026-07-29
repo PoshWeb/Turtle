@@ -60,13 +60,13 @@ if ($null -ne $Curvature -and (
 }
 
 # If both coordinates are empty, there is no step
-if ($DeltaX -or $DeltaY) {
+# if ($DeltaX -or $DeltaY) {
     $this.Position = $DeltaX, $DeltaY
     if ($This.IsPenDown) {
         $this.Steps.Add(" l $DeltaX $DeltaY")
     } else {
         $this.Steps.Add(" m $DeltaX $DeltaY")
     }
-}
+# }
 
 return $this
