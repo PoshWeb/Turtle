@@ -820,26 +820,26 @@ return $this.Rotate(-90).LSystem('0',  [Ordered]@{
     https://www.needlescript.com/
 #&gt;
 param(
-# The number of petals in the bloom.
-[int]
-$Petals = $(Get-Random -Minimum 4 -Maximum 24),
-
 # The radius of each circle.
 [double]
 $Radius = $(Get-Random -Minimum 23 -Maximum 42),
+
+# The number of petals in the bloom.
+[int]
+$Petals = $(Get-Random -Minimum 4 -Maximum 24),
 
 # The spread between circles.
 [double]
 $Spread = $(Get-Random -Minimum 2.3 -Maximum 4.2),
 
+# If provided, will jump by this amount after each petal.
+[double]
+$Jump = 0.0,
+
 # The extent of a circle to draw.
 # Using a partial extent may result in incomplete shapes.
 [double]
-$Extent = 1.0,
-
-# If true, will leap between petals, rather than draw a line.
-[double]
-$Jump = 0.0
+$Extent = 1.0
 )
 
 if (-not $this) {$this = turtle}
@@ -850,9 +850,9 @@ $turtle = $this
 foreach ($n in 1..([Math]::Abs($Petals))) {
     $turtle = $turtle.Circle($Radius, $Extent).Rotate(360/$Petals)
     
-    if ($Jump) {
+    #if ($Jump) {
         $turtle = $turtle.Jump($Jump)
-    }
+    # }
 
     $turtle = $turtle.Forward($spread)        
 }
@@ -5709,14 +5709,14 @@ if ($null -ne $Curvature -and (
 }
 
 # If both coordinates are empty, there is no step
-if ($DeltaX -or $DeltaY) {
+# if ($DeltaX -or $DeltaY) {
     $this.Position = $DeltaX, $DeltaY
     if ($This.IsPenDown) {
         $this.Steps.Add(" l $DeltaX $DeltaY")
     } else {
         $this.Steps.Add(" m $DeltaX $DeltaY")
     }
-}
+# }
 
 return $this
 
