@@ -16,6 +16,46 @@
         </Members>
       </MemberSet>
       <AliasProperty>
+        <Name>@Keyframes</Name>
+        <ReferencedMemberName>Keyframe</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>∠</Name>
+        <ReferencedMemberName>Rotate</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⊿</Name>
+        <ReferencedMemberName>RightTriangle</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>□</Name>
+        <ReferencedMemberName>Square</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>▯</Name>
+        <ReferencedMemberName>Rectangle</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>☆</Name>
+        <ReferencedMemberName>Star</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⟁</Name>
+        <ReferencedMemberName>SierpinskiTriangle</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⬡</Name>
+        <ReferencedMemberName>Polygon</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⭘</Name>
+        <ReferencedMemberName>Circle</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>🕸</Name>
+        <ReferencedMemberName>Spiderweb</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>a</Name>
         <ReferencedMemberName>Arc</ReferencedMemberName>
       </AliasProperty>
@@ -42,6 +82,10 @@
       <AliasProperty>
         <Name>Arm</Name>
         <ReferencedMemberName>Leg</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>Attributes</Name>
+        <ReferencedMemberName>Attribute</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>Back</Name>
@@ -148,6 +192,10 @@
         <ReferencedMemberName>Teleport</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>PathAttributes</Name>
+        <ReferencedMemberName>PathAttribute</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>pd</Name>
         <ReferencedMemberName>PenDown</ReferencedMemberName>
       </AliasProperty>
@@ -232,8 +280,16 @@
         <ReferencedMemberName>Style</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>SVGAttributes</Name>
+        <ReferencedMemberName>SVGAttribute</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Terdragon</Name>
         <ReferencedMemberName>TerdragonCurve</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>TextAttributes</Name>
+        <ReferencedMemberName>TextAttribute</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>triagon</Name>
