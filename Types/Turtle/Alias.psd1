@@ -106,7 +106,10 @@
     '⭘' = 'Circle'
     '▯' = 'Rectangle'
     '□'  = 'Square'
-    '∠' = 'Rotate'
+    '∠' = 'Rotate' # Angle should be rotate
+    '⦣' = 'Left'   # Reversed angle should be reversed rotation
+    '⭢' = 'Forward'
+    '⭠' = 'Backward'
     '⊿' = 'RightTriangle'
     '⟁' = 'SierpinskiTriangle'
     '🕸' = 'Spiderweb'
