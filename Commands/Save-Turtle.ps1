@@ -56,9 +56,13 @@ function Save-Turtle {
     process {
         # If there is no input, return
         if (-not $inputObject) { return }
+        
         # Auto detect property names from file names
         $defaultToProperty =
             switch -regex ($FilePath) {
+                '\.(?>markdown|md)$' { 'Markdown' }
+                '\.(?>html|xml)$' { 'Element' }
+                '\.css$' { 'CSS' }
                 '\.png$' { 'PNG' } 
                 '\.jpe?g$' { 'JPEG' }
                 '\.webp$' { 'WEBP' }
