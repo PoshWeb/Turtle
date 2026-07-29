@@ -36,4 +36,7 @@
 param()
 
 # This just sets the style property.
-$this.Style = @($args | . { process { $_ }})
+$this.Style = @(
+    # after unrolling arguments 
+    $args | . { process { $_ }}
+)
