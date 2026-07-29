@@ -60,12 +60,12 @@ function Save-Turtle {
         # Auto detect property names from file names
         $defaultToProperty =
             switch -regex ($FilePath) {
-                '\.(?>markdown|md)$' { 'Markdown' }
-                '\.(?>html|xml)$' { 'Element' }
-                '\.css$' { 'CSS' }
-                '\.png$' { 'PNG' } 
-                '\.jpe?g$' { 'JPEG' }
-                '\.webp$' { 'WEBP' }
+                '\.(?>markdown|md)$' { 'Markdown'; break }
+                '\.(?>html|xml)$' { 'Element'; break }
+                '\.css$' { 'CSS'; break }
+                '\.png$' { 'PNG'; break } 
+                '\.jpe?g$' { 'JPEG'; break }
+                '\.webp$' { 'WEBP'; break }
                 'PatternMask' { 'PatternMask'; break }
                 'Mask' { 'Mask'; break }
                 'Pattern' { 'Pattern'; break }
