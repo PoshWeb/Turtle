@@ -116,7 +116,9 @@ filter outputHtml {
         {$outputItem -is [string]} { return $outputItem }
         {$outputItem -is [xml]} { return $outputItem.OuterXml }
         {$outputItem.HTML} { return $outputItem.HTML }
-        {$outputItem.Markdown} { return (ConvertFrom-Markdown -InputObject $outputItem.Markdown).HTML }
+        {$outputItem.Markdown} { return (ConvertFrom-Markdown -InputObject (
+            $outputItem.Markdown -join [Environment]::NewLine
+        )).HTML }
         default { "$outputItem" }
     }
 }
@@ -252,6 +254,7 @@ $headerElements = @(
     }
     # * Viewport metadata
     "<meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1.0' />"
+    "<meta charset='utf-8' />"
     # * Open Graph metadata
     if ($Page.MetaData -is [Collections.IDictionary] -and $Page.MetaData.Count) {
         foreach ($og in $Page.MetaData.GetEnumerator()) {
