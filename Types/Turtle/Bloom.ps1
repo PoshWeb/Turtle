@@ -7,6 +7,24 @@
     Inspired by Bloom in NeedleScript
 .LINK
     https://www.needlescript.com/
+.EXAMPLE
+    turtle bloom
+.EXAMPLE
+    turtle bloom 42 4 0
+.EXAMPLE
+    turtle bloom 42 4 4
+.EXAMPLE
+    turtle bloom 42 4 0 morph @(
+        turtle bloom 42 4 0
+        turtle bloom 42 4 4
+        turtle bloom 42 4 0
+    )
+.EXAMPLE
+    turtle bloom 42 4 0 morph @(
+        turtle bloom 42 4 21
+        turtle bloom 42 4 0
+        turtle bloom 42 4 21
+    )
 #>
 param(
 # The radius of each circle.
@@ -37,13 +55,11 @@ if ($petals -eq 0) { $petals = 1 }
 
 $turtle = $this
 foreach ($n in 1..([Math]::Abs($Petals))) {
-    $turtle = $turtle.Circle($Radius, $Extent).Rotate(360/$Petals)
-    
-    #if ($Jump) {
-        $turtle = $turtle.Jump($Jump)
-    # }
-
-    $turtle = $turtle.Forward($spread)        
+    $turtle = $turtle.
+        Circle($Radius, $Extent).
+        Rotate(360/$Petals).
+        Forward($Spread).
+        Jump($jump)
 }
 
 return $turtle
