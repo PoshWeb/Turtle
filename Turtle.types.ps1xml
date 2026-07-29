@@ -6512,7 +6512,7 @@ $scriptBlock = "
     # For the moment, only positional parameters are supported.
     $unboundArgs = @(for ($argNumber = 0 ; $argNumber -lt $argList.Length; $argNumber++ ) {
         # So we simply look for the name of each parameter.
-        $toParameterName = @($toParameters.Keys)[$argNumber]
+        $toParameterName = @($toParameters.Keys)[$argNumber] -replace '[\$\:]'
         # and if we found one
         if ($toParameterName) {
             # we map that parameter to the Nth argument.
@@ -6532,8 +6532,8 @@ $scriptBlock = "
             if ($argName -eq 'args') {
                 $argList
             }
-            elseif ($mappedParameters.Contains($argName)) {
-                $mappedParameters[$argName]
+            elseif ($mappedParameters.Contains("`$$argName")) {
+                $mappedParameters["`$$argName"]
             } else {
                 Write-Warning "Unknown variable $command"
             }            
