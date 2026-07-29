@@ -9,7 +9,7 @@ if ($PSScriptRoot) {
     Push-Location $PSScriptRoot
 }
 
-$monotile = turtle id [TurtleMonotile] rotate -90 TurtleMonotile 1
+$monotile = turtle id [TurtleMonotile] rotate -90 TurtleMonotile 100
 
 $monotile | Save-Turtle .\TurtleMonotile.svg
 
