@@ -28,6 +28,18 @@
         <ReferencedMemberName>RightTriangle</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>⊿⚘</Name>
+        <ReferencedMemberName>Triflower</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⌒</Name>
+        <ReferencedMemberName>Arc</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⌒⬡</Name>
+        <ReferencedMemberName>Arcygon</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>□</Name>
         <ReferencedMemberName>Square</ReferencedMemberName>
       </AliasProperty>
@@ -36,8 +48,36 @@
         <ReferencedMemberName>Rectangle</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>▽</Name>
+        <ReferencedMemberName>Tri</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>▽▽</Name>
+        <ReferencedMemberName>TriTri</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>☆</Name>
         <ReferencedMemberName>Star</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⚘</Name>
+        <ReferencedMemberName>Flower</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⚘⊿</Name>
+        <ReferencedMemberName>Triflower</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⚘▯</Name>
+        <ReferencedMemberName>Goldenflower</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⚘☆</Name>
+        <ReferencedMemberName>Starflower</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⚘⭘</Name>
+        <ReferencedMemberName>Bloom</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>⟁</Name>
@@ -46,6 +86,10 @@
       <AliasProperty>
         <Name>⦣</Name>
         <ReferencedMemberName>Left</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⪦</Name>
+        <ReferencedMemberName>CircleArc</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>⬡</Name>
