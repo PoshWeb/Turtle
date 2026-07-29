@@ -7747,6 +7747,11 @@ if ($this.'#Element') {
         elseif ($in -is [string]) {
             $in
         }
+        elseif ($in -is [object[]]) {
+            foreach ($inin in $in) {
+                "$inin"
+            }
+        }
     }
 
     $elementMarkup = $this.'#Element' | toElement
@@ -7825,19 +7830,16 @@ if (-not $this.'#Element') {
 
 $unrolledArgs = $args |. {process { $_ }}
 
-foreach ($element in $unrolledArgs){
+$elements = @(foreach ($element in $unrolledArgs){
     if ($element -is [string] -and 
         (-not ($element -as [xml])) -and 
-        $element -notmatch '\s'
+        $element -notmatch '[\&lt;\&gt;\s]'
     ) {
         $this.'#Element'.ElementName = $Element
         continue
     }
 
-    if ($element -is [xml] -or $Element -as [xml]) {
-        if ($Element -isnot [xml]) {
-            $element = $Element -as [xml]
-        }
+    if ($element -is [xml]) {        
         $this.'#Element'.ElementName = $Element.ChildNodes[0].LocalName
         foreach ($attribute in $element.ChildNodes[0].Attributes) {
             $this.'#Element'.Attribute[$attribute.Name] = $attribute.Value
@@ -7895,13 +7897,16 @@ foreach ($element in $unrolledArgs){
         }
         continue        
     }
-
     
     if ($elementName) {
         $this.'#Element'.ElementName = $element
     } else {
-        $this.'#Element' = $element
-    }
+        $element
+    }    
+})
+
+if ($elements) {
+    $this.'#Element' = $elements
 }
 
 return $this
