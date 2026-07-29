@@ -67,7 +67,12 @@
     Arguments = 'ArgumentList'
     Args = 'ArgumentList'
     Argument = 'ArgumentList'
+    Attributes = 'Attribute'
+    PathAttributes = 'PathAttribute'
+    TextAttributes = 'TextAttribute'
+    SVGAttributes = 'SVGAttribute'
     Keyframes = 'Keyframe'
+    '@Keyframes' = 'Keyframe'
     Styles = 'Style'
     Spoke = 'Spokes'
     Stick = 'Sticks'
@@ -89,11 +94,22 @@
     SierpińskiTriangle = 'SierpinskiTriangle'
     SierpińskiArrowHeadCurve = 'SierpinskiArrowHeadCurve'
     SierpińskiSquareCurve = 'SierpinskiSquareCurve'
-    SierpińskiCurve = 'SierpinskiCurve'    
+    SierpińskiCurve = 'SierpinskiCurve'
 
     Bezier = 'BezierCurve'
     Cubic = 'CubicBezierCurve'
 
     # Shortened fractal names
     Terdragon = 'TerdragonCurve'
+
+    # Symbols 
+    '⭘' = 'Circle'
+    '▯' = 'Rectangle'
+    '□'  = 'Square'
+    '∠' = 'Rotate'
+    '⊿' = 'RightTriangle'
+    '⟁' = 'SierpinskiTriangle'
+    '🕸' = 'Spiderweb'
+    '☆' = 'Star'
+    '⬡' = 'Polygon'
 }
