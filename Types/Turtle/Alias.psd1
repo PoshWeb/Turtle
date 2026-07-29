@@ -102,17 +102,30 @@
     # Shortened fractal names
     Terdragon = 'TerdragonCurve'
 
-    # Symbols 
-    '⭘' = 'Circle'
-    '▯' = 'Rectangle'
-    '□'  = 'Square'
-    '∠' = 'Rotate' # Angle should be rotate
-    '⦣' = 'Left'   # Reversed angle should be reversed rotation
-    '⭢' = 'Forward'
-    '⭠' = 'Backward'
-    '⊿' = 'RightTriangle'
+    # Symbols             
+    '⭘' = 'Circle'            # 🐢 ⭘ 1
+    '▯' = 'Rectangle'         # 🐢 ▯ 1
+    '□'  = 'Square'            # 🐢 □ 1
+    '∠' = 'Rotate'         # Angle should be rotate
+    '⦣' = 'Left'           # Reversed angle should be reversed rotation
+    '▽' = 'Tri'            # Equilateral triangle should be `Tri`
+    '⭢' = 'Forward'        # Forward should be `.Forward`
+    '⭠' = 'Backward'       # Backward should be `.Backward`
+    '⊿' = 'RightTriangle'      # 🐢 ⊿ -1 -1
     '⟁' = 'SierpinskiTriangle'
     '🕸' = 'Spiderweb'
-    '☆' = 'Star'
-    '⬡' = 'Polygon'
+    '☆' = 'Star'       # 🐢 ☆ 1 5
+    '⬡' = 'Polygon'    # 🐢 ⬡ 1 6
+    '⚘' = 'Flower'
+    '⌒'  = 'Arc'
+    '⪦'  = 'CircleArc' # 🐢 ⦣ 30 ⪦ 1 60
+
+    # Compound symbols
+    '⌒⬡' = 'Arcygon'    
+    '⚘⭘' = 'Bloom'
+    '⚘▯' = 'Goldenflower'    
+    '⚘⊿' = 'Triflower'
+    '⊿⚘' = 'Triflower'
+    '⚘☆' = 'Starflower'
+    '▽▽' = 'TriTri' # TriTri
 }
