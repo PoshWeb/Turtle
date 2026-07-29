@@ -44,12 +44,24 @@
         <ReferencedMemberName>SierpinskiTriangle</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>⦣</Name>
+        <ReferencedMemberName>Left</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>⬡</Name>
         <ReferencedMemberName>Polygon</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>⭘</Name>
         <ReferencedMemberName>Circle</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⭠</Name>
+        <ReferencedMemberName>Backward</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>⭢</Name>
+        <ReferencedMemberName>Forward</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>🕸</Name>
