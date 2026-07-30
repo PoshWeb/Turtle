@@ -1,3 +1,6 @@
+# Symbol Aliases
+A number of Turtle methods are aliased to a symbol.
+
 |symbol|method|
 |-|-|
 |∠|Rotate|
