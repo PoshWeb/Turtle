@@ -1,3 +1,14 @@
+<#
+.SYNOPSIS
+    Turtle Symbol Aliases
+.DESCRIPTION
+    Gets all the Turtle Symbol Aliases.
+
+    These can be used in place of the corresponding method name.
+.NOTES
+    This information is collected into a simple markdown table.
+#>
+
 $td = Get-TypeData -TypeName Turtle
 
 if ($PSScriptRoot) { 
