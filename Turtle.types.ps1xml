@@ -48,11 +48,11 @@
         <ReferencedMemberName>Rectangle</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
-        <Name>▽</Name>
+        <Name>△</Name>
         <ReferencedMemberName>Tri</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
-        <Name>▽▽</Name>
+        <Name>△△</Name>
         <ReferencedMemberName>TriTri</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
@@ -106,6 +106,10 @@
       <AliasProperty>
         <Name>⭢</Name>
         <ReferencedMemberName>Forward</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>🌹</Name>
+        <ReferencedMemberName>Rose</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
         <Name>🕸</Name>
