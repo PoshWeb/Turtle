@@ -1208,8 +1208,8 @@ function Get-Turtle {
         # |⌒⬡|Arcygon|
         # |□|Square|
         # |▯|Rectangle|
-        # |▽|Tri|
-        # |▽▽|TriTri|
+        # |△|Tri|
+        # |△△|TriTri|
         # |☆|Star|
         # |⚘|Flower|
         # |⚘⊿|Triflower|
