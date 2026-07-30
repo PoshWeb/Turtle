@@ -108,7 +108,7 @@
     '□'  = 'Square'            # 🐢 □ 1
     '∠' = 'Rotate'         # Angle should be rotate
     '⦣' = 'Left'           # Reversed angle should be reversed rotation
-    '▽' = 'Tri'            # Equilateral triangle should be `Tri`
+    '△' = 'Tri'            # Equilateral triangle should be `Tri`
     '⭢' = 'Forward'        # Forward should be `.Forward`
     '⭠' = 'Backward'       # Backward should be `.Backward`
     '⊿' = 'RightTriangle'      # 🐢 ⊿ -1 -1
@@ -127,5 +127,9 @@
     '⚘⊿' = 'Triflower'
     '⊿⚘' = 'Triflower'
     '⚘☆' = 'Starflower'
-    '▽▽' = 'TriTri' # TriTri
+    '△△' = 'TriTri' # TriTri
+
+    # Emoji
+    '🌹' = 'Rose'
+
 }
