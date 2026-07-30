@@ -6655,10 +6655,10 @@ $Side = (
 )
 )
 
-if (-not $this) {$this = turtle}
 $turtle = $this
+if (-not $turtle) { $turtle = turtle }
 foreach ($n in 1..3) {
-    $turtle = $turtle.Forward($Step).Rotate(360/3)    
+    $turtle = $turtle.Forward($Side).Rotate(360/3)    
 }
 return $turtle
 
