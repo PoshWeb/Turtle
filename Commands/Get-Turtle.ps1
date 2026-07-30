@@ -31,7 +31,12 @@ function Get-Turtle {
 
         Each argument can be the name of a method or property of the turtle object.        
 
-        After a member name is encountered, subsequent arguments will be passed to the member as parameters.
+        After a member name is encountered,
+        subsequent arguments will be passed to the member as parameters.
+
+        This repeats until there are no more arguments to process.
+
+        This lets us write Turtle in a natural syntax.
     .EXAMPLE
         # We can write shapes as a series of steps.
         # Let's start with a simple diagonal line
@@ -150,7 +155,7 @@ function Get-Turtle {
             'rotate', 90
         ) * 4)
     .EXAMPLE
-        # We can make a pair of parallax astroids and morph them.
+        # We can make a pair of parallax astroids and morph them.        
         $parallaxAstroid = turtle id ParallaxAstroid (
             @(
                 foreach ($n in 1..10) {
@@ -191,9 +196,6 @@ function Get-Turtle {
         # this can make composing complex shapes easier.
         # Let's take the previous example and repeat it 8 times.
         turtle @('circle',42,0.5,'rotate',90 * 8)
-    .EXAMPLE
-        # Let's make a triangle by multiplying steps
-        turtle ('forward', 10, 'rotate', 120 * 3)
     .EXAMPLE
         # We can also write this with a polygon
         turtle polygon 10 3    
@@ -283,7 +285,29 @@ function Get-Turtle {
                 Get-Random -Max 360 -Min -360
             ) Flower 50 5 $sideCount 72
             turtle Flower 50 10 $sideCount 72
-        )        
+        )
+    .EXAMPLE
+        # We can draw many types of Flowers
+        # A `triflower` is a flower made of Right Triangles
+        turtle TriFlower 50 15 24 25
+    .EXAMPLE
+        # Triflowers morph smoothly
+        turtle TriFlower 50 15 25 24 morph @(
+            turtle TriFlower 50 15 25 24 
+            turtle TriFlower 25 15 50 24 
+            turtle TriFlower 50 15 25 24 
+        )
+    .EXAMPLE
+        # We can draw a flower using golden rectangles
+        # We call this a `GoldenFlower`
+        turtle GoldenFlower 50 15 24
+    .EXAMPLE
+        # GoldenFlowers also morph smoothly
+        turtle GoldenFlower 50 15 24 morph @(
+            turtle GoldenFlower 50 15 24
+            turtle GoldenFlower -50 30 24
+            turtle GoldenFlower 50 15 24
+        )
     .EXAMPLE
         ### Petals and Flowers
         # We can draw a pair of arcs and turn back after each one.
@@ -324,12 +348,96 @@ function Get-Turtle {
             $flowerPetals
         )
     .EXAMPLE
-        ### Triflowers
-        # We can make Flowers out of Right Triangles
-        # We call these triflowers
-        turtle triflower 42 15 21 24
+        # We can also draw flower out of circles.
+        # We call this a `bloom`
+        turtle bloom
     .EXAMPLE
-        turtle triflower
+        # Blooms take a radius, petal count, spread        
+        turtle bloom 42 6 60 6
+    .EXAMPLE
+        # Blooms look blooming beautiful when morphed
+        turtle bloom 42 6 60 morph @(
+            turtle bloom 42 6 60
+            turtle bloom 42 6 10
+            turtle bloom 42 6 60
+        )
+    .EXAMPLE
+        # We can also provide a jump and extent
+        turtle bloom 42 8 120 21 0.25
+    .EXAMPLE
+        turtle bloom 42 8 120 21 0.25 morph @(
+            turtle bloom 42 8 120 21 0.25
+            turtle bloom 42 8 120 0 0.25
+            turtle bloom 42 8 120 21 0.25
+        )        
+    .EXAMPLE
+        turtle bloom 42 4 120 0 0.5
+    .EXAMPLE
+        turtle bloom 42 4 120 0 0.5 morph @(
+            turtle bloom 42 4 120 0 0.5
+            turtle bloom 42 4 120 0 -0.5
+            turtle bloom 42 4 120 0 0.5
+        )
+    .EXAMPLE
+        #### Roses
+        # We can draw roses
+        # They use the format `$radius` `$frequency` `$extent` `$stepcount`
+        Turtle rose 42 2
+    .EXAMPLE
+        # All the simple roses
+        # 
+        # between 1 and 8
+        Turtle rose 42 2 1 
+        Turtle rose 42 3 1
+        Turtle rose 42 4 1
+        Turtle rose 42 5 1
+        Turtle rose 42 6 1
+        Turtle rose 42 7 1
+        Turtle rose 42 8 1
+    .EXAMPLE
+        # All the simple fractional roses
+        #
+        # between 1/2 and 1/8
+        Turtle rose 42 (1/2) 2
+        Turtle rose 42 (1/3) 3
+        Turtle rose 42 (1/4) 4
+        Turtle rose 42 (1/5) 5
+        Turtle rose 42 (1/6) 6
+        Turtle rose 42 (1/7) 7
+        Turtle rose 42 (1/8) 8
+    .EXAMPLE
+        # Any roses with an equal number of steps should morph
+        turtle Rose 100 2 1 180 morph @(
+            turtle Rose 100 2 1 180
+            turtle Rose 100 4 1 180
+            turtle Rose 100 2 1 180
+        )
+    .EXAMPLE
+        # As we reduce the number of steps, the rose gets more pointed.
+        turtle Rose 100 2 1 90 morph @(
+            turtle Rose 100 2 1 90
+            turtle Rose 100 4 1 90
+            turtle Rose 100 2 1 90
+        )
+    .EXAMPLE
+        turtle Rose 100 2 45 morph @(
+            turtle Rose 100 2 1 45
+            turtle Rose 100 4 1 45
+            turtle Rose 100 2 1 45
+        )
+    .EXAMPLE
+        turtle Rose 100 2 8 morph @(
+            turtle Rose 100 2 1 8
+            turtle Rose 100 4 1 8
+            turtle Rose 100 2 1 8
+        )
+    .EXAMPLE
+        # We can rotate and repeat roses
+        turtle repeat 4 [ rotate 90 rose 42 2 ] 
+    .EXAMPLE
+        turtle repeat 8 [ rotate 45 rose 42 2 ]    
+    .EXAMPLE
+        turtle repeat 2 [ rotate 180 rose 42 (1/2) 2 ]
     .EXAMPLE
         #### Arcs and Suns
         # We can arc right or left
@@ -505,7 +613,7 @@ function Get-Turtle {
     .EXAMPLE
         turtle spirolateral 23 144 8
     .EXAMPLE
-        turtle spirolateral 23 72 8
+        turtle spirolateral 23 72 8    
     .EXAMPLE
         #### Bezier Curves
         # We can draw simple Bezier Curves.
@@ -578,7 +686,68 @@ function Get-Turtle {
             turtle start 0 100 c 0 0 0 0 200 0
             turtle start 0 100 c 0 -100 200 100 200 0
             turtle start 0 100 c 0 0 0 0 200 0
-        )    
+        )
+    .EXAMPLE
+        #### Curvy Turtles
+        # Turtles can be curvy
+        # We can tell turtle to use a Curvature
+        turtle curvature 1 curvetype QuadraticCurve rotate 45 square
+    .EXAMPLE
+        # We can tell turtle to use a Simple Bezier Curvature
+        turtle curvature 1 curvetype SimpleCurve rotate 45 square
+    .EXAMPLE
+        # We can tell turtle to use a Cubic Bezier Curvature
+        turtle curvature 1 curvetype CubicCurve rotate 45 square
+    .EXAMPLE
+        # We can morph between the same curve type
+        # We can also specify the curve with the first letter in brackets.
+        # Let's morph between curves
+        turtle rotate 45 square 42 morph @(
+            turtle curvature 0 curvetype [q] rotate 45 square 42
+            turtle curvature 1 curvetype [q] rotate 45 square 42
+            turtle curvature 0 curvetype [q] rotate 45 square 42
+        )
+    .EXAMPLE
+        turtle rotate 45 square 42 morph @(
+            turtle curvature 0 curvetype [c] rotate 45 square 42
+            turtle curvature 1 curvetype [c] rotate 45 square 42
+            turtle curvature 0 curvetype [c] rotate 45 square 42
+        )
+    .EXAMPLE
+        turtle rotate 45 square 42 morph @(
+            turtle curvature 0 curvetype [s] rotate 45 square 42
+            turtle curvature 1 curvetype [s] rotate 45 square 42
+            turtle curvature 0 curvetype [s] rotate 45 square 42
+        )
+    .EXAMPLE
+        #### Curvy Flowers
+        # We can make any of our flowers curvy
+        turtle curvature 1 curvetype [q] flower 42 60 6 6
+    .EXAMPLE
+        # Curvy Flowers morph nicely
+        turtle flower 42 60 6 6 morph @(
+            turtle curvature 0 curvetype [q] flower 42 60 6 6
+            turtle curvature 2 curvetype [q] flower 42 60 6 6
+            turtle curvature 0 curvetype [q] flower 42 60 6 6
+        )
+    .EXAMPLE
+        turtle starflower 42 60 6 6 morph @(
+            turtle curvature 0 curvetype [q] starflower 42 60 6 6
+            turtle curvature 2 curvetype [q] starflower 42 60 6 6
+            turtle curvature 0 curvetype [q] starflower 42 60 6 6
+        )
+    .EXAMPLE
+        turtle triflower 42 60 6 6 morph @(
+            turtle curvature 0 curvetype [q] triflower 42 60 6 6
+            turtle curvature 2 curvetype [q] triflower 42 60 6 6
+            turtle curvature 0 curvetype [q] triflower 42 60 6 6
+        )
+    .EXAMPLE
+        turtle goldenflower 42 60 6 6 morph @(
+            turtle curvature 0 curvetype [q] goldenflower 42 60 6 6
+            turtle curvature 1 curvetype [q] goldenflower 42 60 6 6
+            turtle curvature 0 curvetype [q] goldenflower 42 60 6 6
+        )
     .EXAMPLE
         #### Bar Graphs
         # Lets get practical.  Turtle can easily make a bar graph.
@@ -707,8 +876,7 @@ function Get-Turtle {
                 'Rotate', 90 * 4
             )
             $quadrants
-        )
-        
+        )        
     .EXAMPLE
         # Lets morph positive sextants into negative sextants
         $sextants = Turtle id Sextants @(
@@ -897,7 +1065,240 @@ function Get-Turtle {
             turtle web 42 $spokes $rings
         ) stroke goldenrod pathclass 'yellow-stroke'
     .EXAMPLE
-        #### L-Systems
+        #### Websites
+
+        # We can make websites in Turtle 
+        turtle markdown "            
+
+        We can write websites in Turtle.
+
+        A Turtle can be made of Markdown, like this one.
+
+        If we can string a few sentences together, we can write a website.
+
+        "
+    .EXAMPLE
+        turtle markdown '            
+
+        Markdown turtles are _very_ cool.
+        
+        Markdown has tons of useful features, like:
+
+        * Bullet Point Lists
+        * Numbered Lists
+        * Tables
+        * Headings
+        * Code Blocks
+
+        All we need to do is:
+
+        ~~~PowerShell
+        turtle markdown $markdown
+        ~~~
+        '        
+    .EXAMPLE
+        # We can also create arbitrary elements
+        turtle element "<p>Like this paragraph</p>"
+    .EXAMPLE
+        # We can use `turtle style` to generate CSS
+
+        turtle style @{
+            '.cool6' = @{
+                'font-size' = '1.5rem'
+                'font-style' = 'italic'
+            }
+        }
+    .EXAMPLE    
+        # We can use `turtle class` to give an element class
+        # We can make a list of turtles and multiply them
+        # This repeats the element N times
+
+        @(
+            turtle class cool6 element '<span>Cool</span>'
+        ) * 6
+    .EXAMPLE
+        # We can also use a string expansion `$()`. 
+        # 
+        # This embeds multiple turtles into one string.
+        "$(
+            @(
+                turtle class cool6 element '<span>Cool</span>'
+            ) * 6
+        )"
+    .EXAMPLE
+        # We can also `-join` turtles by a string.
+        #
+        # That string can be anything
+        (@(
+            turtle class cool6 element '<span>Cool</span>'
+        ) * 6) -join ' <b>Very</b> '
+    .EXAMPLE
+        # We can also simply write inline html
+        turtle element "
+        <menu>
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+        </menu>
+        "
+    .EXAMPLE
+        # We can use htmx  
+        turtle element '
+        <button hx-on:click="alert(''You clicked me!'')">
+            Click Me!
+        </button>
+        '        
+    .EXAMPLE
+        # We can create keyframes        
+        turtle square 42 fill '#4488ff' stroke '#224488' keyframe ([Ordered]@{
+            'wiggle3d' = [Ordered]@{
+                '0%,100%' = [Ordered]@{
+                    transform = "rotateX(-3deg) rotateY(-3deg) rotateZ(-3deg)"            
+                }
+                '50%' = [Ordered]@{
+                    transform = "rotateX(3deg) rotateY(3deg) rotateZ(3deg)"
+                }
+            }
+        }) pathclass wiggle3d
+    .EXAMPLE
+        turtle keyframe ([Ordered]@{
+            'wiggle3d' = [Ordered]@{
+                '0%,100%' = [Ordered]@{
+                    transform = "rotateX(-3deg) rotateY(-3deg) rotateZ(-3deg)"            
+                }
+                '50%' = [Ordered]@{
+                    transform = "rotateX(3deg) rotateY(3deg) rotateZ(3deg)"
+                }
+            }
+        })
+        turtle class wiggle3d markdown '# Turtles Are Fun'
+
+    .EXAMPLE
+        #### Extending Turtle
+        # Turtle is extensible
+        #
+        # We can add new methods to turtle with `turtle to`
+        turtle to [hexagon] :size 42 [ repeat 6 [ forward :size rotate 60 ]] hexagon
+    .EXAMPLE
+        # We can also define a method in PowerShell
+        turtle to [menu] {
+            param()
+            "<menu>$($args -join ' ')</menu>"
+        }
+        turtle menu @(
+            "<a href='/'><button>Home</button></a>"
+            "<a href='/History'><button>History</button></a>"
+            "<a href='/Commands/Get-Turtle'><button>Examples</button></a>"
+        )
+    .EXAMPLE
+        #### Drawing with Symbols
+        # Fun fact: Glyphs _are_ Turtles.
+        #
+        # Each character is a Turtle living in a box
+        # 
+        # Many methods are aliased to symbols
+        #
+        # Here are some of the symbols we can use
+        # |Symbol|Method|
+        # |-|-|
+        # |∠|Rotate|
+        # |⊿|RightTriangle|
+        # |⊿⚘|Triflower|
+        # |⌒|Arc|
+        # |⌒⬡|Arcygon|
+        # |□|Square|
+        # |▯|Rectangle|
+        # |▽|Tri|
+        # |▽▽|TriTri|
+        # |☆|Star|
+        # |⚘|Flower|
+        # |⚘⊿|Triflower|
+        # |⚘▯|Goldenflower|
+        # |⚘☆|Starflower|
+        # |⚘⭘|Bloom|
+        # |⟁|SierpinskiTriangle|
+        # |⦣|Left|
+        # |⪦|CircleArc|
+        # |⬡|Polygon|
+        # |⭘|Circle|
+        # |⭠|Backward|
+        # |⭢|Forward|         
+        # 
+        # We can also use the 🐢 symbol as an alias for `turtle`
+
+        # Let's draw a few shapes this way.
+        🐢 ∠ 120 ⭢ 1 ∠ 120 ⭢ 1 ∠ 120 ⭢ 1
+    .EXAMPLE    
+        # The golden ratio
+        🐢 □ 1 ▯ 1
+    .EXAMPLE
+        # One third of a circle
+        🐢 ⪦ 1 (360 * 1/3)
+    .EXAMPLE
+        # A 1/3 2/3rd pie graph
+        🐢 ⪦ 1 (360 * 1/3 ) ∠ ( 360 * 1/3 ) ⪦ 1 ( 360 * 2/3 )
+    .EXAMPLE
+        🐢 □ 1 ⊿ 1 1 
+    .EXAMPLE
+        # A flower
+        🐢 repeat 6 [ ∠ 60 ⬡ 6 6 ]
+    .EXAMPLE    
+        # A Starflower
+        🐢 repeat 5 [ ∠ 72 ☆ 6 5 ]
+    .EXAMPLE    
+        # A bloom
+        🐢 repeat 6 [ ⭘ 42 ∠ 60 ]
+    .EXAMPLE    
+        # A triflower
+        🐢 repeat 6 [ ⊿ 6 6 ∠ 60 ]
+    .EXAMPLE    
+        # A Flower and Starflower
+        🐢 repeat 5 [ ∠ 72 ☆ 6 5 ⬡ 6 5  ]
+    .EXAMPLE    
+        # A Flower, StarFlower, and Bloom        
+        🐢 repeat 5 [ ∠ 72 ☆ 6 5 ⬡ 6 5 ⭘ 6 ]
+    .EXAMPLE    
+        # A Flower, StarFlower, Triflower, and Bloom        
+        🐢 repeat 6 [ ∠ 60 ☆ 6 6 ⬡ 6 6 ⊿ 6 6 ⭘ 6 ]
+    .EXAMPLE    
+        # A Parallax View
+        🐢 ⊿ 1 -2 ⊿ 2 -2  ⊿ -2 -2 ⊿ -1 -2
+    .EXAMPLE
+        # A Parallax Astroid
+        🐢 (
+            @(
+                foreach ($n in 1..7) {
+                    '⊿',(7 - $n),$n
+                    '⊿',$n,(7-$n)    
+                }
+                '∠',90      
+            ) * 4
+        )
+    .EXAMPLE
+        # A Parallax Astroid Morph
+        $moves = @(
+            foreach ($n in 1..7) {
+                '⊿',(7 - $n),$n
+                '⊿',$n,(7-$n)    
+            }
+            '∠',90
+        ) * 4
+        🐢 $moves morph @(
+            🐢 $moves
+            🐢 (
+                @(
+                    foreach ($n in 1..7) {
+                        '⊿',(7 - $n),($n*-1)
+                        '⊿',($n*-1),(7-$n)    
+                    }
+                    '∠',90      
+                ) * 4
+            )
+
+            🐢 $moves
+        )
+    .EXAMPLE
+        #### Fractals
         # Turtle can draw a number of fractals
         turtle BoxFractal 42 4
     .EXAMPLE
@@ -910,9 +1311,6 @@ function Get-Turtle {
         # We can make ring fractals
         turtle RingFractal 42 4
     .EXAMPLE
-        # We can make a Pentaplexity
-        turtle Pentaplexity 42 3
-    .EXAMPLE
         # We can make a Triplexity
         turtle Triplexity 42 4
     .EXAMPLE
@@ -924,6 +1322,19 @@ function Get-Turtle {
     .EXAMPLE
         # We can make a Koch Snowflake
         turtle KochSnowflake 42
+    .EXAMPLE
+        # We can make Krishna Anklets
+        turtle KrishnaAnklets 42 4       
+    .EXAMPLE
+        # Krishna Anklets look beautiful when curved and morphed
+        turtle KrishnaAnklets 42 4 morph @(
+            turtle curvature -1 curvetype [q] KrishnaAnklets 42 4
+            turtle curvature 1 curvetype [q] KrishnaAnklets 42 4
+            turtle curvature -1 curvetype [q] KrishnaAnklets 42 4
+        )
+    .EXAMPLE
+        # We can make a Pentaplexity
+        turtle Pentaplexity 42 3
     .EXAMPLE
         # We can draw the Levy Curve
         turtle LevyCurve 42 6
@@ -963,14 +1374,22 @@ function Get-Turtle {
         turtle @('SierpinskiSquareCurve', -42, 4, 'Rotate', 90 * 4)     
     .EXAMPLE
         # The SierpinskiTriangle is a Fractal classic    
-        turtle SierpinskiTriangle 42 4    
+        turtle SierpinskiTriangle 42 4
     .EXAMPLE
         # We can morph with no parameters to try to draw step by step
         # 
         # This will result in large files, and may not work in all browsers
         # 
         # For best results, adjust the precision
-        turtle SierpinskiTriangle 42 3 morph 
+        turtle SierpinskiTriangle 42 3 morph
+    .EXAMPLE
+        # We can morph most shapes with a curvature
+        # SierpinskiTriangle 42 3
+        turtle SierpinskiTriangle 42 3 morph @(
+            turtle curvature -1 curvetype [q] SierpinskiTriangle 42 3
+            turtle curvature 1 curvetype [q] SierpinskiTriangle 42 3
+            turtle curvature -1 curvetype [q] SierpinskiTriangle 42 3
+        )
     .EXAMPLE
         # Let's draw two reflected Sierpinski Triangles
         turtle @(
@@ -982,16 +1401,16 @@ function Get-Turtle {
         # Now let's draw a dozen reflected Sierpinski Triangles
         turtle @(
             'rotate', 60,
-            'SierpinskiTriangle', 42, 4,
-            'SierpinskiTriangle', -42, 4,
+            'SierpinskiTriangle', 42, 3,
+            'SierpinskiTriangle', -42, 3,
             'rotate', 30 *
                 12
         )
     .EXAMPLE
         # We can draw a 'Sierpinski Snowflake' with multiple Sierpinski Triangles.
-        turtle @('rotate', 30, 'SierpinskiTriangle',42,4 * 12)
+        turtle @('rotate', 30, 'SierpinskiTriangle',42,3 * 12)
     .EXAMPLE
-        turtle @('rotate', 45, 'SierpinskiTriangle',42,4 * 24)
+        turtle @('rotate', 45, 'SierpinskiTriangle',42,3 * 24)    
     .LINK
         https://psturtle.com/Commands/Get-Turtle
     .LINK
@@ -1076,7 +1495,6 @@ function Get-Turtle {
         if ($PSBoundParameters.AsJob) {
             # remove the -AsJob variable from our parameters
             $null = $PSBoundParameters.Remove('AsJob')
-
             
             $jobCommand = 
                 $threadJob = 
