@@ -115,7 +115,7 @@ $Axiom,
 $Rule = [Ordered]@{},
 
 # The order of magnitude (or number of iterations)
-[Alias('Iterations', 'IterationCount', 'N', 'Steps', 'N','StepCount')]
+[Alias('Iterations', 'IterationCount', 'N', 'Steps', 'StepCount')]
 [int]
 $Order = 2,
 
