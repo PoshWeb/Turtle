@@ -24,7 +24,15 @@ $characterClasses = @(
     'IsCombiningHalfMarks'
 ) -replace '^', '\p{' -replace '$','}' -join '' 
 
+
+
 $table = @(
+    '# Symbol Aliases'
+
+    'A number of Turtle methods are aliased to a symbol.'
+    
+    ''    
+
     "|symbol|method|"
     "|-|-|"
     $td.Members.Values | 
