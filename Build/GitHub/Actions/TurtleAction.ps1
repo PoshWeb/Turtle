@@ -151,9 +151,9 @@ function InitializeAction {
             Invoke-RestMethod -Uri "https://api.github.com/user/$actorID"
         }
     
-    if (-not $UserEmail) { $UserEmail = "$UserName@noreply.github.com" }
+    if (-not $UserEmail) { $UserEmail = "$actorId+$UserName@users.noreply.github.com" }
     git config --global user.email $UserEmail
-    git config --global user.name  $actorInfo.name
+    git config --global user.name  $UserName
 
     # Pull down any changes
     git pull | Out-Host
@@ -186,7 +186,7 @@ function InvokeActionModule {
     }
     $scriptFiles = @(
         Get-ChildItem -Recurse -Path $env:GITHUB_WORKSPACE |
-            Where-Object Name -Match "\.$($ActionModuleName)\.ps1$"
+            Where-Object Name -Match "\.$($ActionModuleName)s?\.ps1$"
         if ($ActionScript) {
             if ($ActionScript -match '^\s{0,}/' -and $ActionScript -match '/\s{0,}$') {
                 $ActionScriptPattern = $ActionScript.Trim('/').Trim() -as [regex]
@@ -197,7 +197,7 @@ function InvokeActionModule {
                 }
             } else {
                 Get-ChildItem -Recurse -Path $env:GITHUB_ACTION_PATH |
-                    Where-Object Name -Match "\.$($ActionModuleName)\.ps1$" |
+                    Where-Object Name -Match "\.$($ActionModuleName)s?\.ps1$" |
                     Where-Object FullName -Like $ActionScript
             }
         }
@@ -282,7 +282,7 @@ function PushActionOutput {
     if ($anyFilesChanged) {
         "::notice::$($anyFilesChanged) Files Changed" | Out-Host        
     }
-    if ($CommitMessage -or $anyFilesChanged) {
+    if ($CommitMessage -or $anyFilesChanged) {        
         if ($CommitMessage) {
             Get-ChildItem $env:GITHUB_WORKSPACE -Recurse |
                 ForEach-Object {
@@ -293,6 +293,12 @@ function PushActionOutput {
                 }
     
             git commit -m $ExecutionContext.SessionState.InvokeCommand.ExpandString($CommitMessage)
+        } elseif (
+            $anyFilesChanged -and 
+                (-not $NoCommit) -and
+                    $gitHubEvent.head_commit.message
+        ) {
+            git commit -m "$($gitHubEvent.head_commit.message)" | Out-Host
         }
     
         $checkDetached = git symbolic-ref -q HEAD
@@ -331,14 +337,7 @@ filter ProcessOutput {
         }
     if ($shouldCommit -and -not $NoCommit) {
         "$fullName has changed, and should be committed" | Out-Host
-        git add $fullName
-        if ($out.Message) {
-            git commit -m "$($out.Message)" | Out-Host
-        } elseif ($out.CommitMessage) {
-            git commit -m "$($out.CommitMessage)" | Out-Host
-        }  elseif ($gitHubEvent.head_commit.message) {
-            git commit -m "$($gitHubEvent.head_commit.message)" | Out-Host
-        }
+        git add $fullName        
         $anyFilesChanged = $true
     }    
     $out
