@@ -6,14 +6,16 @@
 .NOTES
     Icons will be cached in memory to avoid repeated CDN requests.
 .EXAMPLE
-    . $site.Includes.Feather "clipboard"
+    /_includes/FeatherIcon clipboard
 .LINK
     https://feathericons.com/
 #>
+[OutputType('image/svg+xml')]
 param(
 # The feather icon name
 [string]
-$Icon = 'chevron-right',
+$Icon = 'terminal',
+
 [uri]
 $FeatherCDN = "https://cdn.jsdelivr.net/gh/feathericons/feather@latest/icons/"
 )
