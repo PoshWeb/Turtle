@@ -125,120 +125,196 @@ filter outputHtml {
 
 $outputHtml = @($argsAndinput | outputHtml) -join [Environment]::NewLine
 
+
 #region Declare global styles
-$style = @"
-body {
-    max-width: 100vw;
-    height: 100vh;
-    font-family: '$Font', sans-serif;
-    margin: 1em;
-}
+$grid = [Ordered]@{display='grid'}
+$flex = [Ordered]@{display='flex'}
 
-header, footer {
-    text-align: center;
-}
+$turtleStyle = 🐢 style ([Ordered]@{
+    body =
+        [Ordered]@{
+            'max-width' = '100%'
+            'height' = '100vh'
+            'font-family' = "'$font', sans-serif"
+        }
 
-header > svg {
-    display: block;
-    text-align: center;
-}
+    header = 
+        $grid + [Ordered]@{        
+            'position' = 'sticky'
+            'grid-area' = 'header'
+            'grid-template-areas' = '"social title options"'
+            'grid-template-columns' = '1fr 3fr 1fr'
+            'transform-style' = 'preserve-3d'
+            'top' = '0vh'
+            'left' = '0vw'
+            'max-width' = '100%'
+            'height' = '10rem'
+            'z-index' = 10
+            'margin' = '1rem'
+            'gap' = '0.5rem'            
+            'background' = 
+                'color-mix(in srgb, var(--background) 25%, transparent)'
+        }
 
-$(
-    if ($HeaderMenu) {
-        # If the device is in landscape mode, use larger padding and gaps
-        "@media (orientation: landscape) {"
-            ".header-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5em; position: sticky; top: 0px}"
-            ".header-menu-item { text-align: center; padding: 0.5em; }"
-        "}"
+    footer =
+        $grid + [Ordered]@{
+            'grid-area'='footer'
+            'position'='sticky'    
+            'grid-template-rows' ='auto auto'
+            'max-width' = '100vw'
+            'height' = '1vh'
+            'bottom' =  '0'
+            'z-index' = 100
+        }
 
-        # If the device is in portrait mode, use smaller padding and gaps
-        "@media (orientation: portrait) {"
-            ".header-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(66px, 1fr)); gap: 0.25em; position: sticky; top: 0px }"
-            ".header-menu-item { text-align: center; padding: 0.25em; }"
-        "}"
+
+    'article' = 
+        [Ordered]@{
+            'background' = 
+                'color-mix(in srgb, var(--background) 50%, transparent)'
+        }
+
+    '.background' = [Ordered]@{
+        'position' = 'fixed'
+        'top' = 0
+        'left' = 0
+        'max-width' = '100%'
+        'height' = '100%'
     }
-)
 
-.logo { 
-    display: inline;
-    height: 4.2rem;
-}
+    '.foreground' = $grid + [Ordered]@{        
+        'grid-template-rows' = 'auto 1fr auto'
+        'grid-template-areas' = '"header" "main" "footer"'
+    }    
 
-.expandInline { display: flex; flex-direction: row; }
-
-@media (orientation: landscape) {
-    .logo { height: 4.2rem; }
-    .site-title, .page-title {
-        font-size: 1.23rem;
-        line-height: .75rem
+    '.main' = [Ordered]@{
+        'grid-area' = 'main'
+        'max-width' = '90%'
+        'margin-top' = '10rem'
+        'padding-left' = '5%'
+        'padding-right' = '5%'
+        'font-size' = if ($page.FontSize) {
+            $page.FontSize
+        } elseif ($site.FontSize) {
+            $site.FontSize
+        } else {
+            "1.23em"
+        }
+        'line-height' = '1.5rem'        
     }
-}
 
-@media (orientation: portrait) {
-    .logo { height: 2.3rem; }
-    .site-title, .page-title {
-        font-size: 0.84em;
-        line-height: .66rem
+    '.social' = $flex + [Ordered]@{
+        'grid-area' = 'social'        
     }
-    .expandInline { display: flex; flex-direction: column; }
-}
+    
+    '.title' = [Ordered]@{
+        'grid-area' = 'title'
+        'place-self' = 'center'
+        'place-items' = 'center'
+        'text-align' = 'center'
+    }
 
-pre, code { font-family: '$CodeFont', monospace; }
+    '.options' = [Ordered]@{
+        'grid-area' = 'options'
+    }
 
-a, a:visited {
-    text-decoration: none;
-}
 
-a:hover, a:focus {
-    text-decoration: underline;    
-}
+    '@keyframes grow-progress' = [Ordered]@{
+        from = @{transform='scaleX(0) scaleY(1)'}
+        to = @{transform='scaleX(1) scaleX(3)'}
+    }
 
-.main {
-    $(if ($page.FontSize) {
-        "font-size: $($page.FontSize);"
-    } elseif ($site.FontSize) {
-        "font-size: $($site.FontSize);"
-    } else {
-        "font-size: 1.23em;"
-    })
-}
+    ".scroll-progress"  = [Ordered]@{
+        'max-width' = '100%'
+        'height' = '1rem'
+        'margin-top' = 'auto'
+        'margin-bottom' = 'auto'
+        'left' = 0
+        'transform-origin' = '0 50%'
+        'background' = 'linear-gradient(to right, transparent, var(--foreground))'
+        'animation' = 'grow-progress auto linear'
+        'animation-timeline' = 'scroll()'
+    }
 
-.taskbar {    
-    position: sticky;
-    top: 0; right: 0; z-index: 10;    
-    display: flex; flex-direction: row-reverse;
-    align-content: right; align-items: flex-start;
-    margin: 1em; gap: 0.5em;
-}
+    'header > svg' = [Ordered]@{
+        'display' = 'block'
+        'text-align' = 'center'
+    }
 
-.taskbar summary { 
-    color: var(--cyan);
-    list-style-type: none;
-}
 
-.background {
-    position: fixed;    
-    top: 0; left: 0;
-    margin-bottom: 0;
-    min-width: 100%; height:100%;
-}
+    ".logo" = [Ordered]@{ 
+        'display' ='inline'
+        'height'  = '7rem'
+    }
 
-.backdrop-svg {
-    z-index: -100;
-}
+    'pre, code' = [Ordered]@{ 'font-family' = "'$CodeFont', monospace" }
 
-.backdrop-canvas {
-    z-index: -99;
-}
-"@
+    "a, a:visited" = [Ordered]@{'text-decoration' ='none'}
 
-# $style = @($StyleTable | outputCss) -join [Environment]::NewLine
+    "a:hover, a:focus" = [Ordered]@{'text-decoration' ='underline'}
+
+    ".backdrop-svg" = [Ordered]@{"z-index"= -100}
+    ".backdrop-canvas" = [Ordered]@{"z-index"= -99}
+
+    ".row-or-column" = [Ordered]@{        
+        'flex-direction' = 'row'
+    }
+
+
+    '@media (orientation: landscape)' = [Ordered]@{
+        '.row-or-column'  = @{'flex-direction' = 'row'}
+        '.logo' = @{height='4.2rem'}
+        '.site-title, .page-title' = [Ordered]@{
+            'font-size' = '1.23rem'
+            'line-height' = '0.75rem'
+        }
+    }
+
+    '@media (orientation: portrait)' = [Ordered]@{
+        '.row-or-column'  = @{'flex-direction' = 'column'}
+        '.logo' = @{height='2.3rem'}
+        '.page-title, .site-title' = [Ordered]@{
+            'font-size' = '0.84rem'
+            'line-height' = '0.66rem'
+        }
+    }
+
+
+
+
+    #region HighlightJS
+    '.hljs' = [Ordered]@{
+        background = 'color-mix(in srgb, var(--background) 75%, transparent)'
+        color = 'var(--foreground)'
+    }
+    '.hljs-number' = @{color='var(--cyan)'}
+    '.hljs-type' = @{color='var(--purple)'}
+    '.hljs-string' = @{color='var(--brightWhite)'}
+    
+    '.hljs-built_in' = [Ordered]@{
+        color = 'var(--brightBlue)'
+        'font-weight' = 'demibold'
+    }
+
+    '.hljs-variable' = [Ordered]@{
+        color = 'var(--green)'
+        'font-weight' = 'demibold'
+    }
+
+    '.hljs-comment' = [Ordered]@{
+        color = 'var(--brightGreen)'
+        'font-weight' = 'demibold'
+    }
+
+    ".hljs-literal" = @{
+        color='var(--brightWhite)'
+    }
+    
+    #endregion HighlightJS
+})
 #endregion Declare global styles
 
-
-
 #region Page Header
-
 # Set up all of the header elements
 $headerElements = @(
     # * Google Analytics
@@ -298,11 +374,10 @@ $headerElements = @(
     }
     $ImportMap
     # * Our styles
-    "<style>$style</style>"
+    "$turtleStyle"
 )
 
-# Now we declare the body elements
-$bodyElements = @(
+$background = @(
     # * The background layers        
     "<svg class='background backdrop-svg' id='background-svg' width='100%' height='100%'>"
     if ($page.Background -is [xml]) {
@@ -313,9 +388,14 @@ $bodyElements = @(
     }
     "</svg>"
     "<canvas id='background backdrop-canvas' width='0' height='0'></canvas>"
-    if ($taskbar) {
-        # * Our taskbar
-        "<div class='taskbar'>"
+)
+
+$header = @(
+# * The header
+    "<header>"
+        "<section class='social row-or-column'>"
+            if ($taskbar) {
+            # * Our taskbar    
             foreach ($taskbarItem in $taskbar.GetEnumerator()) {
                 $itemIconAndOrName = 
                     if ($page -and $page.Icon."$($taskbarItem.Key)") {                     
@@ -341,16 +421,17 @@ $bodyElements = @(
                     "</details>"
                 } else {
                     "<a href='$($taskBarContent)' class='icon-link' target='_blank'>"
+                    "<button>"
                     $itemIconAndOrName
+                    "</button>"
                     "</a>"
                 }
                 
             }
-        "</div>"
-    }
-
-    # * The header
-    "<header>"    
+            "</div>"
+        }
+        "</section>"
+        "<section class='title'>"
         if ($page.Header) {
             $page.Header -join [Environment]::NewLine
         } elseif ($site.Header) {
@@ -378,47 +459,46 @@ $bodyElements = @(
                 "<h2 class='page-title'>$([Web.HttpUtility]::HtmlEncode($page.Title))</h2>"
             }            
         }
-        
-        if ($headerMenu) {        
-            "<nav class='header-menu'>"
-            foreach ($menuItem in $headerMenu.GetEnumerator()) {
-                if ($menuItem.Value -notmatch '[<>]') {
-                    "<a href='$($menuItem.Value)' class='header-menu-item'>$([Web.HttpUtility]::HtmlEncode($menuItem.Key))</a>"
-                }
-                
-            }
-            "</nav>"
-        }
+        "</section>"
+        "<section class='options'>"
+            . /_includes/Palette
+        "</section>"
     "</header>"
-
-    # * The main content
-
-    "<div class='main'>$outputHtml</div>"    
-
-    if ($page.FixFooter -or $site.FixFooter) {
-        "<style>footer { position:fixed; $(
-            @(
-                foreach ($key in $site.FixFooter.Keys) {
-                    "${key}:$($site.FixFooter[$key])"
-                }   
-                foreach ($key in $page.FixFooter.Keys) {
-                    "${key}:$($Page.FixFooter[$key])"
-                }
-            ) -join ';'
-        )
-        }</style>"
-    }
-    
-
-    # * The footer
-    "<footer>"    
-    if ($Page.Footer) { $page.Footer -join [Environment]::NewLine }
-    if ($Site.Footer) { $site.Footer -join [Environment]::NewLine } 
-    "</footer>"
-    if ($site.HighlightJS -or $page.HighlightJS) { "<script>hljs.highlightAll();</script>" }
 )
 
-"<html>
+$footer = @(
+    # * The footer
+    "<footer>"
+    "<section class='footer-options'>"    
+    "</section>"        
+    "<section class='scroll-progress'>"
+    "</section>"
+    "</footer>"
+)
+
+# Now we declare the body elements
+$bodyElements = @(    
+    
+    $background
+    
+    
+    "<section class='foreground'>"
+    
+
+        $header
+
+        "<section class='main'>$outputHtml</section>"    
+
+        $Footer    
+
+    "</section>"
+
+    if ($site.HighlightJS -or $page.HighlightJS) {
+        "<script>hljs.highlightAll();</script>"
+    }
+)
+
+🐢 element "<html>
     <head>
         <title>$(if ($page['Title']) { $page['Title'] } else { $Title })</title>
 $($headerElements -join [Environment]::NewLine)
@@ -426,4 +506,4 @@ $($headerElements -join [Environment]::NewLine)
     <body>
 $($bodyElements -join [Environment]::NewLine)
 </body>
-</html>"
+</html>" element
