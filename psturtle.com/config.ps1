@@ -79,7 +79,12 @@ if ($site.PSScriptRoot) {
         $getFile = @{LiteralPath=$underbarFile.FullName}
         $fileData  =
             switch -regex ($underbarFile.Extension) {
-                '\.ps1$' { $ExecutionContext.SessionState.InvokeCommand.GetCommand($underbarFile.FullName, 'ExternalScript') }
+                '\.ps1$' {
+                    if ($hierarchy -contains '_includes') {
+                        Set-Alias "/_includes/$($underbarFile.Name -replace '\.ps1$')" $underbarFile.Fullname
+                    }
+                    $ExecutionContext.SessionState.InvokeCommand.GetCommand($underbarFile.FullName, 'ExternalScript')
+                }
                 '\.(css|html|txt)$' { Get-Content @getFile }
                 '\.json$' { Get-Content @getFile | ConvertFrom-Json }
                 '\.jsonl$' { Get-Content @getFile | ConvertFrom-Json }
@@ -110,27 +115,43 @@ $Site.Description = 'Turtles in a PowerShell'
 #region Site Icons
 $Site.Icon  = [Ordered]@{
     'BlueSky' = $site.includes.'BlueSky.svg'.OuterXml
-    'GitHub' = . $site.includes.Feather 'GitHub'
-    'RSS' = . $site.includes.Feather 'RSS'
-    'Settings' = . $site.includes.Feather 'Settings'
-    'Help' = . $site.includes.Feather 'Help-Circle'
+    'GitHub' = . /_includes/FeatherIcon 'GitHub'
+    'RSS' = . /_includes/FeatherIcon  'RSS'
+    'Settings' = . /_includes/FeatherIcon  'Settings'
+    'Help' = . /_includes/FeatherIcon 'Help-Circle'
 }
 #endregion Site Icons
 
 #region Site Menus
 $Site.Logo = 
     @(
-        {             
+        <#{             
             $flowerSides = 3..12 | Get-Random
             turtle Flower 42 (15,20,30,60,72 | Get-Random) $flowerSides 
         }
                 
         {
             turtle SierpinskiTriangle 42 4
+        }#>
+
+        {
+            turtle rotate -90 TurtleMonotile 42 pathclass foreground-fill foreground-stroke
         }
 
         {
-            turtle rotate -90 TurtleMonotile 42 
+            turtle rotate -90 TurtleMonotile 42 fill '#4488ff', '#224488' linear stroke '#224488' '#4488ff' linear
+        }
+
+        {
+            turtle rotate -90 TurtleMonotile 42 fill '#224488' '#4488ff' linear stroke '#4488ff' '#224488' linear
+        }
+
+        {
+            turtle rotate -90 TurtleMonotile 42 fill '#228844' '#448822' linear stroke '#448822' '#228844' linear
+        }
+
+        {
+            turtle rotate -90 TurtleMonotile 42 fill '#448822' '#228844' linear  stroke '#228844' '#448822' linear
         }
     )
 
@@ -143,7 +164,7 @@ $Site.Logo.ID = 'Turtle-Logo'
 
 $site.Taskbar = [Ordered]@{
     'BlueSky' = 'https://bsky.app/profile/psturtle.com'
-    'GitHub' = 'https://github.com/PowerShellWeb/Turtle'
+    'GitHub' = 'https://github.com/PoshWeb/Turtle'
     'RSS' = 'https://psturtle.com/RSS/index.rss'
     'Help' = '/Commands/Get-Turtle'
 }
@@ -152,23 +173,6 @@ $env:TURTLE_BOT = $true
 
 $Site.Palette = "Andromeda"
 
-$site.Footer = @(
-    . $site.includes.SelectPalette
-    . $site.includes.GetRandomPalette
-)
-
-$Site.FixFooter = [Ordered]@{
-    'width' = '90vw'
-    'margin-left' = '5vw'
-    'margin-right' = '5vw'
-    'height' = '5vh'
-    'top' =  '92.5vh'
-    'z-index' = 100
-}
-
-<#$site.HeaderMenu = [Ordered]@{
-
-}#>
 #endregion Site Menus
 
 #region Site Background
@@ -184,9 +188,9 @@ $doodle = @(
 # Randomizing site background a bit
 $backgroundPatternAnimations = 
     [Ordered]@{
-        type = 'scale'    ; values = 0.66,0.33, 0.66 ; repeatCount = 'indefinite' ;dur = "277s"; additive = 'sum';id ='scale-pattern'
+        type = 'scale'    ; values = 0.66,0.33, 0.66 ; repeatCount = 'indefinite' ;dur = "337s"; additive = 'sum';id ='scale-pattern'
     }, [Ordered]@{
-        type = 'rotate'   ; values = 0, 360 ;repeatCount = 'indefinite'; dur = "317s"; additive = 'sum'; id ='rotate-pattern'
+        type = 'rotate'   ; values = 0, 360 ;repeatCount = 'indefinite'; dur = "523s"; additive = 'sum'; id ='rotate-pattern'
     }
 
 $sitebackgrounds = @(
@@ -200,6 +204,8 @@ $sitebackgrounds = @(
     {turtle SierpinskiArrowheadCurve 15 4}
 
     {turtle KochSnowflake 4.2 4}
+    
+    {turtle KrishnaAnklets 4.2 4}
     
     {turtle BoxFractal 4.2 4}
 
