@@ -261,7 +261,8 @@ $turtle.
     Forward(42).Rotate(120)
 
 # Put our path data into an XML
-$svg = [xml]"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42' width='100%' height='100%'>
+$svg = [xml]"<svg xmlns='http://www.w3.org/2000/svg'
+    viewBox='0 0 42 42' width='100%' height='100%'>
     <path d='$($turtle.PathData)' />
 </svg>"
 
