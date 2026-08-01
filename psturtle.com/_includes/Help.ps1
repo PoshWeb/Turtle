@@ -94,10 +94,7 @@ if ($notes) {
 
 #region Grid Styles
 "<style>"
-".example-grid {
-    width: 90vw;
-    margin-left: 5vw;
-    margin-right: 5vw;
+".example-grid {    
     text-align: center;
 }"
 ".example {    
@@ -123,7 +120,9 @@ if ($notes) {
     gap: 1rem;
     margin: 0.8rem;
     padding: 0.2rem;
-    width: 90vw;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
 }"
 ".example-output { text-align: center }"
 "
@@ -183,6 +182,15 @@ foreach ($example in $CommandHelp.examples.example) {
         if ($markdown) {
             (ConvertFrom-Markdown -InputObject $Markdown).Html
         }
+
+        $exampleCode = 
+            try {
+                [scriptblock]::Create($codeBlock)
+            } catch {
+                Write-Warning "Unable to convert $($example.code) to a script"
+                continue
+            }
+            
         # followed by our sample code
         "<div class='example-code'>"
             "<pre>"
@@ -199,18 +207,12 @@ foreach ($example in $CommandHelp.examples.example) {
             continue
         }        
         # Otherwise, try to make our example a script block
-        $exampleCode = 
-            try {
-                [scriptblock]::Create($codeBlock)
-            } catch {
-                Write-Warning "Unable to convert $($example.code) to a script"
-                continue
-            }
+        
         
         if (-not $global:ExampleOutputCache) {
             $global:ExampleOutputCache = [Ordered]@{}
         }
-        if (-not $global:ExampleOutputCache[$codeBlock]) {
+        if (-not $global:ExampleOutputCache[$codeBlock]) {            
             $global:ExampleOutputCache[$codeBlock] = @(. $exampleCode)
         }
         # then run it and capture the output
@@ -267,7 +269,7 @@ document.querySelectorAll('pre > code').forEach(element => {
     const copyCodeButton = document.createElement('div')
     copyCodeButton.classList.add('copy-button')
     copyCodeButton.onclick = () => navigator.clipboard.writeText(element.innerText)
-    copyCodeButton.innerHTML = ``$(. $site.includes.Feather -Icon 'clipboard')``
+    copyCodeButton.innerHTML = ``$(. /_includes/FeatherIcon -Icon 'clipboard')``
     element.parentNode.prepend(copyCodeButton)
 });
 </script>
