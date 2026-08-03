@@ -344,6 +344,10 @@
         <ReferencedMemberName>SVGAttribute</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
+        <Name>t</Name>
+        <ReferencedMemberName>StepCurve</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
         <Name>Terdragon</Name>
         <ReferencedMemberName>TerdragonCurve</ReferencedMemberName>
       </AliasProperty>
