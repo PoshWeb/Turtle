@@ -497,6 +497,30 @@ jobs:
         if: ${{github.ref_name != 'main'}}
         uses: ./
         id: TurtleAction
+      - name: PreviewTurtle
+        id: PreviewTurtle
+        shell: pwsh
+        run: |
+          <#
+          .SYNOPSIS
+              Preview Turtle
+          .DESCRIPTION
+              Generates a preview build of the Turtle website
+          #>
+          if (-not (Test-Path "./psturtle.com")) {
+              throw "Website note found"
+          }
+          
+          Push-Location ./psturtle.com
+          . .\build.ps1
+          Pop-Location
+          
+      - name: PreviewUpload
+        uses: actions/upload-artifact@main
+        with: 
+          name: TurtlePreview
+          path: '**/psturtle.com/**'
+        if: ${{always()}}
 env: 
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}

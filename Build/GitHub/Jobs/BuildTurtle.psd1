@@ -13,6 +13,8 @@
             uses = './'
             id = 'TurtleAction'
         }
+        'PreviewTurtle',
+        'UploadPreviewTurtle'
         # 'BuildAndPublishContainer'
     )
 }
