@@ -1,6 +1,5 @@
 
 <#
-
 .SYNOPSIS    
     Draws a polar equation.    
 .DESCRIPTION
@@ -17,7 +16,6 @@
         $Radius * [Math]::Cos($Frequency * $Step * $Radian)
     } @{Frequency=2.0} |
         Save-Turtle .\PolarRose.svg
-        
 .EXAMPLE
     turtle rotate 45 forward 100 PolarEquation 100 {
         $Radius * [Math]::Cos($Frequency * $Angle * [Math]::PI/180)
@@ -77,9 +75,7 @@
         turtle PolarEquation -100 { $Radius * [Math]::Cos($Frequency * $Step * $Radian) } @{Frequency=3.0} 90
         turtle PolarEquation 100 { $Radius } @{} 90
     )
-#>
-            
-    
+#>    
 param(
 # The radius of the polar path    
 [Parameter(ValueFromPipelineByPropertyName)]
@@ -154,7 +150,7 @@ $Variable = [Ordered]@{},
 $turtle = if ($this) { $this } else { turtle }
 
 # Declare this relatively simple function to calculate a polar coordinate.
-function 𝜑 {
+function polarCoordinate {
     param($radius, $angle)
     $radius * [math]::round([math]::cos($angle * [Math]::PI / 180),10)
     $radius * [math]::round([math]::sin($angle * [Math]::PI / 180),10)
@@ -176,8 +172,8 @@ foreach ($variableName in $variable.Keys) {
     $ExecutionContext.SessionState.PSVariable.Set($variableName, $variable[$variableName])
 }
 
-$centerX          = $turtle.Position.X
-$centerY          = $turtle.Position.Y
+$centerX = $turtle.Position.X
+$centerY = $turtle.Position.Y
 
 $radian = [Math]::PI / 180
 
@@ -201,7 +197,7 @@ for ($angle = $originalHeading; [Math]::Abs($angle - $originalHeading) -le [Math
     $momentRadius = . $localEquation
 
     # Calculate the point of the formula
-    $momentX, $momentY = 𝜑 $momentRadius $angle
+    $momentX, $momentY = polarCoordinate $momentRadius $angle
            
     $relativeX = ($momentX * -1) - $centerX
     $relativeY = ($momentY * -1) - $centerY
