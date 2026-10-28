@@ -10,8 +10,8 @@ param()
 
 $imageHeader = @(
 @'
-<div align='center'>
-    <img src='./Examples/SierpinskiTriangle.svg' alt='SierpinskiTriangle' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+    <img src='./Examples/SierpinskiTriangle.svg' alt='SierpinskiTriangle' width='420px' height='420px' />
     <br/>
     <a href='https://www.powershellgallery.com/packages/Turtle/' >
     <img src='https://img.shields.io/powershellgallery/dt/Turtle' />
@@ -142,13 +142,13 @@ If you want to get a sense of all that Turtle can do, check out the [Get-Turtle 
 
 ### Drawing Squares
 
-<div align='center'>
+<div align='center' class='imagePreview'>
 $(
     $null = Get-Turtle Square 10 | 
         Set-Turtle -Property Stroke '#4488ff' |
         Save-Turtle -Path ./Examples/Square.svg
 )
-<img src='./Examples/Square.svg' alt='Square' width='25%' height='25%' />
+<img src='./Examples/Square.svg' alt='Square' width='420px' height='420px' />
 </div>
 
 Let's start simple, by drawing a square with a series of commands.
@@ -243,13 +243,13 @@ $turtle |
 '@
 
 @"
-<div align='center'>
+<div align='center' class='imagePreview'>
 $(
 $null = turtle ('Forward', 10, 'Rotate', 60  * 6) | 
     Set-Turtle -Property Stroke '#4488ff' |
     Save-Turtle -Path ./Examples/Hexagon.svg
 )
-<img src='./Examples/Hexagon.svg' alt='Hexagon' width='25%' height='25%' />
+<img src='./Examples/Hexagon.svg' alt='Hexagon' width='420px' height='420px' />
 </div>
 "@
 
@@ -274,8 +274,8 @@ $MakeHexagonPattern
 $HexPattern = . $MakeHexagonPattern
 
 @"
-<div align='center'>
-<img src='./Examples/$($HexPattern.Name)' alt='Hexagon Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/$($HexPattern.Name)' alt='Hexagon Pattern' width='420px' height='420px' />
 </div>
 "@
 
@@ -345,10 +345,14 @@ $(
     )
 )
 
-<div align='center'>
-<img src='./Examples/BoxFractal1.svg' alt='Box Fractal 1' width='25%' height='25%' />
-<img src='./Examples/BoxFractal2.svg' alt='Box Fractal 2' width='25%' height='25%' />
-<img src='./Examples/BoxFractal3.svg' alt='Box Fractal 3' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/BoxFractal1.svg' alt='Box Fractal 1' width='420px' height='420px' />
+</div>
+<div align='center' class='imagePreview'>
+<img src='./Examples/BoxFractal2.svg' alt='Box Fractal 2' width='420px' height='420px' />
+</div>
+<div align='center' class='imagePreview'>
+<img src='./Examples/BoxFractal3.svg' alt='Box Fractal 3' width='420px' height='420px' />
 </div>
 "@
 
@@ -378,8 +382,8 @@ $MakeSnowflakePattern
 $SnowFlakePattern = . $MakeSnowflakePattern
 
 @"
-<div align='center'>
-<img src='./Examples/$($SnowFlakePattern.Name)' alt='Snowflake Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/$($SnowFlakePattern.Name)' alt='Snowflake Pattern' width='420px' height='420px'></img>
 </div>
 "@
 
@@ -395,8 +399,8 @@ $(
 "@
 
 @"
-<div align='center'>
-<img src='./Examples/EndlessSnowflake.svg' alt='Endless Snowflake Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/EndlessSnowflake.svg' alt='Endless Snowflake Pattern' width='420px' height='420px' />
 </div>
 "@
 
@@ -427,8 +431,8 @@ $(
 "@
 
 @"
-<div align='center'>
-<img src='./Examples/InscribedCircle.svg' alt='Inscribed Circle' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/InscribedCircle.svg' alt='Inscribed Circle' width='420px' height='420px' />
 </div>
 "@
 
@@ -437,8 +441,8 @@ Let's see it as a pattern:
 "@
 
 @"
-<div align='center'>
-<img src='./Examples/InscribedCirclePattern.svg' alt='Inscribed Circle Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/InscribedCirclePattern.svg' alt='Inscribed Circle Pattern' width='420px' height='420px' />
 </div>
 "@
 
@@ -459,8 +463,8 @@ $(
 "@
 
 @"
-<div align='center'>
-<img src='./Examples/FollowThatTurtle.svg' alt='Follow That Turtle' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/FollowThatTurtle.svg' alt='Follow That Turtle' width='420px' height='420px' />
 </div>
 "@
 
@@ -469,8 +473,8 @@ Let's see it as a pattern:
 "@
 
 @"
-<div align='center'>
-<img src='./Examples/FollowThatTurtlePattern.svg' alt='Follow That Turtle' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/FollowThatTurtlePattern.svg' alt='Follow That Turtle' width='420px' height='420px' />
 </div>
 "@
 
@@ -489,8 +493,8 @@ $(
 
 
 @"
-<div align='center'>
-<img src='./Examples/FollowThatTurtleHideAndSeek.svg' alt='Follow That Turtle Hide And Seek' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/FollowThatTurtleHideAndSeek.svg' alt='Follow That Turtle Hide And Seek' width='420px' height='420px' />
 </div>
 "@
 
@@ -499,8 +503,8 @@ Let's see it as a pattern:
 "@
 
 @"
-<div align='center'>
-<img src='./Examples/FollowThatTurtleHideAndSeekPattern.svg' alt='Follow That Turtle Hide And Seek Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/FollowThatTurtleHideAndSeekPattern.svg' alt='Follow That Turtle Hide And Seek Pattern' width='420px' height='420px' />
 </div>
 "@
 #endregion Turtles All The Way Down

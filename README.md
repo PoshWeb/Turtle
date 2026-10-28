@@ -1,7 +1,7 @@
 # Turtle
 
-<div align='center'>
-    <img src='./Examples/SierpinskiTriangle.svg' alt='SierpinskiTriangle' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+    <img src='./Examples/SierpinskiTriangle.svg' alt='SierpinskiTriangle' width='420px' height='420px' />
     <br/>
     <a href='https://www.powershellgallery.com/packages/Turtle/' >
     <img src='https://img.shields.io/powershellgallery/dt/Turtle' />
@@ -99,9 +99,9 @@ If you want to get a sense of all that Turtle can do, check out the [Get-Turtle 
 
 ### Drawing Squares
 
-<div align='center'>
+<div align='center' class='imagePreview'>
 
-<img src='./Examples/Square.svg' alt='Square' width='25%' height='25%' />
+<img src='./Examples/Square.svg' alt='Square' width='420px' height='420px' />
 </div>
 
 Let's start simple, by drawing a square with a series of commands.
@@ -180,9 +180,9 @@ foreach ($n in 1..6) {
 $turtle | 
     Save-Turtle "./Hexagon.svg" 
 ~~~
-<div align='center'>
+<div align='center' class='imagePreview'>
 
-<img src='./Examples/Hexagon.svg' alt='Hexagon' width='25%' height='25%' />
+<img src='./Examples/Hexagon.svg' alt='Hexagon' width='420px' height='420px' />
 </div>
 Because this Turtle generates SVG, we can also use it to create patterns.
 
@@ -193,8 +193,8 @@ Because this Turtle generates SVG, we can also use it to create patterns.
         Save-Turtle -Path ./Examples/HexagonPattern.svg -Property Pattern
 
 ~~~
-<div align='center'>
-<img src='./Examples/HexagonPattern.svg' alt='Hexagon Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/HexagonPattern.svg' alt='Hexagon Pattern' width='420px' height='420px' />
 </div>
 
 ### Drawing Fractals
@@ -246,10 +246,14 @@ Lets show the first three generations of the box fractal:
 ~~~
 
 
-<div align='center'>
-<img src='./Examples/BoxFractal1.svg' alt='Box Fractal 1' width='25%' height='25%' />
-<img src='./Examples/BoxFractal2.svg' alt='Box Fractal 2' width='25%' height='25%' />
-<img src='./Examples/BoxFractal3.svg' alt='Box Fractal 3' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/BoxFractal1.svg' alt='Box Fractal 1' width='420px' height='420px' />
+</div>
+<div align='center' class='imagePreview'>
+<img src='./Examples/BoxFractal2.svg' alt='Box Fractal 2' width='420px' height='420px' />
+</div>
+<div align='center' class='imagePreview'>
+<img src='./Examples/BoxFractal3.svg' alt='Box Fractal 3' width='420px' height='420px' />
 </div>
 This implementation of Turtle has quite a few built-in fractals.
 
@@ -264,8 +268,8 @@ For example, here is an example of a pattern comprised of Koch Snowflakes:
         Save-Turtle -Path ./Examples/KochSnowflakePattern.svg -Property Pattern
 
 ~~~
-<div align='center'>
-<img src='./Examples/KochSnowflakePattern.svg' alt='Snowflake Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/KochSnowflakePattern.svg' alt='Snowflake Pattern' width='420px' height='420px'></img>
 </div>
 We can also animate the pattern, for endless variety:
 
@@ -288,8 +292,8 @@ $turtle = turtle id EndlessSnowflake KochSnowflake 10 4 |
 $turtle | save-turtle -Path ./EndlessSnowflake.svg -Property Pattern
 Pop-Location
 ~~~
-<div align='center'>
-<img src='./Examples/EndlessSnowflake.svg' alt='Endless Snowflake Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/EndlessSnowflake.svg' alt='Endless Snowflake Pattern' width='420px' height='420px' />
 </div>
 ### Turtles all the way down
 
@@ -320,12 +324,12 @@ $inscribedCircle | Save-Turtle ./InscribedCircle.svg
 $inscribedCircle | Save-Turtle ./InscribedCirclePattern.svg Pattern
 ~~~
 
-<div align='center'>
-<img src='./Examples/InscribedCircle.svg' alt='Inscribed Circle' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/InscribedCircle.svg' alt='Inscribed Circle' width='420px' height='420px' />
 </div>
 Let's see it as a pattern:
-<div align='center'>
-<img src='./Examples/InscribedCirclePattern.svg' alt='Inscribed Circle Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/InscribedCirclePattern.svg' alt='Inscribed Circle Pattern' width='420px' height='420px' />
 </div>
 #### Behavior Modelling
 
@@ -396,12 +400,12 @@ $followThatTurtle.Stroke = 'transparent'
 $followThatTurtle | Save-Turtle ./FollowThatTurtlePattern.svg Pattern
 
 ~~~
-<div align='center'>
-<img src='./Examples/FollowThatTurtle.svg' alt='Follow That Turtle' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/FollowThatTurtle.svg' alt='Follow That Turtle' width='420px' height='420px' />
 </div>
 Let's see it as a pattern:
-<div align='center'>
-<img src='./Examples/FollowThatTurtlePattern.svg' alt='Follow That Turtle' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/FollowThatTurtlePattern.svg' alt='Follow That Turtle' width='420px' height='420px' />
 </div>
 
 Now let's imagine we have four turtles in the center, and they're trying to get away from the turtles in the corners.
@@ -496,12 +500,12 @@ $hideAndSeek | Save-Turtle ./FollowThatTurtleHideAndSeekPattern.svg Pattern
 
 if ($PSScriptRoot) { Pop-Location}
 ~~~
-<div align='center'>
-<img src='./Examples/FollowThatTurtleHideAndSeek.svg' alt='Follow That Turtle Hide And Seek' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/FollowThatTurtleHideAndSeek.svg' alt='Follow That Turtle Hide And Seek' width='420px' height='420px' />
 </div>
 Let's see it as a pattern:
-<div align='center'>
-<img src='./Examples/FollowThatTurtleHideAndSeekPattern.svg' alt='Follow That Turtle Hide And Seek Pattern' width='25%' height='25%' />
+<div align='center' class='imagePreview'>
+<img src='./Examples/FollowThatTurtleHideAndSeekPattern.svg' alt='Follow That Turtle Hide And Seek Pattern' width='420px' height='420px' />
 </div>
 
 ### Turtles in HTML

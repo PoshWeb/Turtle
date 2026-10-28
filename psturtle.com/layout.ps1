@@ -148,10 +148,9 @@ $turtleStyle = 🐢 style ([Ordered]@{
             'grid-area' = 'header'
             'grid-template-areas' = '"social title options"'
             'grid-template-columns' = '1fr 3fr 1fr'
-            'transform-style' = 'preserve-3d'
             'top' = '0vh'
             'left' = '0vw'
-            'max-width' = '100%'
+            'max-width' = '100vw'
             'height' = '10rem'
             'z-index' = 10
             'margin' = '1rem'
@@ -193,7 +192,7 @@ $turtleStyle = 🐢 style ([Ordered]@{
 
     '.main' = [Ordered]@{
         'grid-area' = 'main'
-        'max-width' = '90vw'
+        'width' = '90vw'
         'margin-top' = '10rem'
         'padding-left' = '5%'
         'padding-right' = '5%'
@@ -204,7 +203,9 @@ $turtleStyle = 🐢 style ([Ordered]@{
         } else {
             "1.23em"
         }
-        'line-height' = '1.5rem'        
+        'line-height' = '1.5rem'
+        'display' = 'flex'
+        'flex-direction' = 'column'        
     }
 
     '.social' = $flex + [Ordered]@{
