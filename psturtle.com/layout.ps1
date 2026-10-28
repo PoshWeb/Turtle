@@ -119,7 +119,11 @@ filter outputHtml {
         {$outputItem.Markdown} { return (ConvertFrom-Markdown -InputObject (
             $outputItem.Markdown -join [Environment]::NewLine
         )).HTML }
-        default { "$outputItem" }
+        default {
+            if ($outputItem.ToString) {
+                $outputItem.ToString()
+            }
+         }
     }
 }
 
@@ -504,6 +508,8 @@ $bodyElements = @(
 $($headerElements -join [Environment]::NewLine)
     </head>
     <body>
-$($bodyElements -join [Environment]::NewLine)
+$(
+    $bodyElements -join [Environment]::NewLine
+)
 </body>
 </html>" element
