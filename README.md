@@ -247,9 +247,9 @@ Lets show the first three generations of the box fractal:
 
 
 <div align='center'>
-<img src='./Examples/BoxFractal1.svg' alt='Box Fractal 1' width='50%' />
-<img src='./Examples/BoxFractal2.svg' alt='Box Fractal 2' width='50%' />
-<img src='./Examples/BoxFractal3.svg' alt='Box Fractal 3' width='50%' />
+<img src='./Examples/BoxFractal1.svg' alt='Box Fractal 1' height='25%' />
+<img src='./Examples/BoxFractal2.svg' alt='Box Fractal 2' height='25%' />
+<img src='./Examples/BoxFractal3.svg' alt='Box Fractal 3' height='25%' />
 </div>
 This implementation of Turtle has quite a few built-in fractals.
 
@@ -265,7 +265,7 @@ For example, here is an example of a pattern comprised of Koch Snowflakes:
 
 ~~~
 <div align='center'>
-<img src='./Examples/KochSnowflakePattern.svg' alt='Snowflake Pattern' width='100%' height='50%' />
+<img src='./Examples/KochSnowflakePattern.svg' alt='Snowflake Pattern' width='100%' height='25%' />
 </div>
 We can also animate the pattern, for endless variety:
 
@@ -289,7 +289,7 @@ $turtle | save-turtle -Path ./EndlessSnowflake.svg -Property Pattern
 Pop-Location
 ~~~
 <div align='center'>
-<img src='./Examples/EndlessSnowflake.svg' alt='Endless Snowflake Pattern' width='100%' height='50%' />
+<img src='./Examples/EndlessSnowflake.svg' alt='Endless Snowflake Pattern' width='100%' height='25%' />
 </div>
 ### Turtles all the way down
 
@@ -321,11 +321,11 @@ $inscribedCircle | Save-Turtle ./InscribedCirclePattern.svg Pattern
 ~~~
 
 <div align='center'>
-<img src='./Examples/InscribedCircle.svg' alt='Inscribed Circle' width='100%' />
+<img src='./Examples/InscribedCircle.svg' alt='Inscribed Circle' height='25%' />
 </div>
 Let's see it as a pattern:
 <div align='center'>
-<img src='./Examples/InscribedCirclePattern.svg' alt='Inscribed Circle Pattern' width='100%' height='50%' />
+<img src='./Examples/InscribedCirclePattern.svg' alt='Inscribed Circle Pattern' width='100%' height='25%' />
 </div>
 #### Behavior Modelling
 
@@ -397,7 +397,7 @@ $followThatTurtle | Save-Turtle ./FollowThatTurtlePattern.svg Pattern
 
 ~~~
 <div align='center'>
-<img src='./Examples/FollowThatTurtle.svg' alt='Follow That Turtle' width='100%' />
+<img src='./Examples/FollowThatTurtle.svg' alt='Follow That Turtle' width='100%' height='25%' />
 </div>
 Let's see it as a pattern:
 <div align='center'>
