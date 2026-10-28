@@ -137,7 +137,7 @@ $flex = [Ordered]@{display='flex'}
 $turtleStyle = 🐢 style ([Ordered]@{
     body =
         [Ordered]@{
-            'max-width' = '100%'
+            'max-width' = '100vw'
             'height' = '100vh'
             'font-family' = "'$font', sans-serif"
         }
