@@ -1,7 +1,7 @@
 # Turtle
 
 <div align='center'>
-    <img src='./Examples/SierpinskiTriangle.svg' alt='SierpinskiTriangle' width='50%' />
+    <img src='./Examples/SierpinskiTriangle.svg' alt='SierpinskiTriangle' width='33%' />
     <br/>
     <a href='https://www.powershellgallery.com/packages/Turtle/' >
     <img src='https://img.shields.io/powershellgallery/dt/Turtle' />
@@ -35,6 +35,8 @@ This module gives you Turtle in a PowerShell.
 
 * [Amazing Examples](https://psturtle.com/Commands/Get-Turtle)
 * [A Brief History of Turtles](https://psturtle.com/History)
+
+
 ### Installing and Importing
 
 We can install Turtle from the PowerShell Gallery:
@@ -268,7 +270,7 @@ For example, here is an example of a pattern comprised of Koch Snowflakes:
 We can also animate the pattern, for endless variety:
 
 ~~~PowerShell
-$turtle = turtle KochSnowflake 10 4 | 
+$turtle = turtle id EndlessSnowflake KochSnowflake 10 4 | 
     Set-Turtle -Property PatternTransform -Value @{scale=0.33} |
     set-turtle -property Fill -value '#4488ff' |
     Set-Turtle -Property PatternAnimation -Value ([Ordered]@{
@@ -309,7 +311,7 @@ At the most basic, let's make an inscribed circle and square:
     A simple example of turtles containing turtles
 #>
 $inscribedCircle = 
-    turtle width 42 height 42 turtles ([Ordered]@{
+    turtle id inscribedCircle width 42 height 42 turtles ([Ordered]@{
         'square' = turtle square 42 fill '#4488ff' stroke '#224488'
         'circle' = turtle circle 21 fill '#224488' stroke '#4488ff'
     })
@@ -360,7 +362,7 @@ if (-not $StepCount) {
 }
 
 # Set up our turtles.
-$followThatTurtle = turtle stroke '#4488ff' square $Size turtles ([Ordered]@{
+$followThatTurtle = turtle id FollowThatTurtle stroke '#4488ff' square $Size turtles ([Ordered]@{
     t1 = turtle teleport 0 0 stroke '#4488ff'
     t2 = turtle teleport $Size 0 stroke '#4488ff'
     t3 = turtle teleport $Size $Size stroke '#4488ff' 
@@ -440,7 +442,7 @@ $midpoint = ($squareSize/2), ($squareSize/2)
 $seekerSpeed = $HiderSpeed * $SeekerSpeedRatio # (1 + (Get-Random -Min 10 -Max 50)/50) # (Get-Random -Min 1 -Max 5)
 $stepCount = $squareSize/2 * (1 + ([Math]::Abs($attackerSpeed - $evaderSpeed)))
 
-$hideAndSeek = turtle square $squareSize stroke '#4488ff' turtles ([Ordered]@{
+$hideAndSeek = turtle id hideAndSeek square $squareSize stroke '#4488ff' turtles ([Ordered]@{
     s1 = turtle teleport 0 0 stroke '#4488ff' # stroke 'red' pathclass 'red-stroke' fill red
     s2 = turtle teleport $squareSize 0 stroke '#4488ff' # stroke 'yellow' pathclass 'yellow-stroke' fill yellow
     s3 = turtle teleport $squareSize $squareSize stroke '#4488ff' # stroke 'green' pathclass 'green-stroke' fill green

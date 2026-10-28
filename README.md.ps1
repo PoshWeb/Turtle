@@ -11,7 +11,7 @@ param()
 $imageHeader = @(
 @'
 <div align='center'>
-    <img src='./Examples/SierpinskiTriangle.svg' alt='SierpinskiTriangle' width='50%' />
+    <img src='./Examples/SierpinskiTriangle.svg' alt='SierpinskiTriangle' width='33%' />
     <br/>
     <a href='https://www.powershellgallery.com/packages/Turtle/' >
     <img src='https://img.shields.io/powershellgallery/dt/Turtle' />
@@ -54,6 +54,8 @@ This module gives you Turtle in a PowerShell.
 
 * [Amazing Examples](https://psturtle.com/Commands/Get-Turtle)
 * [A Brief History of Turtles](https://psturtle.com/History)
+
+
 "@
 
 #endregion Introduction
