@@ -28,38 +28,6 @@ $Site.Files =
     else { Get-ChildItem -Recurse -File }
 
 $Site.PSScriptRoot = "$PSScriptRoot"
-foreach ($underbarDirectory in Get-ChildItem -Path $site.PSScriptRoot -Filter _* -Directory) {
-    $Site[$underbarDirectory.Name -replace '^_'] = $Site[$underbarDirectory.Name] = [Ordered]@{}    
-    foreach ($underbarFile in Get-ChildItem -Path $underbarDirectory -Recurse) {
-        $relativePath = $underbarFile.FullName.Substring($underbarDirectory.FullName.Length + 1)
-        $pointer = $site
-        $hierarchy = @($relativePath -split '[\\/]')
-        for ($index = 0; $index -lt ($hierarchy.Length - 1); $index++) {
-            $subdirectory = $hierarchy[$index] -replace '_'
-            if (-not $pointer[$subdirectory]) {
-                $pointer[$subdirectory] = [Ordered]@{}
-            }
-            $pointer = $pointer[$subdirectory]
-        }
-
-        $propertyName = $hierarchy[-1] -replace '_'
-        $getFile = @{LiteralPath=$underbarFile.FullName}
-        $fileData  =
-            switch -regex ($underbarFile.Extension) {
-                '\.ps1$' { $ExecutionContext.SessionState.InvokeCommand.GetCommand($underbarFile.FullName, 'ExternalScript') }
-                '\.(css|html|txt)$' { Get-Content @getFile }
-                '\.json$' { Get-Content @getFile | ConvertFrom-Json }
-                '\.jsonl$' { Get-Content @getFile | ConvertFrom-Json }
-                '\.psd1$' { Get-Content @getFile -Raw | ConvertFrom-StringData }
-                '\.(?>ps1xml|xml|svg)$' { (Get-Content @getFile -Raw) -as [xml] }
-                '\.(?>yaml|toml)$' { Get-Content @getFile -Raw }
-                '\.csv$' { Import-Csv @getFile }
-                '\.tsv$' { Import-Csv @getFile -Delimiter "`t" }
-            }        
-        if (-not $fileData) { continue }
-        $pointer[$relativePath -replace '\.ps1$'] = $fileData        
-    }
-}
 
 #region Common Functions and Filters
 # Any functions or filter file at the site root should be loaded.
@@ -100,31 +68,6 @@ if (Test-Path 'CNAME') {
     # assume it _is_ the domain.
     $site.CNAME = $CNAME = ($site.PSScriptRoot | Split-Path -Leaf)
     $site.RootUrl = "https://$CNAME/"
-}
-
-#region config
-# If we have a config.json file, it can be used to set the site configuration.
-if (Test-Path 'config.json') {
-    $siteConfig = Get-Content -Path 'config.json' -Raw | ConvertFrom-Json
-    foreach ($property in $siteConfig.psobject.properties) {
-        $Site[$property.Name] = $property.Value
-    }
-}
-
-# If we have a config.psd1 file, we'll use it to set the site configuration.
-if (Test-Path 'config.psd1') {
-    $siteConfig = Import-LocalizedData -FileName 'config.psd1' -BaseDirectory $PSScriptRoot
-    foreach ($property in $siteConfig.GetEnumerator()) {
-        $Site[$property.Key] = $property.Value
-    }
-}
-
-# If we have a config yaml, things 
-if (Test-Path 'config.yaml') {
-    $siteConfig = Get-Item 'config.yaml' | from_yaml
-    foreach ($property in $siteConfig.GetEnumerator()) {
-        $Site[$property.Name] = $property.Value
-    }
 }
 
 # If we have a config.ps1 file,
@@ -174,10 +117,6 @@ if ($site.includes.'Index.rss' -is [Management.Automation.ExternalScriptInfo]) {
     New-Item -ItemType File -Path ./RSS/index.rss -Force -Value (
         . $site.includes.'Index.rss'
     )
-}
-
-if ($site.includes.'Index.json' -is [Management.Automation.ExternalScriptInfo]) {
-    . $site.includes.'Index.json' > index.json
 }
 
 #region archive.zip
