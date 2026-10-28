@@ -193,7 +193,7 @@ $turtleStyle = 🐢 style ([Ordered]@{
 
     '.main' = [Ordered]@{
         'grid-area' = 'main'
-        'max-width' = '90%'
+        'max-width' = '90vw'
         'margin-top' = '10rem'
         'padding-left' = '5%'
         'padding-right' = '5%'
